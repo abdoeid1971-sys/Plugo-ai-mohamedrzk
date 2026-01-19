@@ -1,3 +1,0 @@
-User-agent: *
-Allow: /
-Sitemap: https://www.plugo-ai7.site/sitemap.xml
