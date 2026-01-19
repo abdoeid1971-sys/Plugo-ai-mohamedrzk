@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Plugo - القالب الشامل</title>
     
     <!-- الخطوط -->
@@ -72,14 +73,20 @@
             transition: transform 6s ease-in-out;
         }
         .scroll-viewport img { transition: transform 1s ease-in-out; }
+      html, body {
+    overflow-x: hidden !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    position: relative;
+}
     </style>
 </head>
 <body class="bg-slate-50 text-slate-900 dark:bg-[#020617] dark:text-slate-100 transition-colors duration-300 font-sans overflow-x-hidden relative">
 
-    <!-- خلفية حية -->
+    <!-- خلفية حية (معدلة: دوائر صغيرة للموبايل وكبيرة للكمبيوتر) -->
     <div class="fixed inset-0 z-0 pointer-events-none overflow-hidden">
-        <div class="absolute top-0 right-0 w-[700px] h-[700px] bg-primary-600/20 rounded-full blur-[120px] animate-blob"></div>
-        <div class="absolute bottom-0 left-0 w-[600px] h-[600px] bg-secondary-600/10 rounded-full blur-[120px] animate-blob" style="animation-delay: 2s"></div>
+        <div class="absolute top-0 right-0 w-64 h-64 md:w-[700px] md:h-[700px] bg-primary-600/20 rounded-full blur-[80px] md:blur-[120px] animate-blob"></div>
+        <div class="absolute bottom-0 left-0 w-64 h-64 md:w-[600px] md:h-[600px] bg-secondary-600/10 rounded-full blur-[80px] md:blur-[120px] animate-blob" style="animation-delay: 2s"></div>
         <div class="absolute inset-0 bg-grid opacity-40"></div>
     </div>
 
@@ -429,20 +436,48 @@
                 <button onclick="toggleDashSidebar()" class="md:hidden text-slate-400 hover:text-red-500"><i class="fa-solid fa-xmark text-xl"></i></button>
             </div>
             <div class="p-6 bg-slate-50 dark:bg-dark-900/50 flex items-center gap-4"><div class="w-12 h-12 rounded-full bg-gradient-to-tr from-primary-500 to-secondary-500 flex items-center justify-center text-white font-bold text-xl shadow-lg">U</div><div><div class="text-sm font-black text-slate-800 dark:text-white" id="dash-name">User</div><div class="text-xs text-slate-500 font-bold mt-1">عميل مميز</div></div></div>
-            <nav class="flex-1 p-4 space-y-2 overflow-y-auto">
-                <button onclick="exitToSite()" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-dark-700 font-bold transition-all border border-dashed border-slate-300 dark:border-dark-600"><i class="fa-solid fa-arrow-right-from-bracket"></i> الرجوع للموقع</button>
-                <button class="w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-primary-50 dark:bg-primary-500/10 text-primary-600 dark:text-primary-400 font-bold border border-primary-100 dark:border-primary-500/20"><i class="fa-solid fa-gauge-high"></i> لوحة التحكم</button>
-            </nav>
+            <!-- زر الرجوع للموقع -->
+            <button onclick="exitToSite()" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-dark-700 font-bold transition-all border border-dashed border-slate-300 dark:border-dark-600"><i class="fa-solid fa-arrow-right-from-bracket"></i> الرجوع للموقع</button>
+            
+            <!-- زر لوحة التحكم -->
+            <button id="nav-btn-overview" onclick="switchDashTab('overview')" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-primary-50 dark:bg-primary-500/10 text-primary-600 dark:text-primary-400 font-bold border border-primary-100 dark:border-primary-500/20 transition-all"><i class="fa-solid fa-gauge-high"></i> لوحة التحكم</button>
+            
+            <!-- زر الشروحات -->
+            <button id="nav-btn-docs" onclick="switchDashTab('docs')" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-dark-700 font-bold transition-all border border-transparent"><i class="fa-solid fa-book-open"></i> الشروحات</button>
             <div class="p-4 border-t border-slate-200 dark:border-dark-700"><button onclick="logoutClient()" class="w-full py-3 bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 rounded-xl font-bold text-sm hover:bg-red-100 dark:hover:bg-red-500/20 transition-colors"><i class="fa-solid fa-power-off ml-2"></i> تسجيل خروج</button></div>
         </aside>
         
         <main class="flex-1 p-8 overflow-y-auto bg-slate-50 dark:bg-dark-900">
+          <!-- قسم الرئيسية (الافتراضي) -->
+            <div id="view-overview">
             <header class="flex justify-between items-center mb-8"><h2 class="text-3xl font-black text-slate-900 dark:text-white">نظرة عامة</h2><div class="px-4 py-2 bg-green-100 dark:bg-green-500/10 text-green-600 dark:text-green-400 rounded-lg font-bold text-sm flex items-center gap-2"><span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span> متصل</div></header>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                 <div class="bg-white dark:bg-dark-800 p-8 rounded-2xl shadow-sm border border-slate-200 dark:border-dark-700"><div class="text-sm text-slate-500 font-bold mb-2">حالة الترخيص</div><div class="text-3xl font-black text-green-500 flex items-center gap-2"><i class="fa-solid fa-shield-check"></i> <span id="dash-status">نشط</span></div></div>
                 <div class="bg-white dark:bg-dark-800 p-8 rounded-2xl shadow-sm border border-slate-200 dark:border-dark-700 col-span-2 cursor-pointer group hover:border-primary-500 transition-colors" onclick="copyDashCode()"><div class="text-sm text-slate-500 font-bold mb-2">كود التفعيل</div><div class="text-2xl font-mono font-bold text-slate-900 dark:text-white group-hover:text-primary-500 transition-colors" id="dash-code">Loading...</div></div>
             </div>
             <div class="bg-white dark:bg-dark-800 rounded-2xl shadow-sm border border-slate-200 dark:border-dark-700 overflow-hidden"><div class="p-6 border-b border-slate-200 dark:border-dark-700 flex justify-between items-center bg-slate-50 dark:bg-dark-900"><h3 class="font-bold text-lg">تفاصيل المدونة</h3><i class="fa-solid fa-globe text-slate-400"></i></div><div class="p-6"><table class="w-full text-right"><tbody id="blogs-table-body" class="text-base font-bold text-slate-700 dark:text-slate-300"></tbody></table></div></div>
+              </div> <!-- إغلاق view-overview -->
+
+            <!-- قسم الشروحات (Docs View) -->
+            <div id="view-docs" class="hidden h-full flex flex-col md:flex-row gap-6">
+                <!-- القائمة الجانبية للمقالات -->
+                <div class="w-full md:w-1/3 bg-white dark:bg-dark-800 rounded-2xl border border-slate-200 dark:border-dark-700 overflow-hidden flex flex-col h-[600px]">
+                    <div class="p-4 bg-slate-50 dark:bg-dark-900 border-b border-slate-200 dark:border-dark-700 font-bold text-slate-800 dark:text-white">
+                        فهرس الشروحات
+                    </div>
+                    <div id="docs-list" class="flex-1 overflow-y-auto p-2"></div>
+                </div>
+
+                <!-- منطقة عرض المقال -->
+                <div class="w-full md:w-2/3 bg-white dark:bg-dark-800 rounded-2xl border border-slate-200 dark:border-dark-700 overflow-hidden flex flex-col h-[600px]">
+                    <div class="p-4 border-b border-slate-200 dark:border-dark-700 bg-slate-50 dark:bg-dark-900">
+                        <h3 id="docs-title" class="text-xl font-black text-primary-600 dark:text-primary-400">اختر موضوعاً</h3>
+                    </div>
+                    <div id="docs-viewer" class="flex-1 overflow-y-auto p-6 prose dark:prose-invert max-w-none text-slate-700 dark:text-slate-300 leading-relaxed">
+                        <!-- المحتوى هنا -->
+                    </div>
+                </div>
+            </div>
         </main>
     </div>
 
@@ -682,5 +717,2921 @@
             if(localStorage.getItem('plugo_client')) { /* Auto-login check */ }
         });
     </script>
+  <script>
+    // ==========================================
+    // 1. قاعدة بيانات الشروحات والأدوات
+    // ==========================================
+    const docsData = [
+        
+        // 👇👇 ألصق الأكواد التي تأخذها من الأداة هنا 👇👇
+        
+        // مثال (يمكنك حذفه بعد إضافة مقالاتك):
+        { title: "تجربة", content: `<h1>أهلاً بك</h1>` },
+{ title: "صفحة الفهرس (الأرشيف)", content: `<!--انسخ الكود وضعه في صفحة جديدة باسم: صفحة الفهرس (Sitemap)-->
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap');
+  
+  .sitemap-doc-wrapper {
+    font-family: 'Tajawal', sans-serif;
+    direction: rtl;
+    text-align: right;
+    color: #334155;
+    background: #fff;
+    padding: 30px;
+    border-radius: 16px;
+    border: 1px solid #e2e8f0;
+  }
+
+  .sitemap-header {
+    text-align: center;
+    margin-bottom: 40px;
+    background: #f0fdf4;
+    padding: 30px;
+    border-radius: 12px;
+    border-bottom: 4px solid #10b981;
+  }
+  .sitemap-header h1 { margin: 0 0 10px; color: #064e3b; font-weight: 900; font-size: 32px; }
+  .sitemap-header p { font-size: 16px; color: #065f46; }
+
+  /* منطقة الكود */
+  .code-output {
+    position: relative;
+    background: #1e293b;
+    border-radius: 12px;
+    padding: 20px;
+    direction: ltr;
+    text-align: left;
+    margin-top: 20px;
+    border: 1px solid #334155;
+  }
+  
+  .code-pre {
+    color: #6ee7b7;
+    font-family: monospace;
+    font-size: 13px;
+    white-space: pre-wrap;
+    word-break: break-all;
+    max-height: 400px;
+    overflow-y: auto;
+  }
+
+  .copy-code-btn {
+    position: absolute; top: 15px; right: 15px;
+    background: rgba(255,255,255,0.15); color: #fff; border: none;
+    padding: 8px 15px; border-radius: 6px; cursor: pointer;
+    font-family: 'Tajawal'; font-size: 13px; font-weight: bold;
+    backdrop-filter: blur(5px); transition: 0.2s;
+  }
+  .copy-code-btn:hover { background: #10b981; }
+
+  .steps-box {
+    margin-top: 30px;
+    padding: 20px;
+    border: 1px dashed #cbd5e1;
+    border-radius: 12px;
+    background: #f8fafc;
+  }
+  .steps-box h3 { margin-top: 0; color: #334155; }
+  .steps-box li { margin-bottom: 10px; }
+
+</style>
+
+<div class="sitemap-doc-wrapper">
+
+  <div class="sitemap-header">
+    <h1>صفحة الفهرس (الأرشيف) 🗺️</h1>
+    <p></p><div class="separator" style="clear: both; text-align: center;"><a href="https://blogger.googleusercontent.com/img/a/AVvXsEhTKO7U3sRikkrF3KMTwdzDJH_brFzc1qb93MZMRj-u7tXTgjJFJsMd84-LGyTb0HkjY0GhvIpwLxzqHT4H9v52YhfYsfhPLxy8r0jYSENCuT57c4SrspOTTw14tR-X-UQt-aSXX9OvX6q0cqpzmawhNWVPHyBsDWkD4cFTR4E_bN0vVZjRLSXeiSyKSBw" style="margin-left: 1em; margin-right: 1em;"><img alt="" data-original-height="720" data-original-width="1280" src="https://blogger.googleusercontent.com/img/a/AVvXsEhTKO7U3sRikkrF3KMTwdzDJH_brFzc1qb93MZMRj-u7tXTgjJFJsMd84-LGyTb0HkjY0GhvIpwLxzqHT4H9v52YhfYsfhPLxy8r0jYSENCuT57c4SrspOTTw14tR-X-UQt-aSXX9OvX6q0cqpzmawhNWVPHyBsDWkD4cFTR4E_bN0vVZjRLSXeiSyKSBw=s16000" /></a></div><br /><br /><p></p><p>كيفية إنشاء صفحة تجمع كل مقالات مدونتك مصنفة بشكل تلقائي وجميل.</p>
+  </div>
+
+  <p>صفحة الفهرس (Sitemap) مهمة جداً لمساعدة الزوار في الوصول لمحتواك القديم، ومفيدة لمحركات البحث.</p>
+
+  <div class="code-output">
+    <button class="copy-code-btn" onclick="copySitemapCode(this)">نسخ الكود 📋</button>
+    <div class="code-pre" id="sitemapCode">
+&lt;style&gt;
+/* كود تنسيق الفهرس */
+#sitemap-container { font-family: 'Tajawal', sans-serif; }
+.sitemap-tab { display: inline-block; padding: 10px 20px; margin: 0 5px 10px 0; background: var(--bg-hover, #f1f5f9); color: var(--text-secondary, #555); border-radius: 50px; cursor: pointer; font-weight: bold; transition: 0.3s; border: 1px solid var(--border-color, #eee); }
+.sitemap-tab:hover, .sitemap-tab.active { background: var(--accent-blue, #3b82f6); color: #fff; border-color: var(--accent-blue, #3b82f6); }
+.sitemap-content { display: none; margin-top: 20px; animation: fadeIn 0.5s; }
+.sitemap-content.active { display: block; }
+.sitemap-post { display: flex; align-items: center; padding: 10px 0; border-bottom: 1px dashed var(--border-color, #eee); }
+.sitemap-post a { text-decoration: none; color: var(--text-primary, #333); font-weight: 600; flex: 1; transition: 0.2s; }
+.sitemap-post a:hover { color: var(--accent-blue, #3b82f6); padding-right: 5px; }
+.sitemap-date { font-size: 12px; color: var(--text-secondary, #999); margin-right: 10px; white-space: nowrap; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+&lt;/style&gt;
+
+&lt;div id="sitemap-container"&gt;
+  &lt;div id="sitemap-tabs"&gt;&lt;/div&gt;
+  &lt;div id="sitemap-results"&gt;جاري تحميل المقالات...&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script&gt;
+//&lt;![CDATA[
+(function() {
+  var container = document.getElementById('sitemap-container');
+  var tabsContainer = document.getElementById('sitemap-tabs');
+  var resultsContainer = document.getElementById('sitemap-results');
+  var posts = [];
+
+  // جلب المقالات
+  fetch('/feeds/posts/summary?alt=json&amp;max-results=500')
+    .then(res =&gt; res.json())
+    .then(data =&gt; {
+      if (data.feed.entry) {
+        posts = data.feed.entry;
+        createSitemap();
+      } else {
+        resultsContainer.innerHTML = 'لا توجد مقالات.';
+      }
+    });
+
+  function createSitemap() {
+    var categories = {};
+    
+    // تصنيف المقالات
+    posts.forEach(post =&gt; {
+      if (post.category) {
+        post.category.forEach(cat =&gt; {
+          if (!categories[cat.term]) categories[cat.term] = [];
+          categories[cat.term].push(post);
+        });
+      }
+    });
+
+    // إنشاء التبويبات
+    var tabsHtml = '&lt;span class="sitemap-tab active" onclick="filterSitemap(\\'all\\', this)"&gt;الكل&lt;/span&gt;';
+    for (var cat in categories) {
+      tabsHtml += '&lt;span class="sitemap-tab" onclick="filterSitemap(\\'' + cat + '\\', this)"&gt;' + cat + '&lt;/span&gt;';
+    }
+    tabsContainer.innerHTML = tabsHtml;
+
+    // عرض الكل افتراضياً
+    filterSitemap('all', tabsContainer.firstChild);
+  }
+
+  window.filterSitemap = function(cat, btn) {
+    // تفعيل الزر
+    var tabs = document.querySelectorAll('.sitemap-tab');
+    tabs.forEach(t =&gt; t.classList.remove('active'));
+    btn.classList.add('active');
+
+    // فلترة المقالات
+    var filteredPosts = [];
+    if (cat === 'all') {
+      filteredPosts = posts;
+    } else {
+      filteredPosts = posts.filter(p =&gt; {
+        return p.category &amp;&amp; p.category.some(c =&gt; c.term === cat);
+      });
+    }
+
+    // عرض النتائج
+    var html = '';
+    filteredPosts.forEach(p =&gt; {
+      var title = p.title.$t;
+      var link = p.link.find(l =&gt; l.rel === 'alternate').href;
+      var date = new Date(p.published.$t).toLocaleDateString('ar-EG');
+      html += '&lt;div class="sitemap-post"&gt;&lt;a href="' + link + '" target="_blank"&gt;' + title + '&lt;/a&gt;&lt;span class="sitemap-date"&gt;' + date + '&lt;/span&gt;&lt;/div&gt;';
+    });
+    
+    resultsContainer.innerHTML = '&lt;div class="sitemap-content active"&gt;' + html + '&lt;/div&gt;';
+  };
+})();
+//]]&gt;
+&lt;/script&gt;
+    </div>
+  </div>
+
+  <div class="steps-box">
+    <h3>📌 طريقة التركيب:</h3>
+    <ol>
+      <li>اذهب إلى لوحة تحكم بلوجر &gt; <b>الصفحات (Pages)</b>.</li>
+      <li>أنشئ <b>صفحة جديدة</b> بعنوان "الفهرس" أو "Sitemap".</li>
+      <li>من إعدادات الصفحة (يسار الشاشة) &gt; خيارات &gt; اختر <b>عدم السماح بالتعليقات</b>.</li>
+      <li>حول المحرر إلى وضع <b>عرض HTML</b>.</li>
+      <li>انسخ الكود من الصندوق الأسود بالأعلى والصقه في الصفحة.</li>
+      <li>اضغط <b>نشر</b>.</li>
+    </ol>
+  </div>
+
+</div>
+
+<script>
+  function copySitemapCode(btn) {
+    const code = document.getElementById('sitemapCode').innerText;
+    navigator.clipboard.writeText(code).then(() => {
+      btn.innerText = 'تم النسخ! ✅';
+      btn.style.background = '#10b981';
+      setTimeout(() => {
+        btn.innerText = 'نسخ الكود 📋';
+        btn.style.background = 'rgba(255,255,255,0.15)';
+      }, 2000);
+    });
+  }
+<\/script>` },
+      { title: "دليل الوسائط، والتحديثات", content: `<!--انسخ الكود وضعه في صفحة جديدة باسم: دليل الوسائط واللغات-->
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap');
+  
+  .media-doc-wrapper {
+    font-family: 'Tajawal', sans-serif;
+    direction: rtl;
+    text-align: right;
+    color: #334155;
+    background: #fff;
+    padding: 30px;
+    border-radius: 16px;
+    border: 1px solid #e2e8f0;
+  }
+
+  .media-header {
+    text-align: center;
+    margin-bottom: 40px;
+    background: #f8fafc;
+    padding: 30px;
+    border-radius: 12px;
+    border-bottom: 4px solid #f43f5e;
+  }
+  .media-header h1 { margin: 0 0 10px; color: #1e293b; font-weight: 900; }
+
+  /* الكروت */
+  .info-card {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 25px;
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+  }
+  
+  .card-icon {
+    font-size: 24px;
+    background: #fff1f2;
+    color: #f43f5e;
+    width: 50px; height: 50px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .card-content h3 { margin: 0 0 10px 0; color: #0f172a; }
+  .card-content p { margin: 0; font-size: 14px; color: #64748b; line-height: 1.6; }
+
+  .size-badge {
+    display: inline-block;
+    background: #e2e8f0;
+    color: #334155;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-weight: bold;
+    font-family: monospace;
+    margin-top: 10px;
+  }
+
+  .lang-demo {
+    display: flex; gap: 10px; margin-top: 15px;
+  }
+  .lang-btn {
+    padding: 5px 15px; border: 1px solid #cbd5e1; border-radius: 4px;
+    font-size: 13px; font-weight: bold; color: #64748b;
+  }
+  .lang-btn.active { background: #3b82f6; color: #fff; border-color: #3b82f6; }
+
+  .update-alert {
+    background: #fffbeb;
+    border: 1px solid #fcd34d;
+    padding: 15px;
+    border-radius: 8px;
+    color: #92400e;
+    font-size: 14px;
+    margin-top: 10px;
+  }
+
+</style>
+
+<div class="media-doc-wrapper">
+
+  <div class="media-header">
+    <h1>دليل الوسائط، والتحديثات 📷</h1>
+    <p></p><div class="separator" style="clear: both; text-align: center;"><a href="https://blogger.googleusercontent.com/img/a/AVvXsEhYskxvdWiIolD25mQUflSRWVDenpfBoWqpQbYq81Ox8kd5qzq3nepEoUU2DqlY3ZDghQlX-Qh9GKmdkAgCtPNEZgcWvOB8Jzf7QYK_iW1SBUz8c-Po1IcEYm01LDWGORWshblezfqHM7gj-IZP8wNRr4yrj2N7hpuv3HAOhaiTIowMl_-HV1RVPWilomY" style="margin-left: 1em; margin-right: 1em;"><img alt="" data-original-height="720" data-original-width="1280" src="https://blogger.googleusercontent.com/img/a/AVvXsEhYskxvdWiIolD25mQUflSRWVDenpfBoWqpQbYq81Ox8kd5qzq3nepEoUU2DqlY3ZDghQlX-Qh9GKmdkAgCtPNEZgcWvOB8Jzf7QYK_iW1SBUz8c-Po1IcEYm01LDWGORWshblezfqHM7gj-IZP8wNRr4yrj2N7hpuv3HAOhaiTIowMl_-HV1RVPWilomY=s16000" /></a></div><br /><p></p><p>كل ما تحتاج معرفته لضمان ظهور موقعك بأفضل شكل وأداء.</p></div><div class="info-card">
+    <div class="card-content">
+      <h3>1. مقاسات الصور المثالية</h3>
+      <p>القالب يستخدم نظام "قص ذكي" للصور، ولكن للحصول على أفضل دقة وعدم ظهور الصور بشكل "مضبب" أو مقصوص بشكل خاطئ، يفضل الالتزام بالمقاسات التالية:</p>
+      
+      <div style="display: grid; gap: 10px; grid-template-columns: 1fr 1fr; margin-top: 10px;">
+        <div>
+          <span style="display: block; font-weight: bold;">الصورة البارزة للمقال (Featured):</span>
+          <span class="size-badge">1280 × 720 (16:9)</span>
+          <p style="font-size: 12px; margin-top: 5px;">هذا المقاس يضمن ظهورها بشكل مثالي في السلايدر والفيسبوك.</p>
+        </div>
+        <div>
+          <span style="display: block; font-weight: bold;">صورة اللوجو (Logo):</span>
+          <span class="size-badge">العرض: 200px | الارتفاع: 60px</span>
+          <p style="font-size: 12px; margin-top: 5px;">يفضل أن تكون بصيغة PNG وخلفية شفافة.</p></div></div></div></div><div class="info-card">
+    <div class="card-content">
+      <h3>3. طريقة تحديث القالب (دون فقدان البيانات)</h3>
+      <p>عند صدور نسخة جديدة من القالب، اتبع هذه الطريقة لضمان عدم ضياع إعداداتك وأدواتك:</p>
+      
+      <ol style="font-size: 14px; padding-right: 20px;">
+        <li><b>لا تستخدم كود التنظيف</b> عند التحديث.</li>
+        <li>انسخ كود القالب الجديد (النسخة الحديثة).</li>
+        <li>اذهب إلى <b>المظهر</b> &gt; <b>تعديل HTML</b>.</li>
+        <li>حدد الكود القديم بالكامل واستبدله بالجديد، ثم اضغط <b>حفظ</b>.</li>
+      </ol>
+
+      <div class="update-alert">
+        ⚠️ <b>ملاحظة هامة:</b> عند التحديث بهذه الطريقة، ستبقى أدوات التخطيط (مثل القوائم والإعلانات ومحتوى الصفحة الرئيسية) كما هي ولن تُحذف. فقط الألوان قد تعود للافتراضي إذا لم تكن قد حفظتها.
+      </div>
+    </div>
+  </div>
+
+</div>` },
+      { title: "تخصيص المظهر والصفحات الثابتة 🎨", content: `<!--انسخ الكود وضعه في صفحة جديدة باسم: تخصيص المظهر ومولد صفحة الاتصال-->
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap');
+  
+  .cust-wrapper {
+    font-family: 'Tajawal', sans-serif;
+    direction: rtl;
+    text-align: right;
+    color: #334155;
+    background: #fff;
+    padding: 30px;
+    border-radius: 16px;
+    border: 1px solid #e2e8f0;
+  }
+
+  .cust-header {
+    text-align: center;
+    margin-bottom: 40px;
+    background: #f8fafc;
+    padding: 30px;
+    border-radius: 12px;
+    border-bottom: 4px solid #8b5cf6;
+  }
+  .cust-header h1 { margin: 0 0 10px; color: #1e293b; font-weight: 900; font-size: 32px; }
+  .cust-header p { font-size: 16px; color: #64748b; }
+
+  /* قسم الألوان */
+  .section-title {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 20px;
+    padding-bottom: 10px; border-bottom: 2px dashed #f1f5f9;
+  }
+  .section-icon { font-size: 24px; background: #f3e8ff; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 50%; }
+  .section-title h2 { margin: 0; color: #5b21b6; font-size: 22px; }
+
+  .color-steps {
+    background: #fdf4ff; border: 1px solid #f0abfc; padding: 20px; border-radius: 12px; margin-bottom: 40px;
+  }
+  .color-steps ol { margin: 0; padding-right: 20px; }
+  .color-steps li { margin-bottom: 8px; font-weight: 600; color: #4a044e; }
+
+  /* مولد نموذج الاتصال */
+  .generator-box {
+    background: #fff;
+    border: 2px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 25px;
+    box-shadow: 0 10px 30px -10px rgba(0,0,0,0.05);
+  }
+
+  .input-area {
+    margin-bottom: 20px;
+  }
+  .input-label { display: block; font-weight: 800; margin-bottom: 10px; color: #0f172a; font-size: 15px; }
+  
+  .email-input-wrapper {
+    display: flex; gap: 10px;
+  }
+  
+  .email-input {
+    flex: 1;
+    padding: 12px 15px;
+    border: 2px solid #3b82f6;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 16px;
+    outline: none;
+    direction: ltr;
+    text-align: left;
+    background: #eff6ff;
+    color: #1e3a8a;
+    font-weight: bold;
+  }
+  .email-input:focus { box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.2); }
+
+  .generate-btn {
+    background: #3b82f6; color: #fff; border: none; padding: 0 25px;
+    border-radius: 8px; font-weight: bold; cursor: pointer; font-family: 'Tajawal';
+    transition: 0.2s;
+  }
+  .generate-btn:hover { background: #2563eb; transform: translateY(-2px); }
+
+  /* منطقة الكود */
+  .code-output {
+    position: relative;
+    background: #0f172a;
+    border-radius: 12px;
+    padding: 20px;
+    direction: ltr;
+    text-align: left;
+    margin-top: 20px;
+    border: 1px solid #1e293b;
+  }
+  
+  .code-pre {
+    color: #38bdf8;
+    font-family: monospace;
+    font-size: 13px;
+    white-space: pre-wrap;
+    word-break: break-all;
+    max-height: 400px;
+    overflow-y: auto;
+  }
+
+  .copy-code-btn {
+    position: absolute; top: 15px; right: 15px;
+    background: rgba(255,255,255,0.15); color: #fff; border: none;
+    padding: 8px 15px; border-radius: 6px; cursor: pointer;
+    font-family: 'Tajawal'; font-size: 13px; font-weight: bold;
+    backdrop-filter: blur(5px); transition: 0.2s;
+  }
+  .copy-code-btn:hover { background: #10b981; }
+
+  .activation-note {
+    margin-top: 20px;
+    padding: 15px;
+    background: #fff7ed;
+    border: 1px solid #fdba74;
+    border-radius: 8px;
+    color: #9a3412;
+    font-size: 14px;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .icon-note { font-size: 20px; }
+
+</style>
+
+<div class="cust-wrapper">
+
+  <div class="cust-header">
+    <h1>تخصيص المظهر وصفحة الاتصال 🎨</h1>
+    <p></p><div class="separator" style="clear: both; text-align: center;"><a href="https://blogger.googleusercontent.com/img/a/AVvXsEg1atJn_4avzjXoANyCAQFe2kJZd5x1l5Epk_AZTc-T7ADz9mST6IW5w3FP0FirgoZN9iuuZYiuWWeDHWrFiHwHiNvJsi3iIJCbbmr-NRlT9dRAtVBVOy7RZmyF3ZWQkywynwFTv4f76orqy7vwHTbbpNZZAqzlAespj5wkqYtB4jBywsL-4Ea5CSFMtyA" style="margin-left: 1em; margin-right: 1em;"><img alt="" data-original-height="720" data-original-width="1280" src="https://blogger.googleusercontent.com/img/a/AVvXsEg1atJn_4avzjXoANyCAQFe2kJZd5x1l5Epk_AZTc-T7ADz9mST6IW5w3FP0FirgoZN9iuuZYiuWWeDHWrFiHwHiNvJsi3iIJCbbmr-NRlT9dRAtVBVOy7RZmyF3ZWQkywynwFTv4f76orqy7vwHTbbpNZZAqzlAespj5wkqYtB4jBywsL-4Ea5CSFMtyA=s16000" /></a></div><p></p><p>تحكم في ألوان موقعك وأنشئ صفحة "اتصل بنا" المربوطة ببريدك بضغطة زر.</p>
+  </div>
+
+  <!--1. الألوان-->
+  <div class="section-title">
+    <div class="section-icon">🌈</div>
+    <h2>1. تغيير ألوان وخطوط الموقع</h2>
+  </div>
+  
+  <div class="color-steps">
+    <p style="margin-top: 0px;">لتغيير اللون الرئيسي (الأزرق) أو ألوان الوضع الليلي دون لمس الأكواد:</p>
+    <ol>
+      <li>اذهب إلى لوحة تحكم بلوجر &gt; <b>المظهر (Theme)</b>.</li>
+      <li>اضغط على زر <b>تخصيص (Customize)</b>.</li>
+      <li>اختر <b>"متقدم" (Advanced)</b> من القائمة الجانبية.</li>
+      <li>ستجد إعدادات الألوان والخطوط، غيّرها كما تحب وستظهر التغييرات فوراً.</li>
+    </ol>
+  </div>
+
+  <!--2. مولد صفحة الاتصال-->
+  <div class="section-title">
+    <div class="section-icon">✉️</div>
+    <h2>2. مولد صفحة "اتصل بنا" (Contact Form Generator)</h2>
+  </div>
+
+  <p>هذه الأداة ستقوم بإنشاء الكود الكامل لصفحة "اتصل بنا" الحديثة (التي تعمل بدون إعادة تحميل الصفحة)، وتربطها ببريدك الإلكتروني تلقائياً.</p>
+
+  <div class="generator-box">
+    
+    <div class="input-area">
+      <label class="input-label">أدخل بريدك الإلكتروني الذي ستستقبل عليه الرسائل:</label>
+      <div class="email-input-wrapper">
+        <input class="email-input" id="userEmail" oninput="generateContactCode()" placeholder="example@gmail.com" type="email" />
+        <!--زر وهمي للشكل الجمالي-->
+        <button class="generate-btn" onclick="generateContactCode()">تحديث الكود 🔄</button>
+      </div>
+    </div>
+
+    <div class="code-output">
+      <button class="copy-code-btn" onclick="copyFinalCode()">نسخ الكود 📋</button>
+      <div class="code-pre" id="finalCodeOutput">
+        <!--الكود سيظهر هنا-->
+        &lt;!-- يرجى كتابة بريدك الإلكتروني في الأعلى ليظهر الكود --&gt;
+      </div>
+    </div>
+
+    <div class="activation-note">
+      <span class="icon-note">⚠️</span>
+      <div>
+        <b>خطوة التفعيل (مهمة جداً):</b><br />
+        بعد وضع الكود في الصفحة ونشرها، قم بإرسال رسالة تجريبية لنفسك. ستصلك رسالة تفعيل على إيميلك من خدمة (FormSubmit)، اضغط على زر <b>Activate</b> داخلها ليعمل النموذج بشكل دائم.
+      </div>
+    </div>
+
+  </div>
+
+  <div style="margin-top: 30px;">
+    <h3>📌 أين أضع هذا الكود؟</h3>
+    <ol>
+      <li>أنشئ <b>صفحة جديدة</b> في بلوجر بعنوان "اتصل بنا".</li>
+      <li>من إعدادات الصفحة (يسار الشاشة) &gt; خيارات &gt; اختر <b>عدم السماح بالتعليقات</b>.</li>
+      <li>حول المحرر إلى وضع <b>عرض HTML</b>.</li>
+      <li>امسح أي شيء موجود، والصق الكود الذي نسخته من الأعلى.</li>
+      <li>اضغط <b>نشر</b>.</li>
+    </ol>
+  </div>
+
+</div>
+
+<script>
+  // القالب الثابت للكود
+  const cssPart = \`<style>
+.contact-form-wrapper { max-width: 700px; margin: 40px auto; padding: 30px; background-color: var(--bg-container); border: 1px solid var(--border-color); border-radius: 16px; box-shadow: 0 5px 20px rgba(0,0,0,0.07); }
+.contact-form-header h2 { text-align: center; font-size: 28px; color: var(--text-primary); margin-top: 0; margin-bottom: 10px; }
+.contact-form-header p { text-align: center; font-size: 16px; color: var(--text-secondary); margin-top: 0; margin-bottom: 30px; }
+.form-group { margin-bottom: 20px; }
+.form-group label { display: block; font-weight: 700; color: var(--text-primary); margin-bottom: 8px; font-size: 15px; }
+.form-group input, .form-group textarea { width: 100%; padding: 12px 15px; font-size: 16px; border: 1px solid var(--border-color); border-radius: 8px; transition: all 0.2s; background-color: var(--input-bg); color: var(--text-primary); box-sizing: border-box; }
+.form-group input:focus, .form-group textarea:focus { outline: none; border-color: var(--accent-blue); box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.2); }
+.form-group textarea { min-height: 150px; resize: vertical; }
+.form-submit-button { display: block; width: 100%; background-color: var(--accent-blue); color: #fff; border: none; padding: 14px 30px; font-size: 17px; font-weight: 700; border-radius: 8px; cursor: pointer; transition: all 0.2s; }
+html[data-theme='dark'] .form-submit-button { color: #0f172a; }
+.form-submit-button:hover { transform: translateY(-2px); opacity: 0.9; }
+.form-submit-button:disabled { background-color: #9ca3af; cursor: not-allowed; }
+.form-success-message { text-align: center; padding: 40px 20px; border: 2px dashed var(--accent-blue); border-radius: 12px; background-color: var(--bg-hover); }
+.form-success-message h3 { font-size: 24px; color: var(--text-primary); margin: 0 0 10px 0; }
+.form-success-message p { font-size: 16px; color: var(--text-secondary); margin: 0; }
+</style>\`;
+
+  const jsPart = \`<script>
+//<![CDATA[
+const contactForm = document.getElementById('contact-form');
+const contactWrapper = document.getElementById('contact-wrapper');
+const submitBtn = document.getElementById('submit-btn');
+
+contactForm.addEventListener('submit', function (e) {
+  e.preventDefault();
+  const formData = new FormData(contactForm);
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'جاري الإرسال...';
+  
+  fetch(contactForm.action, {
+    method: 'POST',
+    body: formData,
+    headers: { 'Accept': 'application/json' }
+  }).then(response => {
+    if (response.ok) {
+      contactWrapper.innerHTML = \\\`
+        <div class="form-success-message">
+          <h3>تم استلام رسالتك بنجاح!</h3>
+          <p>شكراً لتواصلك معنا، سنقوم بالرد عليك في أقرب وقت ممكن.</p>
+        </div>\\\`;
+    } else {
+      alert('عفواً، حدث خطأ. يرجى المحاولة مرة أخرى.');
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'إرسال الرسالة';
+    }
+  }).catch(error => {
+    alert('عفواً، حدث خطأ في الاتصال.');
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'إرسال الرسالة';
+  });
+});
+//]]>
+<\\/script>\`;
+
+  function generateContactCode() {
+    const email = document.getElementById('userEmail').value.trim();
+    const output = document.getElementById('finalCodeOutput');
+    
+    if (!email) {
+      output.innerText = "<!-- يرجى كتابة بريدك الإلكتروني في الخانة أعلاه لإنشاء الكود -->";
+      return;
+    }
+
+    const htmlPart = \`
+<div class="contact-form-wrapper" id="contact-wrapper">
+  <form action="https://formsubmit.co/\${email}" id="contact-form" method="POST">
+    <div class="contact-form-header">
+      <h2>تواصل معنا</h2>
+      <p>هل لديك سؤال أو استفسار؟ يرجى ملء النموذج أدناه.</p>
+    </div>
+    
+    <div class="form-group">
+      <label>الاسم بالكامل</label>
+      <input id="name" name="name" placeholder="اكتب اسمك هنا..." required="" type="text" />
+    </div>
+    
+    <div class="form-group">
+      <label>البريد الإلكتروني</label>
+      <input id="email" name="email" placeholder="بريدك الإلكتروني..." required="" type="email" />
+    </div>
+    
+    <div class="form-group">
+      <label>الموضوع</label>
+      <input id="subject" name="subject" placeholder="موضوع رسالتك..." required="" type="text" />
+    </div>
+    
+    <div class="form-group">
+      <label>الرسالة</label>
+      <textarea id="message" name="message" placeholder="اكتب رسالتك بالتفصيل هنا..." required=""></textarea>
+    </div>
+    
+    <input name="_subject" type="hidden" value="رسالة جديدة من المدونة!" />
+    <input name="_captcha" type="hidden" value="false" />
+
+    <button class="form-submit-button" id="submit-btn" type="submit">إرسال الرسالة</button>
+  </form>
+</div>\`;
+
+    output.innerText = cssPart + "\\n" + htmlPart + "\\n" + jsPart;
+  }
+
+  function copyFinalCode() {
+    const code = document.getElementById('finalCodeOutput').innerText;
+    if (code.includes("يرجى كتابة بريدك")) {
+        alert("الرجاء كتابة البريد الإلكتروني أولاً!");
+        document.getElementById('userEmail').focus();
+        return;
+    }
+    navigator.clipboard.writeText(code).then(() => {
+      const btn = document.querySelector('.copy-code-btn');
+      btn.innerText = "تم النسخ! ✅";
+      btn.style.background = "#10b981";
+      setTimeout(() => {
+        btn.innerText = "نسخ الكود 📋";
+        btn.style.background = "rgba(255,255,255,0.15)";
+      }, 2000);
+    });
+  }
+<\/script>` },
+      { title: "الدعم الفني وحل المشاكل", content: `<!--انسخ الكود وضعه في صفحة جديدة باسم: الأسئلة الشائعة ومرجع الأيقونات-->
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap');
+  
+  .faq-wrapper {
+    font-family: 'Tajawal', sans-serif;
+    direction: rtl;
+    text-align: right;
+    color: #334155;
+    background: #fff;
+    padding: 30px;
+    border-radius: 16px;
+    border: 1px solid #e2e8f0;
+  }
+
+  .faq-header {
+    text-align: center;
+    margin-bottom: 40px;
+    background: #f8fafc;
+    padding: 30px;
+    border-radius: 12px;
+    border-bottom: 4px solid #3b82f6;
+  }
+  .faq-header h1 { margin: 0 0 10px; color: #1e293b; }
+
+  /* جدول الأيقونات */
+  .social-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 15px;
+    margin-bottom: 40px;
+  }
+  .social-item {
+    background: #f8fafc;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    padding: 10px;
+    text-align: center;
+    font-weight: bold;
+    color: #475569;
+    transition: 0.2s;
+  }
+  .social-item:hover {
+    background: #3b82f6;
+    color: #fff;
+    border-color: #3b82f6;
+    transform: translateY(-2px);
+  }
+  .copy-hint {
+    font-size: 12px; display: block; margin-top: 5px; opacity: 0.7; font-weight: normal;
+  }
+
+  /* قسم الأسئلة */
+  .faq-box {
+    margin-bottom: 20px;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .faq-q {
+    background: #f1f5f9;
+    padding: 15px 20px;
+    font-weight: 800;
+    color: #0f172a;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .faq-q::after { content: '+'; font-size: 20px; color: #3b82f6; }
+  .faq-a {
+    padding: 20px;
+    display: none;
+    background: #fff;
+    color: #4b5563;
+    line-height: 1.7;
+    border-top: 1px solid #e2e8f0;
+  }
+  .faq-box.open .faq-a { display: block; }
+  .faq-box.open .faq-q::after { content: '-'; }
+
+  /* قسم الشريط العائم */
+  .dock-guide {
+    background: #eff6ff;
+    border: 1px dashed #60a5fa;
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 40px;
+  }
+  .dock-item {
+    display: flex; gap: 15px; margin-bottom: 10px; align-items: center;
+  }
+  .dock-icon {
+    width: 30px; height: 30px; background: #fff; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    border: 1px solid #bfdbfe;
+  }
+
+</style>
+
+<div class="faq-wrapper">
+
+  <div class="faq-header">
+    <h1>الدعم الفني وحل المشاكل 🔧</h1>
+    <p></p><div class="separator" style="clear: both; text-align: center;"><a href="https://blogger.googleusercontent.com/img/a/AVvXsEgGshImHBPd8QBT-uknFQUq5inJwfNMzJ518kDEgewNLRrglmu25vYZ1zlr7dWvIuitSy_4fJ_4Hut5fpSfUpEp94x9mqueqrofTlsxbmJ080fTmd2V8OWuyCh_GFt_ToZB1TOcwcghR9-1dR3rzfGIjL4W7iz9VvCjtRRDWYxGCCf7T0kEtbcFLE69aCc" style="margin-left: 1em; margin-right: 1em;"><img alt="" data-original-height="720" data-original-width="1280" height="1" src="https://blogger.googleusercontent.com/img/a/AVvXsEgGshImHBPd8QBT-uknFQUq5inJwfNMzJ518kDEgewNLRrglmu25vYZ1zlr7dWvIuitSy_4fJ_4Hut5fpSfUpEp94x9mqueqrofTlsxbmJ080fTmd2V8OWuyCh_GFt_ToZB1TOcwcghR9-1dR3rzfGIjL4W7iz9VvCjtRRDWYxGCCf7T0kEtbcFLE69aCc" width="1" /></a></div><div class="separator" style="clear: both; text-align: center;"><a href="https://blogger.googleusercontent.com/img/a/AVvXsEh7hPMBDu6mv6SX0uC7r1cuXgd7mg4_p_ymQQ1xwAwFh6KAkc0cQzpICagdHwQDpgYMQNYs2oENoMMKsJfrxlP0oS4Ovr_nLA3ymBiqpjHzQu588UD1ENQFhYQ1yKPGp5dKcMHQwTWl1wKiCWSkIPMAsXklmZZJsiWKC_hYaJjtEw0_mcYYF_vCb0eAH6Q" style="margin-left: 1em; margin-right: 1em;"><img alt="" data-original-height="720" data-original-width="1280" src="https://blogger.googleusercontent.com/img/a/AVvXsEh7hPMBDu6mv6SX0uC7r1cuXgd7mg4_p_ymQQ1xwAwFh6KAkc0cQzpICagdHwQDpgYMQNYs2oENoMMKsJfrxlP0oS4Ovr_nLA3ymBiqpjHzQu588UD1ENQFhYQ1yKPGp5dKcMHQwTWl1wKiCWSkIPMAsXklmZZJsiWKC_hYaJjtEw0_mcYYF_vCb0eAH6Q=s16000" /></a></div><br /><p></p><p>مرجع أسماء الشبكات الاجتماعية وحلول لأشهر الاستفسارات.</p>
+  </div>
+
+  <!--1. مرجع الأيقونات-->
+  <h2 style="border-right: 5px solid rgb(59, 130, 246); padding-right: 15px;">1. أسماء شبكات التواصل (مهم جداً)</h2>
+  <p>لكي تظهر أيقونات التواصل الاجتماعي (في الهيدر، الفوتر، أو السايدبار)، يجب عليك كتابة <b>"اسم الموقع"</b> باللغة الإنجليزية كما هو موضح في هذا الجدول بالضبط (الحروف الكبيرة والصغيرة تفرق):</p>
+  
+  <div class="social-grid">
+    <div class="social-item">Facebook <span class="copy-hint">فيسبوك</span></div>
+    <div class="social-item">Twitter <span class="copy-hint">تويتر (X)</span></div>
+    <div class="social-item">Instagram <span class="copy-hint">انستجرام</span></div>
+    <div class="social-item">YouTube <span class="copy-hint">يوتيوب</span></div>
+    <div class="social-item">WhatsApp <span class="copy-hint">واتساب</span></div>
+    <div class="social-item">Telegram <span class="copy-hint">تيليجرام</span></div>
+    <div class="social-item">LinkedIn <span class="copy-hint">لينكد إن</span></div>
+    <div class="social-item">Pinterest <span class="copy-hint">بينترست</span></div>
+    <div class="social-item">tumblr <span class="copy-hint">تمبلر</span></div>
+  </div>
+  <p style="color: #ef4444; font-size: 13px;">* إذا كتبت الاسم بشكل خاطئ (مثلاً "facebook" بحرف صغير أو "فيس بوك")، سيظهر مربع فارغ بدون أيقونة.</p>
+
+  <hr style="border-bottom: 0px; border-image: initial; border-left: 0px; border-right: 0px; border-top: 1px dashed rgb(203, 213, 225); border: 0; margin: 40px 0px;" />
+
+  <!--2. الشريط العائم-->
+  <h2 style="border-right: 5px solid rgb(16, 185, 129); padding-right: 15px;">2. الشريط الجانبي العائم (الإعدادات)</h2>
+  <div class="dock-guide">
+    <p>يوجد زر "ترس" ⚙️ عائم على يمين أو يسار الموقع. عند الضغط عليه تظهر قائمة تحكم:</p>
+    
+    <div class="dock-item">
+      <div class="dock-icon">A+</div>
+      <div>
+        <b>التحكم في حجم الخط:</b>
+        <span style="display: block; font-size: 13px;">تظهر هذه الأزرار <b>فقط داخل المقالات</b>. تسمح للزائر بتكبير وتصغير خط المقال لراحة عينه. لا تظهر في الصفحة الرئيسية.</span>
+      </div>
+    </div>
+
+    <div class="dock-item">
+      <div class="dock-icon">🔔</div>
+      <div>
+        <b>جرس الإشعارات:</b>
+        <span style="display: block; font-size: 13px;">يعمل تلقائياً. يضيء باللون الأحمر عند نشر مقال جديد في المدونة لتنبيه الزائر.</span>
+      </div>
+    </div>
+
+    <div class="dock-item">
+      <div class="dock-icon">🌙</div>
+      <div>
+        <b>الوضع الليلي:</b>
+        <span style="display: block; font-size: 13px;">للتبديل بين الوضع النهاري والليلي. يتم حفظ اختيار الزائر تلقائياً.</span>
+      </div>
+    </div>
+  </div>
+
+  <hr style="border-bottom: 0px; border-image: initial; border-left: 0px; border-right: 0px; border-top: 1px dashed rgb(203, 213, 225); border: 0; margin: 40px 0px;" />
+
+  <!--3. الأسئلة الشائعة-->
+  <h2 style="border-right: 5px solid rgb(245, 158, 11); padding-right: 15px;">3. مشاكل وحلول (FAQ)</h2>
+
+  <div class="faq-box">
+    <div class="faq-q" onclick="toggleFaq(this)">1. المساعد الذكي (AI) لا يجيب أو يظهر خطأ؟</div>
+    <div class="faq-a">
+      تأكد من الآتي:
+      <ul>
+        <li>أنك قمت بإنشاء صفحة <b>AI-Config</b> بشكل صحيح (راجع صفحة شرح الذكاء الاصطناعي).</li>
+        <li>أن مفتاح API الذي نسخته من جوجل صالح ولم يتم حذفه.</li>
+        <li>أنك نسخت الكود داخل الصفحة في وضع <b>"عرض HTML"</b> وليس وضع الكتابة العادي.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="faq-box">
+    <div class="faq-q" onclick="toggleFaq(this)">2. الميجا منيو لا تظهر الصور؟</div>
+    <div class="faq-a">
+      الميجا منيو تعتمد على <b>"اسم التصنيف"</b>. تأكد أن الاسم الذي كتبته في القائمة (مثلاً: <code>[mega] تكنولوجيا</code>) يطابق تماماً اسم التصنيف (Label) الموجود في مقالاتك. إذا اختلف حرف واحد، لن تظهر المقالات.
+    </div>
+  </div>
+
+  <div class="faq-box">
+    <div class="faq-q" onclick="toggleFaq(this)">3. كيف أحذف حقوق المصمم من الفوتر؟</div>
+    <div class="faq-a">
+      القالب محمي برمجياً. حذف حقوق المصمم سيؤدي إلى توقف القالب عن العمل فوراً وظهور رسالة تحذيرية. يرجى احترام حقوق التطوير للحصول على التحديثات والدعم.
+    </div>
+  </div>
+
+  <div class="faq-box">
+    <div class="faq-q" onclick="toggleFaq(this)">4. صور الموقع تظهر بجودة منخفضة؟</div>
+    <div class="faq-a">
+      القالب يستخدم نظام ذكي لضغط الصور لتسريع الموقع. تأكد دائماً أنك ترفع الصورة البارزة للمقال بجودة عالية (على الأقل 800px عرض). القالب سيقوم بإنشاء نسخ مصغرة منها تلقائياً للأماكن المختلفة.
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function toggleFaq(element) {
+    element.parentElement.classList.toggle('open');
+  }
+<\/script>` },
+      { title: "ضبط الكاتب ومفاتيح التحكم", content: `<!--انسخ الكود من هنا وضعه في صفحة جديدة باسم: إعدادات الكاتب والتحكم-->
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap');
+  
+  .settings-wrapper {
+    font-family: 'Tajawal', sans-serif;
+    direction: rtl;
+    text-align: right;
+    color: #334155;
+    background: #f8fafc;
+    padding: 30px;
+    border-radius: 20px;
+    border: 1px solid #e2e8f0;
+  }
+
+  .settings-header {
+    text-align: center;
+    margin-bottom: 40px;
+    border-bottom: 2px dashed #cbd5e1;
+    padding-bottom: 20px;
+  }
+  .settings-header h1 { font-size: 32px; font-weight: 900; color: #0f172a; margin-bottom: 10px; }
+  .settings-header p { font-size: 16px; color: #64748b; }
+
+  /* قسم الكاتب */
+  .author-guide {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 25px;
+    margin-bottom: 30px;
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+  }
+  
+  .author-preview {
+    flex: 1;
+    background: #f1f5f9;
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    border: 1px dashed #cbd5e1;
+  }
+  .fake-avatar { width: 60px; height: 60px; background: #cbd5e1; border-radius: 50%; margin: 0 auto 10px; }
+  .fake-line { height: 8px; background: #e2e8f0; border-radius: 4px; margin-bottom: 5px; }
+
+  .author-steps { flex: 2; }
+  .author-steps h3 { margin-top: 0; color: #3b82f6; }
+
+  /* مفاتيح التحكم */
+  .toggles-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+  }
+
+  .toggle-card {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 20px;
+    transition: 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+  .toggle-card:hover { border-color: #3b82f6; transform: translateY(-3px); }
+  
+  .toggle-card::after {
+    content: ''; position: absolute; top: 0; right: 0; bottom: 0; width: 4px;
+    background: #e2e8f0;
+  }
+  .toggle-card.active::after { background: #10b981; } /* أخضر */
+  .toggle-card.inactive::after { background: #ef4444; } /* أحمر */
+
+  .toggle-title { font-weight: 800; font-size: 16px; margin-bottom: 5px; color: #1e293b; }
+  .toggle-desc { font-size: 13px; color: #64748b; margin-bottom: 15px; min-height: 40px; }
+  
+  .widget-name {
+    background: #1e293b; color: #a5f3fc; padding: 4px 8px; border-radius: 4px;
+    font-family: monospace; font-size: 12px; display: inline-block; direction: ltr;
+  }
+
+  .status-badge {
+    display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; float: left;
+  }
+  .s-on { background: #dcfce7; color: #166534; }
+  .s-off { background: #fee2e2; color: #991b1b; }
+
+</style>
+
+<div class="settings-wrapper">
+  
+  <div class="settings-header">
+    <h1>ضبط الكاتب ومفاتيح التحكم ⚙️</h1>
+    <p></p><div class="separator" style="clear: both; text-align: center;"><a href="https://blogger.googleusercontent.com/img/a/AVvXsEidi38wCBPydIZ3Rk5K_5zH5pR_Hwy91-Y9K-FxRIFGDZTCetxxKiueA7liwtOSwc6AqdGJbbH6q9rsQHo3y6pGtssVGP-p7t7Fx1Lu8zetL1YmeMQ8qXSKMDGoPHpKDMEOyYwh_yk4BSjt134U9EKZoEk2NpIv1SpvDVg8pH2EzA0NL0dVQhUpFpp_K50" style="margin-left: 1em; margin-right: 1em;"><img alt="" data-original-height="720" data-original-width="1280" src="https://blogger.googleusercontent.com/img/a/AVvXsEidi38wCBPydIZ3Rk5K_5zH5pR_Hwy91-Y9K-FxRIFGDZTCetxxKiueA7liwtOSwc6AqdGJbbH6q9rsQHo3y6pGtssVGP-p7t7Fx1Lu8zetL1YmeMQ8qXSKMDGoPHpKDMEOyYwh_yk4BSjt134U9EKZoEk2NpIv1SpvDVg8pH2EzA0NL0dVQhUpFpp_K50=s16000" /></a></div><p></p><p>كيفية إظهار صورتك في صندوق الكاتب والتحكم في الميزات المخفية للقالب.</p>
+  </div>
+
+  <!--1. إعدادات الكاتب-->
+  <div class="author-guide">
+    <div class="author-steps">
+      <h3>1. ضبط صندوق الكاتب (Author Box)</h3>
+      <p>يظهر صندوق الكاتب أسفل كل مقال. لكي تظهر صورتك ووصفك بشكل صحيح:</p>
+      <ol style="font-size: 14px; padding-right: 20px;">
+        <li>اذهب إلى لوحة تحكم بلوجر &gt; <b>الإعدادات</b>.</li>
+        <li>انزل لأسفل حتى تجد قسم <b>"الملف الشخصي للمستخدم"</b> واضغط عليه.</li>
+        <li><b>صورة الملف الشخصي:</b> قم برفع صورة واضحة لك (ضروري جداً).</li>
+        <li><b>نبذة عني:</b> اكتب وصفاً مختصراً سيظهر أسفل اسمك.</li>
+        <li>احفظ الإعدادات.</li>
+      </ol>
+      <p style="color: #ef4444; font-size: 13px;">* تنبيه: إذا لم ترفع صورة، ستظهر صورة "شبح" رمادية افتراضية.</p>
+    </div>
+    <div class="author-preview">
+      <div style="font-size: 13px; font-weight: bold; margin-bottom: 10px;">معاينة تقريبية</div>
+      <div class="fake-avatar"></div>
+      <div class="fake-line" style="margin: 0px auto 10px; width: 60%;"></div>
+      <div class="fake-line"></div>
+      <div class="fake-line" style="width: 80%;"></div>
+    </div>
+  </div>
+
+  <!--2. مفاتيح التحكم-->
+  <h3 style="border-bottom: 2px solid rgb(226, 232, 240); margin-bottom: 20px; padding-bottom: 10px;">2. مفاتيح التحكم (Control Widgets)</h3>
+  <p style="color: #475569; font-size: 14px; margin-bottom: 25px;">
+    في صفحة <b>التخطيط (Layout)</b>، وتحديداً في قسم <b>"لوحة تحكم القالب"</b>، ستجد أدوات تتحكم في وظائف الموقع. تفعيل الأداة يعني تشغيل الميزة، وإخفاؤها يعني إيقافها.
+  </p>
+
+  <div class="toggles-grid">
+    
+    <!--Sidebar Toggle-->
+    <div class="toggle-card active">
+      <div class="toggle-title">القائمة الجانبية (Sidebar)</div>
+      <div class="toggle-desc">التحكم في ظهور أو إخفاء الشريط الجانبي في جميع الصفحات.</div>
+      <div>
+        <span class="widget-name">HTML20</span>
+        <span class="status-badge s-on">تفعيل = إظهار</span>
+      </div>
+    </div>
+
+    <!--Grid/List View-->
+    <div class="toggle-card active">
+      <div class="toggle-title">شكل المقالات (شبكة/قائمة)</div>
+      <div class="toggle-desc">التبديل بين العرض الشبكي (Grid) والعرض العمودي (List) في الأرشيف.</div>
+      <div>
+        <span class="widget-name">HTML777</span>
+        <span class="status-badge s-on">تغيير العنوان</span>
+      </div>
+      <div style="color: #64748b; font-size: 11px; margin-top: 5px;">* اكتب كلمة "عمودي" في عنوان الأداة للتحويل للقائمة.</div>
+    </div>
+
+    <!--TOC Toggle-->
+    <div class="toggle-card active">
+      <div class="toggle-title">جدول المحتويات التلقائي</div>
+      <div class="toggle-desc">إنشاء فهرس للمقال تلقائياً بناءً على العناوين H2 و H3.</div>
+      <div>
+        <span class="widget-name">HTML126</span>
+        <span class="status-badge s-on">تفعيل = تشغيل</span>
+      </div>
+    </div>
+
+    <!--Mid-Post Related-->
+    <div class="toggle-card active">
+      <div class="toggle-title">مقالات ذات صلة (وسط المقال)</div>
+      <div class="toggle-desc">إظهار صندوق "قد يعجبك أيضاً" بين فقرات المقال.</div>
+      <div>
+        <span class="widget-name">HTML127</span>
+        <span class="status-badge s-on">تفعيل = تشغيل</span>
+      </div>
+    </div>
+
+    <!--Latest Posts Homepage-->
+    <div class="toggle-card active">
+      <div class="toggle-title">أحدث المقالات (الرئيسية)</div>
+      <div class="toggle-desc">إظهار أو إخفاء قسم المقالات التقليدي أسفل الصفحة الرئيسية.</div>
+      <div>
+        <span class="widget-name">HTML24</span>
+        <span class="status-badge s-on">تفعيل = إظهار</span>
+      </div>
+    </div>
+
+  </div>
+
+</div>` },
+      { title: "أكواد تنسيق المقالات", content: `<!--انسخ الكود من هنا وضعه في صفحة جديدة باسم: مولد أدوات المقال-->
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap');
+  
+  .sc-gen-wrapper {
+    font-family: 'Tajawal', sans-serif;
+    direction: rtl;
+    text-align: right;
+    color: #1e293b;
+    background: #f8fafc;
+    padding: 30px;
+    border-radius: 20px;
+    border: 1px solid #e2e8f0;
+  }
+
+  .gen-header {
+    text-align: center;
+    margin-bottom: 40px;
+    border-bottom: 2px dashed #cbd5e1;
+    padding-bottom: 20px;
+  }
+  .gen-header h1 { font-size: 32px; font-weight: 900; color: #0f172a; margin-bottom: 10px; }
+  .gen-header p { font-size: 16px; color: #64748b; }
+
+  /* كارت الأداة */
+  .tool-card {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 25px;
+    margin-bottom: 40px;
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+  }
+
+  .tool-head {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 20px;
+    padding-bottom: 15px; border-bottom: 1px solid #f1f5f9;
+  }
+  .tool-icon { font-size: 24px; background: #f1f5f9; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 50%; }
+  .tool-title { font-size: 20px; font-weight: 800; color: #334155; margin: 0; }
+
+  /* الشبكة */
+  .io-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+  }
+  
+  @media (max-width: 768px) { .io-grid { grid-template-columns: 1fr; } }
+
+  /* المدخلات */
+  .input-group { margin-bottom: 15px; }
+  .input-group label { display: block; font-weight: 700; margin-bottom: 8px; font-size: 14px; color: #475569; }
+  .input-group input, .input-group select, .input-group textarea {
+    width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 8px;
+    font-family: inherit; font-size: 14px; transition: 0.3s; outline: none; box-sizing: border-box;
+  }
+  .input-group input:focus, .input-group select:focus, .input-group textarea:focus { border-color: #3b82f6; }
+  
+  /* المعاينة */
+  .preview-area {
+    background: #f8fafc;
+    border: 2px dashed #cbd5e1;
+    border-radius: 8px;
+    padding: 20px;
+    display: flex; align-items: center; justify-content: center;
+    min-height: 100px;
+    margin-bottom: 20px;
+  }
+  .preview-label { display: block; font-weight: 700; margin-bottom: 10px; color: #64748b; font-size: 13px; }
+
+  /* الكود الناتج */
+  .code-output {
+    position: relative;
+    background: #0f172a;
+    border-radius: 8px;
+    padding: 15px;
+    direction: ltr; text-align: left;
+  }
+  .code-text {
+    color: #38bdf8; font-family: monospace; font-size: 13px; white-space: pre-wrap; word-break: break-all;
+  }
+  .copy-btn {
+    position: absolute; top: 10px; right: 10px;
+    background: rgba(255,255,255,0.1); color: #fff; border: none;
+    padding: 5px 12px; border-radius: 4px; cursor: pointer; font-family: 'Tajawal'; font-size: 12px; transition: 0.2s;
+  }
+  .copy-btn:hover { background: rgba(255,255,255,0.2); }
+
+  /* --- تنسيقات المعاينة (نفس القالب) --- */
+  /* Buttons */
+  .pro-btn { display: inline-flex; align-items: center; gap: 10px; padding: 12px 28px; border-radius: 8px; font-weight: 700; text-decoration: none; border: 2px solid transparent; }
+  .btn-primary { background-color: #3a7fff; color: #fff; }
+  .btn-secondary { background-color: transparent; border-color: #eee; color: #34495e; }
+  .btn-download { background-color: #10b981; color: #fff; }
+  .btn-preview { background-color: #f59e0b; color: #fff; }
+
+  /* Alerts */
+  .alert-box { padding: 15px 20px 15px 50px; border-radius: 12px; border: 1px solid #eee; position: relative; width: 100%; }
+  .alert-box::before { content:''; position: absolute; right:0; top:0; bottom:0; width:6px; border-radius:0 12px 12px 0; }
+  .alert-info { background: rgba(56, 189, 248, 0.1); } .alert-info::before { background: #38bdf8; }
+  .alert-success { background: rgba(74, 222, 128, 0.1); } .alert-success::before { background: #4ade80; }
+  .alert-warning { background: rgba(251, 191, 36, 0.1); } .alert-warning::before { background: #fbbf24; }
+  .alert-error { background: rgba(248, 113, 113, 0.1); } .alert-error::before { background: #f87171; }
+
+</style>
+
+<div class="sc-gen-wrapper">
+
+  <div class="gen-header">
+    <h1>مولد أدوات المقال 🛠️</h1>
+    <p></p><div class="separator" style="clear: both; text-align: center;"><a href="https://blogger.googleusercontent.com/img/a/AVvXsEg1UWaxltggYPPz1GA3zqzdvkul0JxmGfIxO_kx91Fh9zwza_xYWAn_eLrURRuOurYBlxTJxixCvevA-XoOTYFw5kRxxuh8fZw0DSBMOuyc6X4ASUvpkA2OQY_L8ijSiVt89HcunUT1Y3_wa0dc42_WE3R8hEfGGpCQ-HWc76ITEUHH-kfFYPG4MXvzeTo" style="margin-left: 1em; margin-right: 1em;"><img alt="" data-original-height="720" data-original-width="1280" src="https://blogger.googleusercontent.com/img/a/AVvXsEg1UWaxltggYPPz1GA3zqzdvkul0JxmGfIxO_kx91Fh9zwza_xYWAn_eLrURRuOurYBlxTJxixCvevA-XoOTYFw5kRxxuh8fZw0DSBMOuyc6X4ASUvpkA2OQY_L8ijSiVt89HcunUT1Y3_wa0dc42_WE3R8hEfGGpCQ-HWc76ITEUHH-kfFYPG4MXvzeTo=s16000" /></a></div><p></p><p>أداة ذكية لإنشاء الأزرار، الصناديق، والأكواد داخل مقالاتك دون الحاجة لكتابة أي كود برمجي.</p>
+  </div>
+
+  <!--1. مولد الأزرار-->
+  <div class="tool-card">
+    <div class="tool-head">
+      <div class="tool-icon">🔗</div>
+      <h2 class="tool-title">مولد الأزرار (Buttons)</h2>
+    </div>
+    
+    <div class="io-grid">
+      <!--Inputs-->
+      <div>
+        <div class="input-group">
+          <label>نص الزر:</label>
+          <input id="btnText" oninput="updateBtn()" type="text" value="تحميل الملف" />
+        </div>
+        <div class="input-group">
+          <label>رابط الزر (URL):</label>
+          <input id="btnUrl" oninput="updateBtn()" type="text" value="#" />
+        </div>
+        <div class="input-group">
+          <label>نوع الزر:</label>
+          <select id="btnStyle" onchange="updateBtn()">
+            <option value="btn-primary">أزرق (أساسي)</option>
+            <option value="btn-secondary">شفاف (ثانوي)</option>
+            <option value="btn-download">أخضر (تحميل)</option>
+            <option value="btn-preview">برتقالي (معاينة)</option>
+          </select>
+        </div>
+      </div>
+
+      <!--Output-->
+      <div>
+        <span class="preview-label">المعاينة الحية:</span>
+        <div class="preview-area">
+          <a class="pro-btn btn-primary" href="#" id="btnPreview" onclick="return false;">تحميل الملف</a>
+        </div>
+        <div class="code-output">
+          <button class="copy-btn" onclick="copyCode('btnCode', this)">نسخ</button>
+          <div class="code-text" id="btnCode"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--2. مولد التنبيهات-->
+  <div class="tool-card">
+    <div class="tool-head">
+      <div class="tool-icon">🔔</div>
+      <h2 class="tool-title">مولد صناديق التنبيه (Alerts)</h2>
+    </div>
+    
+    <div class="io-grid">
+      <!--Inputs-->
+      <div>
+        <div class="input-group">
+          <label>نص الرسالة:</label>
+          <textarea id="alertText" oninput="updateAlert()" rows="3">يرجى الانتباه لهذه الملاحظة المهمة.</textarea>
+        </div>
+        <div class="input-group">
+          <label>نوع التنبيه:</label>
+          <select id="alertStyle" onchange="updateAlert()">
+            <option value="alert-info">معلومات (أزرق)</option>
+            <option value="alert-success">نجاح (أخضر)</option>
+            <option value="alert-warning">تحذير (أصفر)</option>
+            <option value="alert-error">خطأ (أحمر)</option>
+          </select>
+        </div>
+      </div>
+
+      <!--Output-->
+      <div>
+        <span class="preview-label">المعاينة الحية:</span>
+        <div class="preview-area" style="display: block;">
+          <div class="alert-box alert-info" id="alertPreview">يرجى الانتباه لهذه الملاحظة المهمة.</div>
+        </div>
+        <div class="code-output">
+          <button class="copy-btn" onclick="copyCode('alertCode', this)">نسخ</button>
+          <div class="code-text" id="alertCode"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--3. مولد صندوق الكود-->
+  <div class="tool-card">
+    <div class="tool-head">
+      <div class="tool-icon">code</div>
+      <h2 class="tool-title">مولد صندوق الأكواد</h2>
+    </div>
+    <p style="color: #64748b; font-size: 14px; margin-bottom: 15px;">سيقوم القالب تلقائياً بإضافة أزرار (نسخ، معاينة، تحميل) لهذا الصندوق.</p>
+    
+    <div class="io-grid">
+      <!--Inputs-->
+      <div>
+        <div class="input-group">
+          <label>عنوان اللغة (HTML, CSS, JS):</label>
+          <input id="codeLang" oninput="updateCodeBox()" type="text" value="HTML" />
+        </div>
+        <div class="input-group">
+          <label>ضع الكود البرمجي هنا:</label>
+          <textarea id="codeContent" oninput="updateCodeBox()" rows="5" style="direction: ltr; font-family: monospace; text-align: left;"><h1>Hello World</h1></textarea>
+        </div>
+      </div>
+
+      <!--Output-->
+      <div>
+        <span class="preview-label">الكود النهائي (للمقال):</span>
+        <div class="code-output" style="height: 100%;">
+          <button class="copy-btn" onclick="copyCode('boxCode', this)">نسخ</button>
+          <div class="code-text" id="boxCode"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // 1. تحديث الأزرار
+  function updateBtn() {
+    const text = document.getElementById('btnText').value;
+    const url = document.getElementById('btnUrl').value;
+    const style = document.getElementById('btnStyle').value;
+    
+    // تحديث المعاينة
+    const preview = document.getElementById('btnPreview');
+    preview.className = \`pro-btn \${style}\`;
+    preview.innerText = text;
+    
+    // تحديث الكود
+    const code = \`<a href="\${url}" class="pro-btn \${style}" target="_blank">\${text}</a>\`;
+    document.getElementById('btnCode').innerText = code;
+  }
+
+  // 2. تحديث التنبيهات
+  function updateAlert() {
+    const text = document.getElementById('alertText').value;
+    const style = document.getElementById('alertStyle').value;
+    
+    // تحديث المعاينة
+    const preview = document.getElementById('alertPreview');
+    preview.className = \`alert-box \${style}\`;
+    preview.innerText = text;
+    
+    // تحديث الكود
+    const code = \`<div class="alert-box \${style}">\${text}</div>\`;
+    document.getElementById('alertCode').innerText = code;
+  }
+
+  // 3. تحديث صندوق الكود
+  function updateCodeBox() {
+    const lang = document.getElementById('codeLang').value;
+    const content = document.getElementById('codeContent').value;
+    
+    // الهروب من الرموز (Escaping)
+    const escapedContent = content
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+
+    const code = \`<div class="custom-code-box">
+  <div class="custom-code-box-header">
+    <span class="code-box-title">\${lang}</span>
+  </div>
+  <pre>\${escapedContent}</pre>
+</div>\`;
+    
+    document.getElementById('boxCode').innerText = code;
+  }
+
+  // دالة النسخ
+  function copyCode(elementId, btn) {
+    const text = document.getElementById(elementId).innerText;
+    navigator.clipboard.writeText(text).then(() => {
+      const originalText = btn.innerText;
+      btn.innerText = "تم النسخ!";
+      btn.style.background = "#10b981";
+      setTimeout(() => {
+        btn.innerText = originalText;
+        btn.style.background = "rgba(255,255,255,0.1)";
+      }, 2000);
+    });
+  }
+
+  // تشغيل مبدئي
+  updateBtn();
+  updateAlert();
+  updateCodeBox();
+<\/script>` },
+      { title: "دليل الإعلانات والربح 💰", content: `<!--انسخ الكود من هنا وضعه في صفحة جديدة في بلوجر في وضع (عرض HTML)-->
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap');
+  
+  .ads-wrapper {
+    font-family: 'Tajawal', sans-serif;
+    direction: rtl;
+    text-align: right;
+    color: #334155;
+    background: #f8fafc;
+    padding: 30px;
+    border-radius: 16px;
+    line-height: 1.8;
+  }
+
+  .ads-header {
+    text-align: center;
+    margin-bottom: 40px;
+    background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
+    padding: 40px;
+    border-radius: 16px;
+    color: #fff;
+    box-shadow: 0 10px 30px rgba(22, 163, 74, 0.2);
+  }
+
+  .ads-header h1 {
+    font-size: 32px;
+    font-weight: 900;
+    margin: 0 0 10px;
+  }
+
+  .ads-header p {
+    font-size: 18px;
+    opacity: 0.9;
+  }
+
+  .ad-spot-card {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 25px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .ad-spot-card::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0; bottom: 0; width: 6px;
+    background: #16a34a;
+  }
+
+  .ad-spot-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .badge {
+    font-size: 12px;
+    background: #dcfce7;
+    color: #166534;
+    padding: 2px 8px;
+    border-radius: 4px;
+  }
+
+  .code-placeholder {
+    background: #f1f5f9;
+    border: 2px dashed #cbd5e1;
+    color: #64748b;
+    padding: 15px;
+    text-align: center;
+    border-radius: 8px;
+    margin-top: 15px;
+    font-size: 14px;
+  }
+
+  .lazy-load-info {
+    background: #fff7ed;
+    border: 1px solid #fed7aa;
+    color: #9a3412;
+    padding: 20px;
+    border-radius: 12px;
+    margin-top: 40px;
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+  .lazy-icon {
+    font-size: 30px;
+  }
+
+  ul { padding-right: 20px; margin: 0; }
+  li { margin-bottom: 8px; }
+</style>
+
+<div class="ads-wrapper">
+
+  <div class="ads-header">
+    <h1>دليل الإعلانات والربح 💰</h1>
+    <p></p><div class="separator" style="clear: both; text-align: center;"><a href="https://blogger.googleusercontent.com/img/a/AVvXsEikixdDwohGeXcvrehiyrGfhS9kBEJKeFj29u4J7B_8nJ37W6wkHKoxCitZPBJ_NzSPiLzQk5KAPEqE609gIW0wSCQTj3X4uoGxEGZHM0MrJPim7y3JJ-5V0uihzysydoIIKFCXPPP4pD5XgzztSZlsJOONn9Z4e7qzl4H18toSIGzl9Kk8ECXo2-u8Q50" style="margin-left: 1em; margin-right: 1em;"><img alt="" data-original-height="720" data-original-width="1280" src="https://blogger.googleusercontent.com/img/a/AVvXsEikixdDwohGeXcvrehiyrGfhS9kBEJKeFj29u4J7B_8nJ37W6wkHKoxCitZPBJ_NzSPiLzQk5KAPEqE609gIW0wSCQTj3X4uoGxEGZHM0MrJPim7y3JJ-5V0uihzysydoIIKFCXPPP4pD5XgzztSZlsJOONn9Z4e7qzl4H18toSIGzl9Kk8ECXo2-u8Q50=s16000" /></a></div><p></p><p>أماكن إعلانية استراتيجية مدروسة لزيادة أرباحك مع الحفاظ على سرعة موقعك.</p>
+  </div>
+
+  <!--Lazy Load Notice-->
+  <div class="lazy-load-info">
+    <div class="lazy-icon">⚡</div>
+    <div>
+      <h3 style="margin: 0px 0px 5px;">ميزة التحميل الكسول (Lazy Load)</h3>
+      <p style="font-size: 14px; margin: 0px;">لا تقلق من كثرة الإعلانات! القالب يستخدم تقنية ذكية تمنع تحميل إعلانات AdSense إلا بعد أن يبدأ الزائر في التمرير (Scroll). هذا يضمن سرعة خرافية للموقع وقبولاً أسرع في محركات البحث.</p>
+    </div>
+  </div>
+
+  <h3 style="color: #334155; margin: 40px 0px 20px;">أماكن وضع الإعلانات:</h3>
+
+  <!--1. Header Ad-->
+  <div class="ad-spot-card">
+    <div class="ad-spot-title">
+      <span>1. إعلان الهيدر (للهاتف فقط)</span>
+      <span class="badge">الأعلى ربحاً</span>
+    </div>
+    <p>يظهر هذا الإعلان في أعلى الموقع تماماً (تحت القائمة) لمستخدمي الهواتف فقط.</p>
+    <ul>
+      <li>اذهب إلى <b>التخطيط</b> &gt; قسم <b>"[إعلان تحت الهيدر]"</b>.</li>
+      <li>ضع كود الإعلان المتجاوب (Responsive).</li>
+    </ul>
+  </div>
+
+  <!--2. Middle Post Ad-->
+  <div class="ad-spot-card">
+    <div class="ad-spot-title">
+      <span>2. إعلان وسط المقال</span>
+      <span class="badge">تلقائي</span>
+    </div>
+    <p>يتم زرع هذا الإعلان تلقائياً بعد الفقرة الثانية أو الثالثة داخل المقال لضمان رؤيته.</p>
+    <ul>
+      <li>اذهب إلى <b>التخطيط</b> &gt; قسم <b>"[مخزن أكواد الإعلانات]"</b> (في الأسفل).</li>
+      <li>ابحث عن أداة <b>"كود إعلان [وسط المقال]"</b> وضع الكود فيها.</li>
+    </ul>
+    <div class="code-placeholder">يفضل استخدام إعلان "داخل المقال" (In-Article) من أدسنس</div>
+  </div>
+
+  <!--3. Bottom Post Ad-->
+  <div class="ad-spot-card">
+    <div class="ad-spot-title">
+      <span>3. إعلان أسفل المقال</span>
+    </div>
+    <p>يظهر مباشرة بعد نهاية المقال وقبل التعليقات، وهو مكان ممتاز لجذب الانتباه بعد القراءة.</p>
+    <ul>
+      <li>ابحث في <b>[مخزن أكواد الإعلانات]</b> عن أداة <b>"كود إعلان [أسفل المقال]"</b>.</li>
+    </ul>
+  </div>
+
+  <!--4. Sidebar Ad-->
+  <div class="ad-spot-card">
+    <div class="ad-spot-title">
+      <span>4. إعلانات القائمة الجانبية (Sidebar)</span>
+    </div>
+    <p>يوجد مكانان مخصصان في القائمة الجانبية:</p>
+    <ul>
+      <li><b>أعلى القائمة:</b> يظهر في بداية السايدبار.</li>
+      <li><b>أسفل القائمة:</b> يظهر في نهاية السايدبار.</li>
+    </ul>
+    <div class="code-placeholder">الحجم المثالي: 300x250 أو إعلان مربع</div>
+  </div>
+
+  <!--5. In-Feed Ad-->
+  <div class="ad-spot-card" style="border-color: rgb(245, 158, 11);">
+    <div class="ad-spot-title">
+      <span>5. إعلان بين المقالات (In-Feed)</span>
+      <span class="badge" style="background: rgb(254, 243, 199); color: #b45309;">احترافي</span>
+    </div>
+    <p>هذا الإعلان يظهر في الصفحة الرئيسية بين بطاقات المقالات (مثلاً بعد كل 3 مقالات)، مما يجعله يبدو كجزء من المحتوى.</p>
+    <ul>
+      <li>ابحث في <b>[مخزن أكواد الإعلانات]</b> عن أداة <b>"كود إعلان [بين المقالات الرئيسية]"</b>.</li>
+      <li>استخدم كود إعلان من نوع <b>In-Feed</b> للحصول على أفضل شكل.</li>
+    </ul>
+  </div>
+
+  <div style="margin-top: 40px; text-align: center;">
+    <p style="color: #16a34a; font-weight: bold;">🎉 تهانينا! لقد أتممت إعداد القالب بالكامل.</p>
+    <a href="/" style="background: rgb(22, 163, 74); border-radius: 50px; color: white; display: inline-block; font-weight: bold; padding: 12px 40px; text-decoration: none;" target="_blank">معاينة موقعك الآن</a>
+  </div>
+
+</div>` },
+      { title: "الأدوات والمميزات الإضافية", content: `<!--انسخ الكود من هنا وضعه في صفحة جديدة في بلوجر في وضع (عرض HTML)-->
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap');
+  
+  .extra-wrapper {
+    font-family: 'Tajawal', sans-serif;
+    direction: rtl;
+    text-align: right;
+    color: #334155;
+    background: #f8fafc;
+    padding: 30px;
+    border-radius: 16px;
+    line-height: 1.8;
+  }
+
+  .extra-header {
+    text-align: center;
+    margin-bottom: 40px;
+    border-bottom: 2px dashed #cbd5e1;
+    padding-bottom: 20px;
+  }
+  .extra-header h1 {
+    font-size: 32px;
+    font-weight: 900;
+    color: #0f172a;
+    margin: 0 0 10px;
+  }
+  .extra-header p { font-size: 18px; color: #64748b; }
+
+  /* تنسيق الأقسام */
+  .tool-section {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 25px;
+    margin-bottom: 30px;
+    transition: transform 0.2s;
+  }
+  .tool-section:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+  }
+
+  .tool-title {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #f1f5f9;
+  }
+
+  .tool-icon {
+    width: 45px; height: 45px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px;
+    color: #fff;
+  }
+
+  .tool-info h2 { margin: 0; font-size: 20px; color: #0f172a; }
+  .tool-info span { font-size: 13px; color: #64748b; }
+
+  /* ألوان الأيقونات */
+  .icon-weather { background: linear-gradient(135deg, #3b82f6, #6366f1); }
+  .icon-redirect { background: linear-gradient(135deg, #10b981, #059669); }
+  .icon-pwa { background: linear-gradient(135deg, #f59e0b, #d97706); }
+  .icon-toc { background: linear-gradient(135deg, #ef4444, #dc2626); }
+
+  .step-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .step-list li {
+    position: relative;
+    padding-right: 25px;
+    margin-bottom: 12px;
+  }
+  .step-list li::before {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 4px;
+    color: #10b981;
+    font-weight: bold;
+  }
+
+  .code-snippet {
+    background: #f1f5f9;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: monospace;
+    font-weight: bold;
+    color: #c026d3;
+    direction: ltr;
+    display: inline-block;
+  }
+
+  .highlight-box {
+    background: #fffbeb;
+    border: 1px solid #fcd34d;
+    border-radius: 8px;
+    padding: 15px;
+    font-size: 14px;
+    color: #92400e;
+    margin-top: 15px;
+  }
+</style>
+
+<div class="extra-wrapper">
+
+  <div class="extra-header">
+    <h1>الأدوات والمميزات الإضافية 🛠️</h1>
+    <p><br /></p><p></p><div class="separator" style="clear: both; text-align: center;"><a href="https://blogger.googleusercontent.com/img/a/AVvXsEjZQrhLUBNMSsVikTzr9ylwsFyuluQ4jWefrll1xJMxJRvGBIXvZMLWH3M4hUU8q8Bgyk0glAZjIKjV8M2l-Dsj_YEXYBwaUGPe6IIr-uCi84pGXhiSoHzb2xeE4gi0JLxvci4BDqyglAgSubWBYEW5OCnMGU8SiyRxmCiRZJDVuWEjB5jzWpYXW9MvHww" style="margin-left: 1em; margin-right: 1em;"><img alt="" data-original-height="720" data-original-width="1280" src="https://blogger.googleusercontent.com/img/a/AVvXsEjZQrhLUBNMSsVikTzr9ylwsFyuluQ4jWefrll1xJMxJRvGBIXvZMLWH3M4hUU8q8Bgyk0glAZjIKjV8M2l-Dsj_YEXYBwaUGPe6IIr-uCi84pGXhiSoHzb2xeE4gi0JLxvci4BDqyglAgSubWBYEW5OCnMGU8SiyRxmCiRZJDVuWEjB5jzWpYXW9MvHww=s16000" /></a></div><br />إضافات حصرية تجعل موقعك متكاملاً دون الحاجة لأدوات خارجية.<p></p></div><div class="tool-section"><div class="tool-title">
+      <div class="tool-info">
+        <h2>أداة الطقس الحية</h2>
+        <span>تعرض درجة الحرارة وتوقعات الطقس للزائر تلقائياً</span>
+      </div>
+    </div>
+    <p>تظهر أيقونة الطقس بجانب زر البحث في الهيدر. عند الضغط عليها، تفتح نافذة منبثقة بتفاصيل الطقس لموقع الزائر.</p>
+    <ul class="step-list">
+      <li>اذهب إلى <b>التخطيط</b>.</li>
+      <li>ابحث عن أداة <b>"تفعيل ميزة الطقس"</b> (في الأسفل بقسم "لوحة تحكم القالب").</li>
+      <li>تأكد من تفعيل الأداة (اضغط "تعديل" ثم فعّل خيار "إظهار الأداة").</li>
+      <li>الأداة تعمل تلقائياً ولا تحتاج لأي ضبط آخر.</li>
+    </ul>
+  </div>
+
+  <!--2. Redirect Page-->
+  <div class="tool-section">
+    <div class="tool-title">
+      <div class="tool-icon icon-redirect">⏳</div>
+      <div class="tool-info">
+        <h2>صفحة تحويل الروابط (Redirect)</h2>
+        <span>لزيادة بقاء الزائر وزيادة أرباح الإعلانات</span>
+      </div>
+    </div>
+    <p>يقوم القالب بتحويل جميع الروابط الخارجية داخل المقالات إلى صفحة انتظار مع عداد تنازلي.</p>
+    
+    <h3>خطوات التفعيل:</h3>
+    <ol style="padding-right: 20px;">
+      <li>أنشئ صفحة جديدة بعنوان <b>Redirect</b> (أو "تحويل").</li>
+      <li>تأكد أن رابط الصفحة هو: <span class="code-snippet">/p/redirect.html</span> (مهم جداً).</li>
+      <li>اترك محتوى الصفحة فارغاً، القالب سيملؤها تلقائياً.</li>
+      <li>اذهب إلى <b>التخطيط</b> &gt; أداة <b>"إعدادات صفحة تحويل الروابط"</b>.</li>
+      <li>يمكنك تغيير مدة الانتظار من خلال تعديل الرقم في <span class="code-snippet">data-time="15"</span>.</li>
+    </ol>
+    
+    <div class="highlight-box">
+      💡 <b>نصيحة:</b> يمكنك وضع إعلانات AdSense داخل هذه الصفحة لزيادة الأرباح، حيث سيبقى الزائر فيها لمدة 15 ثانية.
+    </div>
+  </div>
+
+  <!--3. PWA-->
+  <div class="tool-section">
+    <div class="tool-title">
+      <div class="tool-icon icon-pwa">📱</div>
+      <div class="tool-info">
+        <h2>تطبيق الويب (PWA)</h2>
+        <span>تحويل الموقع لتطبيق هاتف قابل للتثبيت</span>
+      </div>
+    </div>
+    <p>يدعم القالب ميزة PWA، مما يعني أن الزوار سيشاهدون زر "تثبيت التطبيق" في القائمة الجانبية أو كإشعار.</p>
+    <ul class="step-list">
+      <li>التفعيل تلقائي بالكامل.</li>
+      <li>فقط تأكد من رفع <b>أيقونة التفضيلات (Favicon)</b> بمقاس 512x512 بكسل من إعدادات التخطيط لضمان ظهور أيقونة التطبيق بشكل صحيح على هواتف الزوار.</li>
+    </ul>
+  </div>
+
+  <!--4. Table of Contents-->
+  <div class="tool-section">
+    <div class="tool-title">
+      <div class="tool-icon icon-toc">📑</div>
+      <div class="tool-info">
+        <h2>جدول المحتويات التلقائي</h2>
+        <span>فهرس للمقال لتحسين تجربة المستخدم و SEO</span>
+      </div>
+    </div>
+    <p>يقوم القالب بإنشاء جدول محتويات تلقائياً في بداية كل مقال إذا وجد عناوين فرعية.</p>
+    <ul class="step-list">
+      <li>يظهر الجدول فقط إذا كان المقال يحتوي على عنوانين (H2 أو H3) أو أكثر.</li>
+      <li>يمكنك تفعيل/إيقاف هذه الميزة من التخطيط &gt; أداة <b>"تفعيل جدول المحتويات التلقائي"</b>.</li>
+    </ul>
+  </div>
+
+</div>` },
+      { title: "تفعيل الذكاء الاصطناعي (Gemini AI)", content: `<!--انسخ الكود من هنا وضعه في صفحة جديدة في بلوجر في وضع (عرض HTML)-->
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap');
+  
+  .ai-doc-wrapper {
+    font-family: 'Tajawal', sans-serif;
+    direction: rtl;
+    text-align: right;
+    color: #334155;
+    background: #f8fafc;
+    padding: 30px;
+    border-radius: 16px;
+    line-height: 1.8;
+  }
+
+  .ai-header {
+    text-align: center;
+    margin-bottom: 40px;
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    padding: 40px;
+    border-radius: 16px;
+    color: #fff;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.2);
+  }
+
+  .ai-header h1 {
+    font-size: 36px;
+    font-weight: 900;
+    margin: 0 0 10px;
+    background: linear-gradient(to right, #38bdf8, #818cf8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .ai-header p {
+    font-size: 18px;
+    color: #94a3b8;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .step-box {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 25px;
+    margin-bottom: 30px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .step-box::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0; bottom: 0; width: 4px;
+    background: #3b82f6;
+  }
+
+  .step-title {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+  }
+
+  .step-num {
+    background: #3b82f6;
+    color: #fff;
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: bold;
+    flex-shrink: 0;
+  }
+
+  .step-title h2 {
+    margin: 0;
+    font-size: 22px;
+    color: #0f172a;
+  }
+
+  .code-block {
+    background: #1e293b;
+    color: #a5f3fc;
+    padding: 15px;
+    border-radius: 8px;
+    font-family: monospace;
+    direction: ltr;
+    text-align: left;
+    margin: 15px 0;
+    position: relative;
+    overflow-x: auto;
+  }
+
+  .copy-btn {
+    position: absolute;
+    top: 10px; right: 10px;
+    background: rgba(255,255,255,0.1);
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: 'Tajawal';
+    font-size: 12px;
+  }
+  .copy-btn:hover { background: rgba(255,255,255,0.2); }
+
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-top: 40px;
+  }
+
+  .feature-card {
+    background: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    text-align: center;
+  }
+  .feature-icon {
+    font-size: 40px;
+    margin-bottom: 10px;
+    display: block;
+  }
+  .feature-card h3 { margin: 0 0 10px; color: #0f172a; }
+  .feature-card p { font-size: 14px; color: #64748b; margin: 0; }
+
+  .important-alert {
+    background: #fff7ed;
+    border: 1px solid #fdba74;
+    color: #9a3412;
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 15px;
+    font-size: 14px;
+    display: flex; align-items: center; gap: 10px;
+  }
+</style>
+
+<div class="ai-doc-wrapper">
+
+  <div class="ai-header">
+    <h1>تفعيل الذكاء الاصطناعي (Gemini AI) 🧠</h1>
+    <p></p><div class="separator" style="clear: both; text-align: center;"><a href="https://blogger.googleusercontent.com/img/a/AVvXsEjXRRHaol0be3i_nhnk7a1paI6YznLar-rdaUAyObpR4hUw1M1X3d7TYomC6bG2ieGSS78L7CuAtCOevV9M3d7Q8Z-UgXEvjryxW8gKogvT2nwxbkVbsRHE2RbtvRy2uG54Dayqj5JCu0xsB-C2SCUKUFE6FT7vPhP6my3o8GUepWQ-K5GpnR1wKBr56Io" style="margin-left: 1em; margin-right: 1em;"><img alt="" data-original-height="720" data-original-width="1280" src="https://blogger.googleusercontent.com/img/a/AVvXsEjXRRHaol0be3i_nhnk7a1paI6YznLar-rdaUAyObpR4hUw1M1X3d7TYomC6bG2ieGSS78L7CuAtCOevV9M3d7Q8Z-UgXEvjryxW8gKogvT2nwxbkVbsRHE2RbtvRy2uG54Dayqj5JCu0xsB-C2SCUKUFE6FT7vPhP6my3o8GUepWQ-K5GpnR1wKBr56Io=s16000" /></a></div><p></p><p>حول مدونتك إلى منصة ذكية! اجعل موقعك يجيب على أسئلة الزوار ويشرح لهم المحتوى تلقائياً باستخدام تقنيات جوجل.</p>
+  </div>
+
+  <!--Step 1-->
+  <div class="step-box">
+    <div class="step-title">
+      <div class="step-num">1</div>
+      <h2>الحصول على مفتاح API (مجاناً)</h2>
+    </div>
+    <p>تعتمد الميزة على نموذج <b>Google Gemini</b>، وهو مجاني وسريع جداً.</p>
+    <ol>
+      <li>اذهب إلى موقع <a href="https://aistudio.google.com/app/apikey" style="color: #3b82f6; font-weight: bold;" target="_blank">Google AI Studio</a>.</li>
+      <li>سجل الدخول بحساب Gmail الخاص بك.</li>
+      <li>اضغط على زر <b>Create API key</b>.</li>
+      <li>اختر <b>Create API key in new project</b>.</li>
+      <li>سيظهر لك كود طويل (يبدأ بـ AIza...)، هذا هو مفتاحك، انسخه واحتفظ به.</li>
+    </ol>
+  </div>
+
+  <!--Step 2-->
+  <div class="step-box">
+    <div class="step-title">
+      <div class="step-num">2</div>
+      <h2>إنشاء صفحة الإعدادات السرية 🔒</h2>
+    </div>
+    <p>لحماية مفتاحك من السرقة، لا نضعه في كود القالب مباشرة. سنقوم بتخزينه في صفحة خاصة.</p>
+    
+    <ol>
+      <li>اذهب إلى لوحة تحكم بلوجر &gt; <b>الصفحات (Pages)</b>.</li>
+      <li>أنشئ <b>صفحة جديدة</b>.</li>
+      <li>في عنوان الصفحة، اكتب بالضبط: <span style="background: rgb(226, 232, 240); border-radius: 4px; font-weight: bold; padding: 2px 6px;">AI-Config</span></li>
+      <li>حول المحرر إلى وضع <b>عرض HTML</b> (وليس وضع الإنشاء).</li>
+      <li>امسح أي كود موجود، والصق الكود التالي:</li>
+    </ol>
+
+    <div class="code-block">
+      <button class="copy-btn" onclick="copyAiCode()">نسخ</button>
+      <code id="aiCode">&lt;div id="secret-key-storage" style="display:none;"&gt;ضع_مفتاح_API_هنا&lt;/div&gt;</code>
+    </div>
+
+    <div class="important-alert">
+      ⚠️ <b>تنبيه:</b> استبدل عبارة "ضع_مفتاح_API_هنا" بالمفتاح الذي نسخته في الخطوة الأولى. لا تترك أي مسافات.
+    </div>
+
+    <p style="margin-top: 15px;">6. اضغط <b>نشر (Publish)</b>. لا تقلق، هذه الصفحة لن تظهر للزوار في القوائم، لكن القالب سيقرأ منها المفتاح.</p>
+  </div>
+
+  <!--Features Showcase-->
+  <h2 style="color: #0f172a; margin: 40px 0px 20px; text-align: center;">ماذا ستحصل بعد التفعيل؟ ✨</h2>
+  <div class="feature-grid">
+    <div class="feature-card">
+      <span class="feature-icon">🤖</span>
+      <h3>المساعد الذكي (Chatbot)</h3>
+      <p>أيقونة عائمة تفتح محادثة ذكية. يمكن للزائر سؤال البوت عن أي محتوى داخل مدونتك وسيجيبه فوراً مع ذكر المصادر.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">📝</span>
+      <h3>ميزة "توضيح النص"</h3>
+      <p>عندما يحدد الزائر أي نص داخل المقال، سيظهر له زر "توضيح". عند الضغط عليه، سيقوم الذكاء الاصطناعي بشرح الفقرة وتبسيطها.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">💡</span>
+      <h3>صندوق الأسئلة (Q&amp;A)</h3>
+      <p>أسفل كل مقال، سيجد الزائر صندوقاً ليسأل: "ما ملخص هذا المقال؟" أو "ما هي النقاط الرئيسية؟" وسيجيب الـ AI بناءً على المقال الحالي فقط.</p>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function copyAiCode() {
+    const code = document.getElementById('aiCode').innerText;
+    navigator.clipboard.writeText(code).then(() => {
+      alert('تم نسخ الكود! ضعه الآن في صفحة AI-Config.');
+    });
+  }
+<\/script>` },
+      { title: "بناء الصفحة الرئيسية", content: `<!--انسخ هذا الكود الشامل (31 شكل) وضعه في صفحة الشرح-->
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap');
+  
+  .builder-wrapper {
+    font-family: 'Tajawal', sans-serif;
+    direction: rtl;
+    text-align: right;
+    color: #1e293b;
+    background: #f8fafc;
+    padding: 30px;
+    border-radius: 20px;
+    border: 1px solid #e2e8f0;
+  }
+
+  .builder-header { text-align: center; margin-bottom: 50px; }
+  .builder-header h1 { font-size: 32px; font-weight: 900; color: #0f172a; margin-bottom: 10px; }
+  .builder-header p { font-size: 16px; color: #64748b; }
+
+  /* شبكة الأشكال */
+  .styles-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 15px;
+    margin-bottom: 40px;
+  }
+
+  .style-card {
+    background: #fff;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+  }
+
+  .style-card:hover { transform: translateY(-3px); border-color: #94a3b8; }
+  .style-card.selected { border-color: #3b82f6; background-color: #eff6ff; box-shadow: 0 0 0 2px rgba(59,130,246,0.3); }
+  .style-name { font-weight: 700; font-size: 13px; text-align: center; margin-top: 8px; color: #334155; }
+
+  /* --- المصغرات (Miniatures) --- */
+  .mini { height: 80px; background: #f1f5f9; border-radius: 6px; overflow: hidden; pointer-events: none; padding: 4px; box-sizing: border-box; }
+  
+  /* تعريفات سريعة للمعاينة */
+  .m-flex { display: flex; gap: 3px; height: 100%; }
+  .m-grid { display: grid; gap: 3px; height: 100%; }
+  .m-col { display: flex; flex-direction: column; gap: 3px; height: 100%; }
+  .bg-blue { background: #3b82f6; } .bg-red { background: #ef4444; } .bg-green { background: #10b981; } .bg-dark { background: #1e293b; } .bg-white { background: #fff; border: 1px solid #e2e8f0; } .bg-gray { background: #cbd5e1; }
+  .rad { border-radius: 3px; } .circle { border-radius: 50%; }
+
+  /* لوحة التحكم */
+  .controls-panel {
+    background: #fff; padding: 20px; border-radius: 12px;
+    border: 1px solid #e2e8f0; display: grid; gap: 15px;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  }
+  .form-group label { display: block; margin-bottom: 5px; font-weight: 700; font-size: 13px; }
+  .form-group input { width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; }
+
+  /* الكود */
+  .result-area { margin-top: 30px; background: #0f172a; padding: 15px; border-radius: 8px; color: #38bdf8; font-family: monospace; direction: ltr; position: relative; }
+  .copy-btn { position: absolute; top: 10px; right: 10px; background: #3b82f6; color: #fff; border: none; padding: 5px 15px; border-radius: 4px; cursor: pointer; font-family: 'Tajawal'; }
+</style>
+
+<div class="builder-wrapper">
+  
+  <div class="builder-header">
+    <h1>مولد الأكواد الشامل (31 شكل) 🚀</h1>
+    <p></p><div class="separator" style="clear: both; text-align: center;"><a href="https://blogger.googleusercontent.com/img/a/AVvXsEiDeZV_mHZs-NlIrXBJNH3kMKL31xo_3PR_eslv1amtJoFDD1n33RQfC5CH0g3ZcaRdO65NdiRK-RLMl_vkmClc1tO0ze6RM7Ae3r9ckQwvr5aggDomBxeBLgg6Dc5PXS8erdA7tSu8DAI1oYpaTWD3Xhpt1IEhFWOLWQ8ata3pXdHZbOTIEoTpSxeIIcQ" style="margin-left: 1em; margin-right: 1em;"><img alt="" data-original-height="720" data-original-width="1280" src="https://blogger.googleusercontent.com/img/a/AVvXsEiDeZV_mHZs-NlIrXBJNH3kMKL31xo_3PR_eslv1amtJoFDD1n33RQfC5CH0g3ZcaRdO65NdiRK-RLMl_vkmClc1tO0ze6RM7Ae3r9ckQwvr5aggDomBxeBLgg6Dc5PXS8erdA7tSu8DAI1oYpaTWD3Xhpt1IEhFWOLWQ8ata3pXdHZbOTIEoTpSxeIIcQ=s16000" /></a></div><br /><p></p><p>مكتبة كاملة لتصميم موقعك! اختر، خصص، وانسخ.</p>
+  </div>
+
+  <h3>1. اختر التصميم:</h3>
+  <div class="styles-grid" id="styleSelector">
+    
+    <!--1. Hero Slider-->
+    <div class="style-card selected" data-min="3" data-value="hero-slider">
+      <div class="mini"><div class="m-flex"><div class="bg-blue rad" style="flex: 2 1 0%;"></div><div class="m-col" style="flex: 1 1 0%;"><div class="bg-white rad" style="flex: 1 1 0%;"></div><div class="bg-white rad" style="flex: 1 1 0%;"></div></div></div></div>
+      <div class="style-name">سلايدر البطل</div>
+    </div>
+
+    <!--2. News Hero-->
+    <div class="style-card" data-min="5" data-value="news-hero">
+      <div class="mini"><div class="m-grid" style="grid-template-columns: 2fr 1fr;"><div class="bg-red rad"></div><div class="m-col"><div class="bg-white rad" style="flex: 1 1 0%;"></div><div class="bg-white rad" style="flex: 1 1 0%;"></div></div></div></div>
+      <div class="style-name">سلايدر إخباري</div>
+    </div>
+
+    <!--3. 3D Hero-->
+    <div class="style-card" data-min="1" data-value="hero-3d">
+      <div class="mini" style="align-items: center; background: rgb(30, 41, 59); display: flex; justify-content: center;"><div class="bg-red rad" style="height: 50px; transform: perspective(100px) rotateY(-15deg); width: 30px;"></div></div>
+      <div class="style-name">سلايدر عائم (3D)</div>
+    </div>
+
+    <!--4. Video Grid-->
+    <div class="style-card" data-min="5" data-value="video-grid">
+      <div class="mini"><div class="m-grid" style="grid-template-columns: 1fr 1fr;"><div class="bg-dark rad" style="align-items: center; color: white; display: flex; font-size: 10px; justify-content: center; position: relative;">▶</div><div class="m-grid" style="grid-template-rows: 1fr 1fr;"><div class="bg-white rad"></div><div class="bg-white rad"></div></div></div></div>
+      <div class="style-name">شبكة فيديو</div>
+    </div>
+
+    <!--5. Apps Grid-->
+    <div class="style-card" data-min="6" data-value="apps-grid">
+      <div class="mini"><div class="m-grid" style="grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr;"><div class="bg-white rad"></div><div class="bg-white rad"></div><div class="bg-white rad"></div><div class="bg-white rad"></div></div></div>
+      <div class="style-name">شبكة تطبيقات</div>
+    </div>
+
+    <!--6. Carousel-->
+    <div class="style-card" data-min="4" data-value="carousel">
+      <div class="mini"><div class="m-flex" style="overflow: hidden;"><div class="bg-white rad" style="border-top: 10px solid rgb(139, 92, 246); height: 100%; min-width: 40px;"></div><div class="bg-white rad" style="border-top: 10px solid rgb(139, 92, 246); height: 100%; min-width: 40px;"></div><div class="bg-white rad" style="border-top: 10px solid rgb(139, 92, 246); height: 100%; min-width: 40px;"></div></div></div>
+      <div class="style-name">سلايدر متحرك</div>
+    </div>
+
+    <!--7. Story Reel-->
+    <div class="style-card" data-min="6" data-value="story-reel">
+      <div class="mini"><div class="m-flex" style="align-items: center; justify-content: center;"><div class="bg-white circle" style="border: 2px solid rgb(239, 68, 68); height: 25px; width: 25px;"></div><div class="bg-white circle" style="border: 2px solid rgb(239, 68, 68); height: 25px; width: 25px;"></div></div></div>
+      <div class="style-name">شريط قصص</div>
+    </div>
+
+    <!--8. Grid 3 Col-->
+    <div class="style-card" data-min="3" data-value="grid-3-col">
+      <div class="mini"><div class="m-grid" style="grid-template-columns: 1fr 1fr 1fr;"><div class="bg-white rad"></div><div class="bg-white rad"></div><div class="bg-white rad"></div></div></div>
+      <div class="style-name">شبكة (3 أعمدة)</div>
+    </div>
+
+    <!--9. Atlas Slider-->
+    <div class="style-card" data-min="5" data-value="atlas-slider">
+      <div class="mini"><div class="m-flex" style="align-items: center; justify-content: center;"><div class="bg-dark rad" style="height: 40px; opacity: 0.5; width: 20px;"></div><div class="bg-red rad" style="box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 5px; height: 50px; width: 30px; z-index: 2;"></div><div class="bg-dark rad" style="height: 40px; opacity: 0.5; width: 20px;"></div></div></div>
+      <div class="style-name">سلايدر أطلس</div>
+    </div>
+
+    <!--10. Magazine 1+3-->
+    <div class="style-card" data-min="4" data-value="magazine-1-3">
+      <div class="mini"><div class="m-grid" style="grid-template-columns: repeat(3,1fr);"><div class="bg-blue rad" style="grid-column: 1 / 4; height: 35px;"></div><div class="bg-white rad"></div><div class="bg-white rad"></div><div class="bg-white rad"></div></div></div>
+      <div class="style-name">مجلة 1+3</div>
+    </div>
+
+    <!--11. Vertical Ticker-->
+    <div class="style-card" data-min="4" data-value="vertical-ticker">
+      <div class="mini"><div class="m-flex"><div class="bg-red rad" style="flex: 1 1 0%;"></div><div class="bg-white rad" style="display: flex; flex-direction: column; flex: 1 1 0%; gap: 2px;"><div style="border-bottom: 1px solid rgb(238, 238, 238); flex: 1 1 0%;"></div><div style="border-bottom: 1px solid rgb(238, 238, 238); flex: 1 1 0%;"></div></div></div></div>
+      <div class="style-name">شريط عمودي</div>
+    </div>
+
+    <!--12. Filter Grid-->
+    <div class="style-card" data-min="6" data-value="filter-grid">
+      <div class="mini"><div class="m-col"><div style="display: flex; gap: 2px; justify-content: center;"><span class="bg-blue rad" style="height: 3px; width: 15px;"></span><span class="bg-gray rad" style="height: 3px; width: 10px;"></span></div><div class="m-grid" style="grid-template-columns: 1fr 1fr 1fr;"><div class="bg-white rad"></div><div class="bg-white rad"></div><div class="bg-white rad"></div></div></div></div>
+      <div class="style-name">معرض بفلتر</div>
+    </div>
+
+    <!--13. Dual Column-->
+    <div class="style-card" data-min="4" data-value="dual-column-posts">
+      <div class="mini"><div class="m-grid" style="grid-template-columns: 1fr 1fr;"><div class="m-col"><div class="bg-gray rad" style="height: 30px;"></div><div class="bg-white rad" style="flex: 1 1 0%;"></div></div><div class="m-col"><div class="bg-gray rad" style="height: 30px;"></div><div class="bg-white rad" style="flex: 1 1 0%;"></div></div></div></div>
+      <div class="style-name">عمودين مزدوج</div>
+    </div>
+
+    <!--14. Pinned List-->
+    <div class="style-card" data-min="4" data-value="magazine-pinned-list">
+      <div class="mini"><div class="m-grid" style="grid-template-columns: 1.5fr 1fr;"><div class="bg-green rad"></div><div class="m-col"><div class="bg-white rad" style="flex: 1 1 0%;"></div><div class="bg-white rad" style="flex: 1 1 0%;"></div></div></div></div>
+      <div class="style-name">مثبت + قائمة</div>
+    </div>
+
+    <!--15. Grid Slider-->
+    <div class="style-card" data-min="3" data-value="grid-slider">
+      <div class="mini"><div class="m-grid" style="grid-template-columns: 1fr 2fr;"><div class="m-col"><div class="bg-white rad" style="flex: 1 1 0%;"></div><div class="bg-white rad" style="flex: 1 1 0%;"></div></div><div class="bg-red rad"></div></div></div>
+      <div class="style-name">سلايدر + قائمة</div>
+    </div>
+
+    <!--16. Numbered Grid-->
+    <div class="style-card" data-min="3" data-value="numbered-grid">
+      <div class="mini"><div class="m-col"><div style="align-items: center; display: flex; gap: 3px;"><span style="font-size: 10px; font-weight: bold;">1</span><div class="bg-white rad" style="flex: 1 1 0%; height: 15px;"></div></div><div style="align-items: center; display: flex; gap: 3px;"><span style="font-size: 10px; font-weight: bold;">2</span><div class="bg-white rad" style="flex: 1 1 0%; height: 15px;"></div></div></div></div>
+      <div class="style-name">قائمة مرقمة</div>
+    </div>
+
+    <!--17. Overlapping-->
+    <div class="style-card" data-min="3" data-value="overlapping-grid">
+      <div class="mini" style="position: relative;"><div class="bg-blue rad" style="height: 60%; left: 5px; position: absolute; top: 5px; width: 60%;"></div><div class="bg-red rad" style="bottom: 5px; height: 50%; position: absolute; right: 5px; width: 50%; z-index: 2;"></div></div>
+      <div class="style-name">شبكة متداخلة</div>
+    </div>
+
+    <!--18. Comparison-->
+    <div class="style-card" data-min="2" data-value="comparison">
+      <div class="mini"><div class="m-grid" style="align-items: center; grid-template-columns: 1fr 1fr;"><div class="bg-white rad" style="height: 80%;"></div><div class="bg-white rad" style="height: 80%;"></div><div style="background: red; border-radius: 50%; color: white; font-size: 8px; left: 50%; padding: 1px; position: absolute; top: 50%; transform: translate(-50%, -50%);">VS</div></div></div>
+      <div class="style-name">مقارنة VS</div>
+    </div>
+
+    <!--19. Magazine 1-->
+    <div class="style-card" data-min="5" data-value="magazine-1">
+      <div class="mini"><div class="m-grid" style="grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr;"><div class="bg-blue rad" style="grid-column: 1 / 3;"></div><div class="bg-white rad"></div><div class="bg-white rad"></div></div></div>
+      <div class="style-name">مجلة كلاسيك</div>
+    </div>
+
+    <!--20. Random Grid-->
+    <div class="style-card" data-min="5" data-value="random-grid">
+      <div class="mini"><div class="m-grid" style="grid-template-columns: repeat(3,1fr);"><div class="bg-gray rad"></div><div class="bg-dark rad"></div><div class="bg-gray rad"></div><div class="bg-dark rad"></div><div class="bg-gray rad"></div><div class="bg-dark rad"></div></div></div>
+      <div class="style-name">شبكة عشوائية</div>
+    </div>
+
+    <!--21. Store Games-->
+    <div class="style-card" data-min="4" data-value="store-games">
+      <div class="mini"><div class="m-grid" style="grid-template-columns: 1fr 1fr;"><div class="bg-white rad" style="padding: 2px; text-align: center;"><div class="bg-blue rad" style="height: 20px; margin: 0px auto; width: 20px;"></div></div><div class="bg-white rad" style="padding: 2px; text-align: center;"><div class="bg-blue rad" style="height: 20px; margin: 0px auto; width: 20px;"></div></div></div></div>
+      <div class="style-name">متجر ألعاب</div>
+    </div>
+
+    <!--22. Store Apps-->
+    <div class="style-card" data-min="4" data-value="store-apps">
+      <div class="mini"><div class="m-grid" style="grid-template-columns: 1fr 1fr;"><div class="bg-white rad" style="align-items: center; display: flex; gap: 2px; padding: 2px;"><div class="bg-green rad" style="height: 15px; width: 15px;"></div><div class="bg-gray rad" style="flex: 1 1 0%; height: 5px;"></div></div><div class="bg-white rad" style="align-items: center; display: flex; gap: 2px; padding: 2px;"><div class="bg-green rad" style="height: 15px; width: 15px;"></div><div class="bg-gray rad" style="flex: 1 1 0%; height: 5px;"></div></div></div></div>
+      <div class="style-name">متجر تطبيقات</div>
+    </div>
+
+    <!--23. List with Thumb-->
+    <div class="style-card" data-min="3" data-value="list-with-thumb">
+      <div class="mini"><div class="m-col"><div class="bg-white rad" style="align-items: center; display: flex; flex: 1 1 0%; gap: 3px; padding: 2px;"><div class="bg-gray rad" style="height: 15px; width: 20px;"></div><div style="background: rgb(226, 232, 240); flex: 1 1 0%; height: 3px;"></div></div><div class="bg-white rad" style="align-items: center; display: flex; flex: 1 1 0%; gap: 3px; padding: 2px;"><div class="bg-gray rad" style="height: 15px; width: 20px;"></div><div style="background: rgb(226, 232, 240); flex: 1 1 0%; height: 3px;"></div></div></div></div>
+      <div class="style-name">قائمة وصورة</div>
+    </div>
+
+    <!--24. Text List (No Img)-->
+    <div class="style-card" data-min="3" data-value="no-img">
+      <div class="mini"><div class="m-col"><div class="bg-white rad" style="align-items: center; display: flex; flex: 1 1 0%; padding: 0px 5px;"><div style="background: rgb(226, 232, 240); height: 3px; width: 100%;"></div></div><div class="bg-white rad" style="align-items: center; display: flex; flex: 1 1 0%; padding: 0px 5px;"><div style="background: rgb(226, 232, 240); height: 3px; width: 100%;"></div></div></div></div>
+      <div class="style-name">قائمة نصية</div>
+    </div>
+
+    <!--25. Grid 2x2-->
+    <div class="style-card" data-min="4" data-value="grid-2x2">
+      <div class="mini"><div class="m-grid" style="grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr;"><div class="bg-white rad"></div><div class="bg-white rad"></div><div class="bg-white rad"></div><div class="bg-white rad"></div></div></div>
+      <div class="style-name">شبكة 2x2</div>
+    </div>
+
+    <!--26. Magazine 3 Cols-->
+    <div class="style-card" data-min="12" data-value="magazine-3-cols">
+      <div class="mini"><div class="m-grid" style="grid-template-columns: 1fr 1fr 1fr;"><div class="bg-gray rad"></div><div class="bg-gray rad"></div><div class="bg-gray rad"></div></div></div>
+      <div class="style-name">مجلة 3 أقسام</div>
+    </div>
+
+    <!--27. Magazine Grid 3-->
+    <div class="style-card" data-min="3" data-value="magazine-grid-3">
+      <div class="mini"><div class="m-grid" style="grid-template-columns: 1fr 1fr 1fr;"><div class="bg-white rad" style="border-top: 3px solid rgb(59, 130, 246);"></div><div class="bg-white rad" style="border-top: 3px solid rgb(59, 130, 246);"></div><div class="bg-white rad" style="border-top: 3px solid rgb(59, 130, 246);"></div></div></div>
+      <div class="style-name">شبكة مجلة 3</div>
+    </div>
+
+    <!--28. News Slider V2-->
+    <div class="style-card" data-min="5" data-value="news-slider">
+      <div class="mini"><div class="m-flex" style="align-items: center; gap: 2px; justify-content: center;"><div class="bg-dark rad" style="height: 20px; opacity: 0.5; width: 20px;"></div><div class="bg-dark rad" style="border: 1px solid rgb(59, 130, 246); height: 25px; width: 25px;"></div><div class="bg-dark rad" style="height: 20px; opacity: 0.5; width: 20px;"></div></div></div>
+      <div class="style-name">سلايدر مصغر V2</div>
+    </div>
+
+    <!--29. Pinned Post-->
+    <div class="style-card" data-min="5" data-value="pinned-post">
+      <div class="mini"><div class="m-grid" style="grid-template-columns: 2fr 1fr;"><div class="bg-blue rad"></div><div class="m-col"><div class="bg-white rad"></div><div class="bg-white rad"></div></div></div></div>
+      <div class="style-name">مقال مثبت</div>
+    </div>
+
+    <!--30. Magazine Pro 1-->
+    <div class="style-card" data-min="3" data-value="magazine-pro-1">
+      <div class="mini"><div class="m-grid" style="grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr;"><div class="bg-dark rad"></div><div class="bg-dark rad"></div><div class="bg-red rad" style="grid-column: 1 / 3;"></div></div></div>
+      <div class="style-name">مجلة برو 1</div>
+    </div>
+
+    <!--31. Pro Layout-->
+    <div class="style-card" data-min="2" data-value="pro-layout">
+      <div class="mini"><div class="m-grid" style="grid-template-columns: 1.5fr 1fr;"><div class="bg-white rad" style="border: 1px solid rgb(59, 130, 246);"></div><div class="m-col"><div class="bg-white rad"></div><div class="bg-white rad"></div></div></div></div>
+      <div class="style-name">تصميم متوازن</div>
+    </div>
+
+  </div>
+
+  <h3>2. الإعدادات:</h3>
+  <div class="controls-panel">
+    <div class="form-group">
+      <label>العنوان (Title):</label>
+      <input id="inpTitle" type="text" value="أحدث المقالات" />
+    </div>
+    <div class="form-group">
+      <label>التصنيف (Label):</label>
+      <input id="inpLabel" placeholder="lastPost أو اسم التسمية" type="text" value="lastPost" />
+      <small id="multiLabelNote" style="color: #d97706; display: none; font-weight: bold; margin-top: 5px;">⚠️ يتطلب هذا الشكل عدة تصنيفات مفصولة بفاصلة (مثال: رياضة, اقتصاد)</small>
+    </div>
+    <div class="form-group">
+      <label>العدد (Number):</label>
+      <input id="inpNumber" max="20" type="number" value="5" />
+      <small id="minCountMsg" style="color: #ef4444; display: block; font-weight: bold; margin-top: 5px;"></small>
+    </div>
+  </div>
+
+  <h3>3. الكود الناتج:</h3>
+  <div class="result-area">
+    <button class="copy-btn" onclick="copyCode()">نسخ</button>
+    <code id="codeOutput"></code>
+  </div>
+
+</div>
+
+<script>
+  const styleCards = document.querySelectorAll('.style-card');
+  const inpTitle = document.getElementById('inpTitle');
+  const inpLabel = document.getElementById('inpLabel');
+  const inpNumber = document.getElementById('inpNumber');
+  const codeOutput = document.getElementById('codeOutput');
+  const minCountMsg = document.getElementById('minCountMsg');
+  const multiLabelNote = document.getElementById('multiLabelNote');
+
+  let currentType = 'hero-slider';
+  let minPosts = 3;
+
+  function updateCode() {
+    const multiTypes = ['filter-grid', 'magazine-3-cols', 'dual-column-posts'];
+    
+    if(multiTypes.includes(currentType)) {
+        multiLabelNote.style.display = 'block';
+    } else {
+        multiLabelNote.style.display = 'none';
+    }
+
+    if(parseInt(inpNumber.value) < minPosts) {
+        minCountMsg.innerText = \`⚠️ يتطلب \${minPosts} مقالات على الأقل.\`;
+    } else {
+        minCountMsg.innerText = '';
+    }
+
+    const code = \`<i class="posts-from" \\n   data-type="\${currentType}" \\n   data-title="\${inpTitle.value}" \\n   data-label="\${inpLabel.value}" \\n   data-number="\${inpNumber.value}">\\n</i>\`;
+    codeOutput.innerText = code;
+  }
+
+  styleCards.forEach(card => {
+    card.addEventListener('click', () => {
+      styleCards.forEach(c => c.classList.remove('selected'));
+      card.classList.add('selected');
+      currentType = card.getAttribute('data-value');
+      minPosts = parseInt(card.getAttribute('data-min'));
+      if(parseInt(inpNumber.value) < minPosts) inpNumber.value = minPosts;
+      updateCode();
+    });
+  });
+
+  inpTitle.addEventListener('input', updateCode);
+  inpLabel.addEventListener('input', updateCode);
+  inpNumber.addEventListener('input', updateCode);
+
+  function copyCode() {
+    navigator.clipboard.writeText(codeOutput.innerText).then(() => {
+      const btn = document.querySelector('.copy-btn');
+      btn.innerText = 'تم!';
+      setTimeout(() => btn.innerText = 'نسخ', 2000);
+    });
+  }
+
+  updateCode();
+<\/script>` },
+      { title: "إعدادات الهيدر والقوائم", content: `<!--انسخ الكود من هنا وضعه في صفحة جديدة في بلوجر في وضع (عرض HTML)-->
+
+<style>
+  /* تنسيقات صفحة الشرح */
+  @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap');
+  
+  .doc-wrapper {
+    font-family: 'Tajawal', sans-serif;
+    direction: rtl;
+    text-align: right;
+    color: #334155;
+    line-height: 1.8;
+    background-color: #f8fafc;
+    padding: 20px;
+    border-radius: 12px;
+  }
+
+  .doc-header {
+    text-align: center;
+    margin-bottom: 40px;
+    padding-bottom: 20px;
+    border-bottom: 2px dashed #cbd5e1;
+  }
+
+  .doc-header h1 {
+    font-size: 32px;
+    font-weight: 900;
+    color: #1e293b;
+    margin: 0 0 10px;
+  }
+
+  .step-card {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 25px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  }
+
+  .step-title {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #f1f5f9;
+    padding-bottom: 15px;
+  }
+
+  .step-title h2 {
+    margin: 0;
+    font-size: 22px;
+    color: #0f172a;
+  }
+
+  .code-snippet {
+    background-color: #f1f5f9;
+    color: #c026d3;
+    font-family: monospace;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: bold;
+    direction: ltr;
+    display: inline-block;
+  }
+
+  .example-box {
+    background-color: #fffbeb;
+    border: 1px dashed #fcd34d;
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 15px;
+  }
+  
+  .example-title {
+    font-weight: bold;
+    color: #b45309;
+    display: block;
+    margin-bottom: 5px;
+  }
+
+  ul {
+    padding-right: 20px;
+  }
+  
+  li {
+    margin-bottom: 10px;
+  }
+</style>
+
+<div class="doc-wrapper">
+
+  <!--Header-->
+  <div class="doc-header">
+    <h1>إعدادات الهيدر والقوائم</h1>
+    <p></p><div class="separator" style="clear: both; text-align: center;"><a href="https://blogger.googleusercontent.com/img/a/AVvXsEh1Q2MGgVIvOwtiy0TifscO4cPMIWt4HTwSgzW8-CwUkCQya3yL8HZP3OFGBwSWnsWdXk-TTv8PqMmyTYclCNubM-NyUYmEGKtTyvAEl4fQ3DNdli0exCZQna-4A6P6elWxUh7OfiFbS-uuINtsuCWta4AVwc7d11WiU3OS6LDf7dcJQ2kPuEFevokVqMU" style="margin-left: 1em; margin-right: 1em;"><img alt="" data-original-height="720" data-original-width="1280" src="https://blogger.googleusercontent.com/img/a/AVvXsEh1Q2MGgVIvOwtiy0TifscO4cPMIWt4HTwSgzW8-CwUkCQya3yL8HZP3OFGBwSWnsWdXk-TTv8PqMmyTYclCNubM-NyUYmEGKtTyvAEl4fQ3DNdli0exCZQna-4A6P6elWxUh7OfiFbS-uuINtsuCWta4AVwc7d11WiU3OS6LDf7dcJQ2kPuEFevokVqMU=s16000" /></a></div><p></p><p>تعلم كيفية التحكم في شكل رأس الصفحة وإنشاء قوائم احترافية وميجا منيو.</p>
+  </div>
+
+  <!--Section 1: Header Styles-->
+  <div class="step-card">
+    <div class="step-title">
+      <span style="font-size: 24px;">🎨</span>
+      <h2>تغيير شكل الهيدر (Header Styles)</h2>
+    </div>
+    <p>القالب يدعم 3 أشكال مختلفة للهيدر تناسب جميع أنواع المواقع. للتبديل بينها:</p>
+    <ol>
+      <li>اذهب إلى <b>التخطيط (Layout)</b>.</li>
+      <li>ابحث عن أداة باسم <b>"🎨 شكل الهيدر"</b> أو <b>"إعدادات الهيدر"</b> في الأعلى.</li>
+      <li>اضغط "تعديل"، ستجد رابطاً باسم <span class="code-snippet">style</span>.</li>
+      <li>في خانة <b>رابط الموقع (URL)</b> الخاصة بهذا العنصر، اكتب الرقم المناسب:</li>
+    </ol>
+
+    <div style="display: grid; gap: 15px; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); margin-top: 20px;">
+      <div style="background: rgb(248, 250, 252); border-radius: 8px; border: 1px solid rgb(226, 232, 240); padding: 15px; text-align: center;">
+        <strong style="color: #3b82f6; display: block; font-size: 24px;">0</strong>
+        <span style="color: #64748b;">الافتراضي (الموجي)</span>
+      </div>
+      <div style="background: rgb(255, 245, 245); border-radius: 8px; border: 1px solid rgb(254, 215, 170); padding: 15px; text-align: center;">
+        <strong style="color: #ef4444; display: block; font-size: 24px;">1</strong>
+        <span style="color: #64748b;">الإخباري (أحمر/أبيض)</span>
+      </div>
+      <div style="background: rgb(240, 249, 255); border-radius: 8px; border: 1px solid rgb(186, 230, 253); padding: 15px; text-align: center;">
+        <strong style="color: #0ea5e9; display: block; font-size: 24px;">2</strong>
+        <span style="color: #64748b;">التقني (أزرق/كحلي)</span>
+      </div>
+    </div>
+  </div>
+
+  <!--Section 2: Main Menu-->
+  <div class="step-card">
+    <div class="step-title">
+      <span style="font-size: 24px;">📋</span>
+      <h2>القائمة الرئيسية (Main Menu)</h2>
+    </div>
+    <p>يمكنك إضافة روابط عادية، قوائم منسدلة، أو قوائم ميجا متطورة من خلال أداة <b>"القائمة الرئيسية"</b> في التخطيط.</p>
+
+    <h3 style="border-right: 4px solid rgb(59, 130, 246); color: #334155; margin: 25px 0px 15px; padding-right: 10px;">1. القائمة المنسدلة (Dropdown)</h3>
+    <p>لجعل رابط فرعياً يظهر تحت رابط آخر، ضع رمز الشرطة السفلية <span class="code-snippet">_</span> قبل اسم الرابط.</p>
+    
+    <div class="example-box">
+      <span class="example-title">مثال تطبيقي (الترتيب في الأداة):</span>
+      <ul>
+        <li>الرئيسية</li>
+        <li>أقسام الموقع (رابط رئيسي)</li>
+        <li><span class="code-snippet">_</span>تطبيقات (سيظهر تحت "أقسام الموقع")</li>
+        <li><span class="code-snippet">_</span>ألعاب (سيظهر تحت "أقسام الموقع")</li>
+      </ul>
+    </div>
+
+    <h3 style="border-right: 4px solid rgb(16, 185, 129); color: #334155; margin: 25px 0px 15px; padding-right: 10px;">2. الميجا منيو (Mega Menu) 🔥</h3>
+    <p>لعرض آخر المقالات من تصنيف معين داخل القائمة بشكل مصور وجذاب.</p>
+    <ul>
+      <li>أضف عنصراً جديداً للقائمة.</li>
+      <li>في خانة <b>اسم الموقع</b>، اكتب: <span class="code-snippet">[mega] اسم التصنيف</span>.</li>
+      <li>في خانة <b>رابط الموقع</b>، ضع رابط التصنيف (Label) أو اتركها #.</li>
+    </ul>
+
+    <div class="example-box" style="background-color: #f0fdf4; border-color: rgb(134, 239, 172);">
+      <span class="example-title" style="color: #15803d;">مثال:</span>
+      إذا كان لديك تصنيف في المدونة باسم <b>"تكنولوجيا"</b> وتريد عرضه كميجا منيو:<br />
+      الاسم: <span class="code-snippet">[mega] تكنولوجيا</span><br />
+      <small style="color: #ef4444;">* ملاحظة: يجب أن يكون الاسم مطابقاً تماماً لاسم التسمية في مقالاتك.</small>
+    </div>
+  </div>
+
+  <!--Section 3: News Ticker-->
+  <div class="step-card">
+    <div class="step-title">
+      <span style="font-size: 24px;">📢</span>
+      <h2>شريط الأخبار (News Ticker)</h2>
+    </div>
+    <p>للتحكم في شريط الأخبار المتحرك، اذهب لأداة <b>"⚙️ إعدادات شريط الأخبار"</b> في التخطيط.</p>
+    
+    <table style="border-collapse: collapse; margin-top: 15px; width: 100%;">
+      <tbody><tr style="background: rgb(241, 245, 249);">
+        <th style="border: 1px solid rgb(203, 213, 225); padding: 10px;">الاسم (Name)</th>
+        <th style="border: 1px solid rgb(203, 213, 225); padding: 10px;">الرابط (URL)</th>
+        <th style="border: 1px solid rgb(203, 213, 225); padding: 10px;">الوظيفة</th>
+      </tr>
+      <tr>
+        <td style="border: 1px solid rgb(226, 232, 240); padding: 10px;">style</td>
+        <td style="border: 1px solid rgb(226, 232, 240); padding: 10px;">1 إلى 5</td>
+        <td style="border: 1px solid rgb(226, 232, 240); padding: 10px;">تغيير شكل الشريط (1 كلاسيكي، 2 تقني، 4 زجاجي...)</td>
+      </tr>
+      <tr>
+        <td style="border: 1px solid rgb(226, 232, 240); padding: 10px;">title</td>
+        <td style="border: 1px solid rgb(226, 232, 240); padding: 10px;">نص (مثل: عاجل)</td>
+        <td style="border: 1px solid rgb(226, 232, 240); padding: 10px;">تغيير الكلمة التي تظهر في بداية الشريط.</td>
+      </tr>
+      <tr>
+        <td style="border: 1px solid rgb(226, 232, 240); padding: 10px;">count</td>
+        <td style="border: 1px solid rgb(226, 232, 240); padding: 10px;">رقم (مثل: 5)</td>
+        <td style="border: 1px solid rgb(226, 232, 240); padding: 10px;">عدد الأخبار التي سيتم جلبها.</td>
+      </tr>
+    </tbody></table>
+  </div>
+
+  <div style="margin-top: 40px; text-align: center;">
+    <a href="#" style="background: rgb(30, 41, 59); border-radius: 50px; color: white; font-weight: bold; padding: 12px 30px; text-decoration: none;">الانتقال للدرس التالي: بناء الصفحة الرئيسية 👈</a>
+  </div>
+
+</div>` },
+      { title: "دليل تركيب وتفعيل القالب", content: `<!--انسخ الكود من هنا وضعه في صفحة جديدة في بلوجر في وضع (عرض HTML)-->
+
+<style>
+  /* تنسيقات صفحة الشرح */
+  @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap');
+  
+  .doc-wrapper {
+    font-family: 'Tajawal', sans-serif;
+    direction: rtl;
+    text-align: right;
+    color: #334155;
+    line-height: 1.8;
+    background-color: #f8fafc;
+    padding: 20px;
+    border-radius: 12px;
+  }
+
+  .doc-header {
+    text-align: center;
+    margin-bottom: 40px;
+    padding-bottom: 20px;
+    border-bottom: 2px dashed #cbd5e1;
+  }
+
+  .doc-header h1 {
+    font-size: 32px;
+    font-weight: 900;
+    color: #1e293b;
+    margin: 0 0 10px;
+  }
+
+  .doc-header p {
+    font-size: 18px;
+    color: #64748b;
+  }
+
+  .step-card {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 25px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s;
+  }
+
+  .step-card:hover {
+    transform: translateY(-3px);
+    border-color: #3b82f6;
+  }
+
+  .step-title {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+  }
+
+  .step-number {
+    background: #3b82f6;
+    color: #fff;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .step-title h2 {
+    margin: 0;
+    font-size: 22px;
+    color: #0f172a;
+  }
+
+  .alert-box {
+    padding: 15px;
+    border-radius: 8px;
+    font-size: 14px;
+    margin: 15px 0;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .alert-warning {
+    background-color: #fff7ed;
+    border: 1px solid #fed7aa;
+    color: #9a3412;
+  }
+
+  .alert-info {
+    background-color: #eff6ff;
+    border: 1px solid #bfdbfe;
+    color: #1e40af;
+  }
+
+  .code-area {
+    background: #1e293b;
+    color: #f8fafc;
+    padding: 20px;
+    border-radius: 8px;
+    direction: ltr;
+    text-align: left;
+    font-family: monospace;
+    font-size: 13px;
+    overflow-x: auto;
+    position: relative;
+    margin-top: 15px;
+  }
+
+  .copy-btn {
+    display: block;
+    width: 100%;
+    background: #3b82f6;
+    color: #fff;
+    border: none;
+    padding: 10px;
+    text-align: center;
+    border-radius: 0 0 8px 8px;
+    cursor: pointer;
+    font-weight: bold;
+    font-family: 'Tajawal', sans-serif;
+    transition: 0.2s;
+  }
+
+  .copy-btn:hover {
+    background: #2563eb;
+  }
+
+  .important-note {
+    font-weight: bold;
+    color: #ef4444;
+  }
+  
+  ul {
+    padding-right: 20px;
+  }
+  
+  li {
+    margin-bottom: 10px;
+  }
+</style>
+
+<div class="doc-wrapper">
+
+  <!--Header-->
+  <div class="doc-header">
+    <h1>دليل تركيب وتفعيل القالب</h1>
+    <p></p><div class="separator" style="clear: both; text-align: center;"><a href="https://blogger.googleusercontent.com/img/a/AVvXsEigayHvjz4ieUXNyWUuK5EqX6m_yPBpFqF1_0bposKqa7w0m5vt86UpvOIp7bFPQLiNpbtPMKzDhTAav-Nxko68D5B-QKg5swOMGTXIoZIFgazElY8PbonSndhT9ChnGKzaX8Fy3LkFGf12nYr1sjcjtV_WoPWGYtvu0c56gsI0WXCD6SSg877OhV3r7Sc" style="margin-left: 1em; margin-right: 1em;"><img alt="" data-original-height="720" data-original-width="1280" src="https://blogger.googleusercontent.com/img/a/AVvXsEigayHvjz4ieUXNyWUuK5EqX6m_yPBpFqF1_0bposKqa7w0m5vt86UpvOIp7bFPQLiNpbtPMKzDhTAav-Nxko68D5B-QKg5swOMGTXIoZIFgazElY8PbonSndhT9ChnGKzaX8Fy3LkFGf12nYr1sjcjtV_WoPWGYtvu0c56gsI0WXCD6SSg877OhV3r7Sc=s16000" /></a></div><p></p><p>أهلاً بك في عائلة مستخدمي قالب "بلوجو" الاحترافي. اتبع الخطوات التالية لتركيب القالب بشكل صحيح.</p>
+  </div>
+
+  <!--Step 1: Cleaning-->
+  <div class="step-card">
+    <div class="step-title">
+      <div class="step-number">1</div>
+      <h2>تنظيف القالب القديم (خطوة ضرورية)</h2>
+    </div>
+    <p>قبل تركيب القالب الجديد، يجب إزالة جميع بقايا القالب القديم لتجنب تعارض الأكواد.</p>
+    
+    <div class="alert-box alert-warning">
+      <span>⚠️ <b>تنبيه هام:</b> يرجى أخذ نسخة احتياطية من قالبك الحالي قبل البدء في حال أردت العودة إليه لاحقاً.</span>
+    </div>
+
+    <ol>
+      <li>اذهب إلى لوحة تحكم بلوجر &gt; <b>المظهر (Theme)</b>.</li>
+      <li>بجانب زر "تخصيص"، اضغط على السهم الصغير واختر <b>تعديل HTML</b>.</li>
+      <li>قم بتحديد كل الكود الموجود (Ctrl+A) وامسحه.</li>
+      <li>انسخ "كود التنظيف" التالي وضعه بدلاً منه ثم اضغط <b>حفظ</b>.</li>
+    </ol>
+
+    <div class="code-area">
+      &lt;?xml version="1.0" encoding="UTF-8" ?&gt;<br />
+      &lt;!DOCTYPE html&gt;<br />
+      &lt;html b:css='false' b:responsive='true' xmlns='http://www.w3.org/1999/xhtml' xmlns:b='http://www.google.com/2005/gml/b' xmlns:data='http://www.google.com/2005/gml/data' xmlns:expr='http://www.google.com/2005/gml/expr'&gt;<br />
+      &lt;head&gt;&lt;title&gt;Cleaning...&lt;/title&gt;&lt;b:skin&gt;&lt;![CDATA[]]&gt;&lt;/b:skin&gt;&lt;/head&gt;<br />
+      &lt;body&gt;&lt;b:section id='main'/&gt;&lt;b:section id='sidebar'/&gt;&lt;/body&gt;<br />
+      &lt;/html&gt;
+    </div>
+  </div>
+
+  <!--Step 2: Installation-->
+  <div class="step-card">
+    <div class="step-title">
+      <div class="step-number">2</div>
+      <h2>تركيب القالب الجديد</h2>
+    </div>
+    <p>الآن بعد أن أصبحت المدونة نظيفة، سنقوم بتركيب كود القالب الأصلي.</p>
+    <ul>
+      <li>افتح ملف القالب الذي قمت بتحميله (بصيغة .xml أو .txt) باستخدام أي محرر نصوص (مثل Notepad).</li>
+      <li>انسخ الكود بالكامل.</li>
+      <li>عُد إلى صفحة <b>تعديل HTML</b> في بلوجر.</li>
+      <li>امسح كود التنظيف، والصق كود القالب الجديد مكانه.</li>
+      <li>اضغط على زر <b>حفظ (Save)</b>.</li>
+    </ul>
+  </div>
+
+  <!--Step 3: Activation-->
+  <div class="step-card" style="background-color: #f0f9ff; border-color: rgb(59, 130, 246);">
+    <div class="step-title">
+      <div class="step-number">3</div>
+      <h2 style="color: #1e40af;">تفعيل ترخيص القالب</h2>
+    </div>
+    <p>القالب محمي بنظام تحقق ذكي لضمان حصولك على التحديثات والميزات الحصرية (مثل الذكاء الاصطناعي).</p>
+    
+    <div class="alert-box alert-info">
+      ℹ️ <b>كيف يعمل التفعيل؟</b> عند تركيب القالب لأول مرة، قد تظهر لك رسالة تفيد بأن القالب غير مفعل، هذا طبيعي.
+    </div>
+
+    <p><b>لتفعيل نسختك، يرجى إرسال البيانات التالية للمطور:</b></p>
+    <ol>
+      <li><b>معرف المدونة (Blog ID):</b> وهو الرقم الطويل الذي يظهر في رابط المتصفح عند دخولك لوحة تحكم بلوجر.<br />
+      <span style="background: rgb(226, 232, 240); border-radius: 4px; color: #64748b; font-size: 13px; padding: 2px 6px;">مثال: https://www.blogger.com/blog/posts/<b>123456789126477582</b></span>
+      </li>
+      <li>اسمك أو بريدك الإلكتروني الذي اشتريت به القالب.</li>
+    </ol>
+    <p>بمجرد تفعيل المعرف من طرفنا، سيعمل القالب فوراً بجميع ميزاته.</p>
+  </div>
+
+  <!--Step 4: Basic Settings-->
+  <div class="step-card">
+    <div class="step-title">
+      <div class="step-number">4</div>
+      <h2>الإعدادات الأولية (اللوجو والأيقونة)</h2>
+    </div>
+    <p>بعد التفعيل، توجه إلى <b>التنسيق (Layout)</b> لضبط أساسيات الموقع:</p>
+    
+    <h3 style="font-size: 18px; margin-top: 15px;">1. رفع اللوجو (الشعار):</h3>
+    <ul>
+      <li>ابحث عن أداة باسم <b>"قالب بلوجو للادوات (رأس الصفحة)"</b> أو <b>Header1</b>.</li>
+      <li>اضغط على "تعديل".</li>
+      <li>قم برفع صورة الشعار الخاص بك (يفضل أن تكون بصيغة PNG شفافة).</li>
+      <li>تأكد من اختيار خيار <b>"بدلاً من العنوان والوصف"</b> (Instead of title and description).</li>
+    </ul>
+
+    <h3 style="font-size: 18px; margin-top: 15px;">2. أيقونة المتصفح (Favicon):</h3>
+    <ul>
+      <li>في أعلى صفحة التخطيط، ستجد أداة "أيقونة التفضيلات".</li>
+      <li>ارفع صورة مربعة (يفضل 512x512) لتظهر في تبويب المتصفح وتطبيق الهاتف (PWA).</li>
+    </ul>
+  </div>
+
+  <div style="margin-top: 40px; text-align: center;">
+    <a href="https://seo7writing777.blogspot.com/2025/12/blog-post_7.html" style="background: rgb(30, 41, 59); border-radius: 50px; color: white; font-weight: bold; padding: 12px 30px; text-decoration: none;">الانتقال للدرس التالي: إعدادات الهيدر والقوائم 👈</a>
+  </div>
+
+</div>` },
+      { title: "نصائح ذهبية للسيو (SEO) وكيفية الاستفادة من سرعة القالب الفائقة", content: `<!--المقال السابع: نصائح ذهبية للسيو وسرعة القالب-->
+
+<h2>نصائح ذهبية للسيو (SEO) وكيفية الاستفادة من سرعة القالب الفائقة</h2>
+<p></p><div class="separator" style="clear: both; text-align: center;"><a href="https://blogger.googleusercontent.com/img/a/AVvXsEhvjDo_mLVtSIylKZmzli6kwRNYA6wa95KvTYWzahgr069kTcL3XzEW-tBDnQUhIE-6EVA4H10GaqV5jtp7-Qn97rYsai3t7UwjjB_-wUmv_81m0XM0-zFLQxBRsCsbGP6bIQXGbJ7MPSQV6SYtIGzDQAn7Ev64lxkx7JcSpnxKVb6zwI6_lK5flcxXRaA" style="margin-left: 1em; margin-right: 1em;"><img alt="" data-original-height="720" data-original-width="1280" height="1" src="https://blogger.googleusercontent.com/img/a/AVvXsEhvjDo_mLVtSIylKZmzli6kwRNYA6wa95KvTYWzahgr069kTcL3XzEW-tBDnQUhIE-6EVA4H10GaqV5jtp7-Qn97rYsai3t7UwjjB_-wUmv_81m0XM0-zFLQxBRsCsbGP6bIQXGbJ7MPSQV6SYtIGzDQAn7Ev64lxkx7JcSpnxKVb6zwI6_lK5flcxXRaA" width="1" /></a></div><br /><div class="separator" style="clear: both; text-align: center;"><a href="https://blogger.googleusercontent.com/img/a/AVvXsEi_7vqSy0G6C3ERmA--mig1sayaUiomt7ag6zupAq-Zr5QcNZyAKpw5atKf9aBM2TY4wcwn-NXd6sJ51Z-sSeXplvvtdfyXdEHcN1tDWHIy7d4S5pNSAOXiT6iGQXNkXR9lGNvqfwcj9JXMyHYeHbGSexe8bw6L_tCICDhnXz2dyJO85BhnaK5bw_3B_Fs" style="margin-left: 1em; margin-right: 1em;"><img alt="" data-original-height="720" data-original-width="1280" src="https://blogger.googleusercontent.com/img/a/AVvXsEi_7vqSy0G6C3ERmA--mig1sayaUiomt7ag6zupAq-Zr5QcNZyAKpw5atKf9aBM2TY4wcwn-NXd6sJ51Z-sSeXplvvtdfyXdEHcN1tDWHIy7d4S5pNSAOXiT6iGQXNkXR9lGNvqfwcj9JXMyHYeHbGSexe8bw6L_tCICDhnXz2dyJO85BhnaK5bw_3B_Fs=s16000" /></a></div><p></p><p>
+    أحد الأهداف الأساسية لقالب يسبيس هو مساعدتك على تصدر نتائج البحث. لم نقم فقط ببناء قالب جميل، بل قمنا بتصميمه ليكون أداة قوية لتحسين محركات البحث (SEO). في هذا المقال، سنوضح لك الميزات المدمجة في القالب التي تخدم هذا الهدف، وسنقدم لك نصائح للاستفادة منها إلى أقصى حد.</p>
+
+<h3>1. سرعة تحميل صاروخية: 100% على الحاسوب والهاتف</h3>
+<p>
+    في عالم اليوم، تعتبر سرعة الموقع من أهم عوامل الترتيب في جوجل. الزائر لن ينتظر، ومحركات البحث تفضل المواقع السريعة. لهذا السبب، تم بناء قالب يسبيس ليحقق نتائج مذهلة على أدوات قياس السرعة مثل Google PageSpeed Insights.
+</p>
+<div class="alert-box alert-success">
+    <b>نتائج مضمونة:</b> بفضل تقنيات التحميل الكسول (Lazy Loading) المتقدمة لكل من الصور، الخطوط، وحتى إعلانات AdSense، يحقق القالب درجة تصل إلى <b>100% على الحاسوب و 100% على الهاتف</b> في الظروف المثالية.
+</div>
+<p>
+    <b>ماذا يعني هذا لك؟</b> هذا يعني أن جوجل سينظر إلى موقعك على أنه موقع عالي الجودة يقدم تجربة مستخدم ممتازة، مما يزيد من فرص ظهورك في النتائج الأولى.</p>
+
+<h3>2. بنية تحتية صديقة لمحركات البحث (Built-in SEO)</h3>
+<p>
+    لقد قمنا بكل العمل التقني نيابة عنك. القالب مجهز تلقائيًا بالميزات التالية:
+</p>
+<ul>
+    <li><b>أكواد Meta Tags ديناميكية:</b> يقوم القالب بإنشاء عناوين وأوصاف فريدة لكل صفحة، وهو أمر حيوي للسيو.</li>
+    <li><b>بيانات منظمة (Schema Markup):</b> يضيف القالب تلقائيًا أكواد Schema التي تساعد جوجل على فهم محتوى مقالاتك (من هو الكاتب، تاريخ النشر، إلخ) وعرضها بشكل غني في نتائج البحث.</li>
+    <li><b>تصميم متجاوب 100%:</b> يضمن القالب أن موقعك سيعمل بشكل مثالي على جميع الأجهزة، وهو شرط أساسي لجوجل.</li></ul>
+
+<h3>3. نصائح للاستفادة من القالب لتحسين السيو</h3>
+<p>
+    الآن بعد أن قام القالب بالجانب التقني، إليك ما يمكنك فعله لتعزيز ترتيبك:
+</p>
+
+<h4>استخدم العناوين الفرعية (H2, H3)</h4>
+<p>
+    عند كتابة مقال، استخدم العناوين الفرعية من محرر بلوجر لتقسيم المحتوى إلى أقسام منطقية. هذا لا يجعل المقال أسهل في القراءة فحسب، بل يساعد جوجل على فهم بنية الموضوع الذي تكتب عنه. القالب سيقوم بتصميم هذه العناوين بشكل احترافي تلقائيًا.
+</p>
+
+<h4>املأ "النص البديل" للصور (Alt Text)</h4>
+<div class="alert-box alert-info">
+    <b>نصيحة ذهبية:</b> لا تترك صورة بدون نص بديل! عند رفع أي صورة في محرر بلوجر، اضغط على أيقونة الإعدادات (الترس) الخاصة بالصورة واملأ حقل <b>"النص البديل"</b> بوصف دقيق للصورة يتضمن كلماتك المفتاحية. هذا هو سر أرشفة صورك في بحث صور جوجل.
+</div>
+
+<h4>اهتم بالربط الداخلي (Internal Linking)</h4>
+<p>
+    ربط مقالاتك ببعضها البعض يخبر جوجل أن موقعك غني بالمحتوى المترابط. استخدم ميزات القالب لصالحك:
+</p>
+<ul>
+    <li>ميزة <b>"قد يعجبك أيضاً"</b> وسط المقال تقوم بذلك تلقائيًا.</li>
+    <li>عند استخدام <b>الأقسام الديناميكية</b> في الصفحة الرئيسية، أنت تقوم بإنشاء روابط داخلية لمقالاتك المهمة.</li>
+    <li>أثناء كتابة مقال، قم بإضافة روابط لمقالات أخرى ذات صلة في مدونتك.</li>
+</ul>
+
+<div class="separator" style="clear: both; text-align: center;"><br /></div>
+
+<h3>الخلاصة: ركز على المحتوى، واترك الباقي للقالب</h3>
+<p>
+    مع قالب يسبيس، لم تعد بحاجة للقلق بشأن الجوانب التقنية المعقدة للسيو. لقد تم إعداد كل شيء لك. مهمتك الآن هي التركيز على ما تفعله بشكل أفضل: <b>كتابة محتوى عالي الجودة ومفيد لجمهورك</b>. عندما تجمع بين المحتوى الرائع والقالب القوي تقنيًا، فإن تصدر نتائج البحث يصبح مسألة وقت.
+</p>` },
+
+        // 👆👆 انتهى مكان اللصق 👆👆
+        
+    ];
+
+    // ==========================================
+    // 2. نظام التشغيل (Engine) - لا تعدل هنا
+    // ==========================================
+    
+    // دالة لتشغيل السكربتات الموجودة داخل المقالات (مثل أزرار النسخ)
+    function executeScripts(container) {
+        const scripts = container.querySelectorAll("script");
+        scripts.forEach((oldScript) => {
+            const newScript = document.createElement("script");
+            // نسخ محتوى السكربت
+            newScript.textContent = oldScript.textContent;
+            // تشغيل السكربت بإضافته للصفحة
+            document.body.appendChild(newScript);
+        });
+    }
+
+    function initDocsSystem() {
+        const listContainer = document.getElementById('docs-list');
+        const viewerTitle = document.getElementById('docs-title');
+        const viewerContent = document.getElementById('docs-viewer');
+
+        if(!listContainer || !viewerTitle) return;
+
+        listContainer.innerHTML = '';
+
+        docsData.forEach((doc) => {
+            const btn = document.createElement('button');
+            btn.className = "w-full text-right p-3 rounded-lg font-bold text-sm mb-2 transition-all hover:bg-primary-50 dark:hover:bg-primary-900/20 hover:text-primary-600 dark:hover:text-primary-400 text-slate-600 dark:text-slate-400 border border-transparent hover:border-primary-100 dark:hover:border-primary-500/30 flex items-center justify-between group";
+            
+            btn.innerHTML = `
+                <span>${doc.title}</span>
+                <i class="fa-solid fa-chevron-left opacity-0 group-hover:opacity-100 transition-opacity text-xs"></i>
+            `;
+
+            btn.onclick = function() {
+                // تفعيل الاستايل للزر النشط
+                document.querySelectorAll('#docs-list button').forEach(b => {
+                    b.classList.remove('bg-primary-50', 'dark:bg-primary-900/20', 'text-primary-600', 'border-primary-100');
+                    b.classList.add('text-slate-600');
+                });
+                btn.classList.add('bg-primary-50', 'dark:bg-primary-900/20', 'text-primary-600', 'border-primary-100');
+                btn.classList.remove('text-slate-600');
+
+                // 1. وضع المحتوى HTML
+                viewerTitle.innerText = doc.title;
+                viewerContent.innerHTML = doc.content;
+
+                // 2. تشغيل السكربتات الموجودة داخل المحتوى (مهم جداً للأدوات)
+                setTimeout(() => {
+                    executeScripts(viewerContent);
+                }, 100);
+                
+                // سكرول للموبايل
+                if(window.innerWidth < 768) {
+                    viewerTitle.scrollIntoView({ behavior: 'smooth' });
+                }
+            };
+
+            listContainer.appendChild(btn);
+        });
+
+        // فتح أول مقال افتراضياً
+        if(docsData.length > 0) {
+            const firstBtn = listContainer.querySelector('button');
+            if(firstBtn) firstBtn.click();
+        }
+    }
+
+    // ✅ حط دي مكانها ✅
+    function switchDashTab(tabName) {
+        const viewOverview = document.getElementById('view-overview');
+        const viewDocs = document.getElementById('view-docs');
+        const btnOverview = document.getElementById('nav-btn-overview');
+        const btnDocs = document.getElementById('nav-btn-docs');
+
+        // ستايلات الزراير
+        const baseClass = "w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold transition-all border ";
+        const activeClass = "bg-primary-50 dark:bg-primary-500/10 text-primary-600 dark:text-primary-400 border-primary-100 dark:border-primary-500/20";
+        const inactiveClass = "text-slate-500 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-dark-700 border-transparent";
+
+        if(tabName === 'docs') {
+            // إظهار الشروحات
+            viewOverview.classList.add('hidden');
+            viewDocs.classList.remove('hidden');
+            viewDocs.classList.add('flex');
+            
+            // تلوين زر الشروحات
+            if(btnOverview) btnOverview.className = baseClass + inactiveClass;
+            if(btnDocs) btnDocs.className = baseClass + activeClass;
+            
+            initDocsSystem();
+        } else {
+            // إظهار الرئيسية (لوحة التحكم)
+            viewOverview.classList.remove('hidden');
+            viewDocs.classList.add('hidden');
+            viewDocs.classList.remove('flex');
+
+            // تلوين زر الرئيسية
+            if(btnDocs) btnDocs.className = baseClass + inactiveClass;
+            if(btnOverview) btnOverview.className = baseClass + activeClass;
+        }
+        
+        // للموبايل
+        if(window.innerWidth < 768) { toggleDashSidebar(); }
+    }
+</script>
 </body>
 </html>
