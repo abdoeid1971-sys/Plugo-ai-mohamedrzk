@@ -223,8 +223,8 @@
                 <div class="demos-grid-wrapper" data-aos="fade-up" data-aos-delay="600">
                     
                     <!-- Card 1 -->
-                    <a href="https://www.rzktools.com/" target="_blank" class="preview-card">
-                        <div class="browser-mockup"><div class="browser-dots"><div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div></div><div class="browser-address">rzktools.com</div></div>
+                    <a href="https://plugo-apk.blogspot.com/" target="_blank" class="preview-card">
+                        <div class="browser-mockup"><div class="browser-dots"><div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div></div><div class="browser-address">https://plugo-apk.blogspot.com</div></div>
                         <div class="scroll-viewport"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEglk_EuyIZdmgbYb_orQFw_KhW1n8nTvuLvI0D_1QHvgqGmGv2F66bswaccfz5Paibh6xNO1nG8AvL5PIIxWqEffCfiB522l78Q6BINUuII6icnBCYstkG2ojTrSkqVsCzeZHaAFyAYk2iyCcZUHzLO3e4kuXTcesfgTIrX3q9RcVHoW9C65rziE0dGbCQ/s1600/www.rzktools.com_%28Nest%20Hub%20Max%29.png" loading="lazy" alt="Store"></div>
                         <div class="preview-footer"><div><div class="template-name">متجر تطبيقات</div><div class="template-type">تصميم Google Play</div></div><div class="preview-btn">معاينة</div></div>
                     </a>
@@ -242,7 +242,12 @@
                         <div class="scroll-viewport"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiIqa1lxoaoajQbqkNWARvjLNBvjhZBFfBqX2s_crU9PgVS3dKW-8D8RPsyy0SVn_8DVfXrJC8dw6mnZ7yabJnyki_QEsF0LS-yDlrjcfq4l8A3-6QnMZPt_pZEHLIiejPwNvfEoQnVHLIDC63B_VBKmOdqnbCByZ8UXmVZ2Evj4nFcH_3qX1ltgpAogMk/s1600/demo-plugo-tools.blogspot.com_%28Nest%20Hub%20Max%29%20%282%29.png" loading="lazy" alt="Tools"></div>
                         <div class="preview-footer"><div><div class="template-name">أدوات ويب</div><div class="template-type">SEO وخدمات</div></div><div class="preview-btn">معاينة</div></div>
                     </a>
-
+<!-- Card 4 -->
+                    <a href="https://demo-plugo-tech.blogspot.com/" target="_blank" class="preview-card">
+                        <div class="browser-mockup"><div class="browser-dots"><div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div></div><div class="browser-address">https://plugo-ai.blogspot.com/</div></div>
+                        <div class="scroll-viewport"><img src="https://blogger.googleusercontent.com/img/a/AVvXsEhoaRN5zYRICQ6j35aqxiHt8BuRhDO-9509stGREt1yll6Ud2h05AL-D9dNOTHL-YksIE3qlhxxf1KxxOTcdrESA08IILj8lqAOp1CE4uWCNB5Me3WWuGrchGR3QRzm2AiYsD2jWhBWqhCscLQ_excdrabUQaAigA5QqYrSpZ4OEX_GICrL1sX8wvJQfl8" loading="lazy" alt="Tech Magazine"></div>
+                        <div class="preview-footer"><div><div class="template-name">تقني</div><div class="template-type">شروحات وبرمجيات</div></div><div class="preview-btn">معاينة</div></div>
+                    </a>
                 </div>
             </div>
         </section>
@@ -400,11 +405,29 @@
                 <button onclick="switchForm('login')" id="tab-login" class="flex-1 py-2 rounded-lg font-bold text-sm bg-white dark:bg-dark-700 shadow text-primary-600 transition-all">دخول</button>
                 <button onclick="switchForm('signup')" id="tab-signup" class="flex-1 py-2 rounded-lg font-bold text-sm text-slate-500 transition-all">شراء</button>
             </div>
+            <!-- نموذج الدخول -->
             <form id="form-login" onsubmit="handleAuth(event, 'login')" class="space-y-4">
                 <div class="relative"><i class="fa-solid fa-envelope absolute right-4 top-4 text-slate-400"></i><input type="email" placeholder="البريد الإلكتروني" class="w-full p-3 pr-10 rounded-xl bg-slate-50 dark:bg-dark-900 border border-slate-200 dark:border-dark-700 outline-none focus:border-primary-500 font-bold" required></div>
                 <div class="relative"><i class="fa-solid fa-lock absolute right-4 top-4 text-slate-400"></i><input type="password" placeholder="كلمة المرور" class="w-full p-3 pr-10 rounded-xl bg-slate-50 dark:bg-dark-900 border border-slate-200 dark:border-dark-700 outline-none focus:border-primary-500 font-bold" required></div>
                 <button type="submit" class="w-full py-3 bg-primary-600 hover:bg-primary-500 text-white rounded-xl font-bold shadow-lg shadow-primary-600/30 transition-all">تسجيل الدخول</button>
+                <button type="button" onclick="switchForm('reset')" class="w-full text-xs font-bold text-slate-500 hover:text-primary-500 transition-colors">نسيت كلمة السر؟</button>
             </form>
+
+            <!-- نموذج استعادة كلمة السر الاحترافي -->
+            <div id="form-reset" class="space-y-4 hidden">
+                <div id="reset-step-1" class="space-y-4">
+                    <p class="text-xs text-center text-slate-500 font-bold">أدخل بريدك لإرسال كود التحقق</p>
+                    <input type="email" id="reset-email" placeholder="بريدك الإلكتروني" class="w-full p-3 rounded-xl bg-slate-50 dark:bg-dark-900 border border-slate-200 dark:border-dark-700 outline-none focus:border-primary-500 font-bold">
+                    <button type="button" onclick="handleResetStep1()" id="btn-reset-1" class="w-full py-3 bg-primary-600 text-white rounded-xl font-bold">إرسال كود التحقق</button>
+                </div>
+                <div id="reset-step-2" class="space-y-4 hidden">
+                    <p class="text-xs text-center text-green-500 font-bold">تم إرسال الكود لبريدك 📩</p>
+                    <input type="text" id="reset-otp" placeholder="كود التحقق (6 أرقام)" class="w-full p-3 rounded-xl bg-slate-50 dark:bg-dark-900 border border-slate-200 dark:border-dark-700 outline-none focus:border-primary-500 font-bold text-center">
+                    <input type="password" id="reset-new-pass" placeholder="كلمة السر الجديدة" class="w-full p-3 rounded-xl bg-slate-50 dark:bg-dark-900 border border-slate-200 dark:border-dark-700 outline-none focus:border-primary-500 font-bold">
+                    <button type="button" onclick="handleResetStep2()" id="btn-reset-2" class="w-full py-3 bg-secondary-600 text-white rounded-xl font-bold">تغيير كلمة السر</button>
+                </div>
+                <button type="button" onclick="switchForm('login')" class="w-full text-xs font-bold text-slate-500">رجوع لتسجيل الدخول</button>
+            </div>
             <form id="form-signup" onsubmit="handleAuth(event, 'signup')" class="space-y-4 hidden">
     <!-- حقل الاسم -->
     <input type="text" id="s-name" placeholder="الاسم الكامل" class="w-full p-3 rounded-xl bg-slate-50 dark:bg-dark-900 border border-slate-200 dark:border-dark-700 outline-none focus:border-primary-500 font-bold" required>
@@ -426,6 +449,8 @@
     
     <button type="submit" class="w-full py-3 bg-secondary-600 hover:bg-secondary-500 text-white rounded-xl font-bold shadow-lg shadow-secondary-600/30 transition-all">إرسال طلب التفعيل</button>
 </form>
+          <!-- نموذج استعادة كلمة السر الجديد -->
+            
         </div>
     </div>
 <!-- نافذة إضافة موقع جديد (لأصحاب التراخيص المتعددة) -->
@@ -516,7 +541,7 @@
 <script>
     // 1. تهيئة النظام
     AOS.init({ duration: 800, once: true });
-    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwjCgYFg1zHoarHnwyo3eWMDBGhSD3DDEj30d29hcjvLM6BQJpJt5fsia3ERqAVs4kAJg/exec";
+    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyRYFHJ3CQtL1yf4ZM7PFXBvpdaFsUczfGkOPDZBO0uePx4zHeJFK_FKy1BQQM3aCT7TQ/exec";
 
     // 2. قائمة المميزات الـ 32
     const features = [
@@ -549,10 +574,51 @@
     function toggleAuth(type) { document.getElementById('auth-modal').classList.remove('hidden'); switchForm(type); }
     function switchForm(type) {
         const isL = type === 'login';
+        const isS = type === 'signup';
+        const isR = type === 'reset';
+        
         document.getElementById('form-login').classList.toggle('hidden', !isL);
-        document.getElementById('form-signup').classList.toggle('hidden', isL);
+        document.getElementById('form-signup').classList.toggle('hidden', !isS);
+        document.getElementById('form-reset').classList.toggle('hidden', !isR);
+        
+        if(isR) {
+            document.getElementById('reset-step-1').classList.remove('hidden');
+            document.getElementById('reset-step-2').classList.add('hidden');
+        }
+        
+        // تعديل ألوان التبويبات
         document.getElementById('tab-login').className = isL ? "flex-1 py-2 rounded-lg font-bold text-sm bg-white dark:bg-dark-700 shadow text-primary-600" : "flex-1 py-2 rounded-lg font-bold text-sm text-slate-500";
-        document.getElementById('tab-signup').className = !isL ? "flex-1 py-2 rounded-lg font-bold text-sm bg-white dark:bg-dark-700 shadow text-primary-600" : "flex-1 py-2 rounded-lg font-bold text-sm text-slate-500";
+        document.getElementById('tab-signup').className = isS ? "flex-1 py-2 rounded-lg font-bold text-sm bg-white dark:bg-dark-700 shadow text-primary-600" : "flex-1 py-2 rounded-lg font-bold text-sm text-slate-500";
+    }
+
+    async function handleResetStep1() {
+        const email = document.getElementById('reset-email').value;
+        if(!email) return alert("اكتب بريدك أولاً");
+        const btn = document.getElementById('btn-reset-1');
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري الإرسال...'; btn.disabled = true;
+        try {
+            const res = await fetch(APPS_SCRIPT_URL, { method: "POST", body: JSON.stringify({ action: "request_otp", email: email }) });
+            const result = await res.json();
+            if (result.success) {
+                document.getElementById('reset-step-1').classList.add('hidden');
+                document.getElementById('reset-step-2').classList.remove('hidden');
+            } else { alert("❌ " + result.message); }
+        } catch (e) { alert("خطأ في الاتصال"); } finally { btn.innerHTML = "إرسال كود التحقق"; btn.disabled = false; }
+    }
+
+    async function handleResetStep2() {
+        const email = document.getElementById('reset-email').value;
+        const otp = document.getElementById('reset-otp').value;
+        const pass = document.getElementById('reset-new-pass').value;
+        if(!otp || !pass) return alert("أكمل البيانات");
+        const btn = document.getElementById('btn-reset-2');
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري التغيير...'; btn.disabled = true;
+        try {
+            const res = await fetch(APPS_SCRIPT_URL, { method: "POST", body: JSON.stringify({ action: "reset_password", email: email, otp: otp, newPassword: pass }) });
+            const result = await res.json();
+            alert(result.success ? "✅ " + result.message : "❌ " + result.message);
+            if (result.success) switchForm('login');
+        } catch (e) { alert("خطأ في الاتصال"); } finally { btn.innerHTML = "تغيير كلمة السر"; btn.disabled = false; }
     }
 
     async function handleAuth(e, type) {
@@ -694,6 +760,20 @@
     function logoutClient() { localStorage.removeItem('plugo_client'); location.reload(); }
     function exitToSite() { document.getElementById('user-dashboard-view').classList.add('hidden'); document.getElementById('main-landing-page').classList.remove('hidden'); }
     function closeAuthModal() { document.getElementById('auth-modal').classList.add('hidden'); }
+  async function forgotPassword() {
+    const email = prompt("أدخل بريدك الإلكتروني المسجل لدينا لاستعادة كلمة المرور:");
+    if (!email) return;
+    try {
+        const res = await fetch(APPS_SCRIPT_URL, {
+            method: "POST",
+            headers: { "Content-Type": "text/plain;charset=utf-8" },
+            body: JSON.stringify({ action: "forgot_password", email: email })
+        });
+        const result = await res.json();
+        if (result.success) { alert("✅ " + result.message); } 
+        else { alert("❌ " + result.message); }
+    } catch (e) { alert("خطأ في الاتصال بالسيرفر."); }
+}
 
     // 10. تشغيل عند التحميل
     window.onload = function() {
