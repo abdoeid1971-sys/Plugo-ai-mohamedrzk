@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl" class="scroll-smooth dark">
-<head>
+<html lang="ar" dir="rtl" class="scroll-smooth">
+  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -79,6 +79,27 @@
     max-width: 100% !important;
     position: relative;
 }
+      /* تثبيت مكان نص التايب رايتر ومنع الرعشة */
+.typewrite {
+    display: inline-block;
+    min-height: 1.2em; /* يحافظ على ارتفاع السطر حتى لو الكلام اتمسح */
+    border-left: 3px solid #6366f1; /* الكرسور (المؤشر) ثابت هنا */
+    padding-left: 8px;
+    margin-left: 5px;
+    animation: blink-cursor 0.8s step-end infinite;
+}
+
+/* حركة الوميض للمؤشر */
+@keyframes blink-cursor {
+    from, to { border-color: transparent }
+    50% { border-color: #6366f1; }
+}
+
+/* إزالة البرواز اللي كان بيعمل رعشة في الكود القديم */
+.typewrite > .wrap {
+    border: none !important;
+    padding: 0 !important;
+}
     </style>
 </head>
 <body class="bg-slate-50 text-slate-900 dark:bg-[#020617] dark:text-slate-100 transition-colors duration-300 font-sans overflow-x-hidden relative">
@@ -108,17 +129,28 @@
                     <span class="text-2xl font-black font-en tracking-tight">Plugo</span>
                 </div>
                 
-                <div class="hidden md:flex items-center gap-1 bg-white/50 dark:bg-dark-800/50 p-1 rounded-full border border-white/10 backdrop-blur-md">
-                    <a href="#hero" class="px-5 py-2 rounded-full text-sm font-bold hover:bg-white dark:hover:bg-dark-700 transition-all">الرئيسية</a>
-                    <a href="#features" class="px-5 py-2 rounded-full text-sm font-bold hover:bg-white dark:hover:bg-dark-700 transition-all">المميزات</a>
-                    <a href="#pricing" class="px-5 py-2 rounded-full text-sm font-bold hover:bg-white dark:hover:bg-dark-700 transition-all">الأسعار</a>
-                </div>
+                <!-- داخل Navbar -->
+<div class="hidden md:flex items-center gap-1 bg-white/50 dark:bg-dark-800/50 p-1 rounded-full border border-white/10 backdrop-blur-md">
+    <!-- زرار الرئيسية -->
+    <button onclick="showPage('home')" class="px-5 py-2 rounded-full text-sm font-bold hover:bg-white dark:hover:bg-dark-700 transition-all cursor-pointer">الرئيسية</button>
+    
+    <!-- زرار المميزات -->
+    <button onclick="showPage('features')" class="px-5 py-2 rounded-full text-sm font-bold hover:bg-white dark:hover:bg-dark-700 transition-all cursor-pointer">المميزات</button>
+    
+    <!-- زرار الشرح (ده الجديد) -->
+    <button onclick="showPage('docs')" class="px-5 py-2 rounded-full text-sm font-bold bg-primary-50 dark:bg-primary-500/10 text-primary-600 dark:text-primary-400 border border-primary-100 dark:border-primary-500/20 transition-all cursor-pointer">
+        <i class="fa-solid fa-book-open mr-2"></i> الشرح
+    </button>
+    
+    <!-- زرار الأسعار -->
+    <button onclick="showPage('pricing')" class="px-5 py-2 rounded-full text-sm font-bold hover:bg-white dark:hover:bg-dark-700 transition-all cursor-pointer">الأسعار</button>
+</div>
                 
                 <div class="flex items-center gap-3">
-                    <button id="theme-toggle" class="w-10 h-10 rounded-full bg-slate-100 dark:bg-dark-800 flex items-center justify-center text-slate-600 dark:text-yellow-400 transition-colors">
-                        <i class="fa-solid fa-moon hidden dark:block"></i>
-                        <i class="fa-solid fa-sun dark:hidden"></i>
-                    </button>
+                    <button onclick="window.toggleTheme()" class="w-10 h-10 rounded-full bg-slate-100 dark:bg-dark-800 flex items-center justify-center text-slate-600 dark:text-yellow-400">
+    <i class="fa-solid fa-moon dark:hidden"></i>
+    <i class="fa-solid fa-sun hidden dark:block"></i>
+</button>
                     <button onclick="toggleAuth('login')" class="hidden md:flex bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-6 py-2 rounded-full font-bold text-sm hover:shadow-lg hover:-translate-y-1 transition-all">
                         حسابي <i class="fa-solid fa-arrow-left mr-2"></i>
                     </button>
@@ -127,12 +159,16 @@
             </div>
             
             <div id="mobile-menu" class="hidden md:hidden bg-white dark:bg-dark-900 border-t border-slate-200 dark:border-dark-700 absolute w-full p-4 flex flex-col gap-2 shadow-2xl">
-                <a href="#hero" class="p-3 font-bold rounded hover:bg-slate-100 dark:hover:bg-dark-800">🏠 الرئيسية</a>
-                <a href="#features" class="p-3 font-bold rounded hover:bg-slate-100 dark:hover:bg-dark-800">🚀 المميزات</a>
-                <button onclick="toggleAuth('login')" class="p-3 bg-primary-600 text-white font-bold rounded text-center">تسجيل الدخول</button>
-            </div>
+    <button onclick="showPage('home')" class="w-full text-right p-3 font-bold rounded hover:bg-slate-100 dark:hover:bg-dark-800 dark:text-white">🏠 الرئيسية</button>
+    <button onclick="showPage('features')" class="w-full text-right p-3 font-bold rounded hover:bg-slate-100 dark:hover:bg-dark-800 dark:text-white">🚀 المميزات</button>
+    
+    <!-- ده اللي ضيفناه -->
+    <button onclick="showPage('docs')" class="w-full text-right p-3 font-bold rounded hover:bg-slate-100 dark:hover:bg-dark-800 flex items-center gap-2 dark:text-white">📚 الشرح</button>
+    
+    <button onclick="toggleAuth('login')" class="p-3 bg-primary-600 text-white font-bold rounded text-center">تسجيل الدخول</button>
+</div>
         </nav>
-
+<div id="landing-sections">
        <!-- Hero Section (Final Mix) -->
         <section id="hero" class="relative pt-32 pb-20 lg:pt-40 lg:pb-32 px-4 text-center overflow-hidden">
             
@@ -183,7 +219,7 @@
                 <!-- Buttons -->
                 <div class="flex flex-col sm:flex-row items-center justify-center gap-5 relative z-20" data-aos="fade-up" data-aos-delay="400">
                     <button onclick="toggleAuth('signup')" class="w-full sm:w-auto px-10 py-4 rounded-2xl bg-gradient-to-r from-primary-600 to-secondary-600 text-white font-extrabold text-lg shadow-xl shadow-primary-500/30 hover:scale-105 transition-transform flex items-center justify-center gap-3">
-                        <i class="fa-solid fa-cart-shopping"></i> اشتري الآن بـ 10$
+                        <i class="fa-solid fa-cart-shopping"></i> اشتري الآن بـ 5$
                     </button>
                     <a href="#demos-anchor" class="w-full sm:w-auto px-10 py-4 rounded-2xl glass text-slate-800 dark:text-white font-bold text-lg hover:bg-white/50 dark:hover:bg-dark-800 transition-all flex items-center justify-center gap-3">
                         <i class="fa-solid fa-eye"></i> معاينة القوالب
@@ -243,7 +279,7 @@
                         <div class="preview-footer"><div><div class="template-name">أدوات ويب</div><div class="template-type">SEO وخدمات</div></div><div class="preview-btn">معاينة</div></div>
                     </a>
 <!-- Card 4 -->
-                    <a href="https://plugo-ai.blogspot.com/" target="_blank" class="preview-card">
+                    <a href="https://demo-plugo-tech.blogspot.com/" target="_blank" class="preview-card">
                         <div class="browser-mockup"><div class="browser-dots"><div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div></div><div class="browser-address">https://plugo-ai.blogspot.com/</div></div>
                         <div class="scroll-viewport"><img src="https://blogger.googleusercontent.com/img/a/AVvXsEhoaRN5zYRICQ6j35aqxiHt8BuRhDO-9509stGREt1yll6Ud2h05AL-D9dNOTHL-YksIE3qlhxxf1KxxOTcdrESA08IILj8lqAOp1CE4uWCNB5Me3WWuGrchGR3QRzm2AiYsD2jWhBWqhCscLQ_excdrabUQaAigA5QqYrSpZ4OEX_GICrL1sX8wvJQfl8" loading="lazy" alt="Tech Magazine"></div>
                         <div class="preview-footer"><div><div class="template-name">تقني</div><div class="template-type">شروحات وبرمجيات</div></div><div class="preview-btn">معاينة</div></div>
@@ -389,8 +425,163 @@
                 </div>
             </div>
         </footer>
+      </div> <!-- قفلة ديف الأقسام -->
+
+<!-- ============================================== -->
+<!-- صفحة الشرح (مخفية وتظهر بالضغط) -->
+<!-- ============================================== -->
+<!-- ============================================== -->
+<!-- صفحة الشرح المحدثة (Responsive Pro) -->
+<!-- ============================================== -->
+<div id="public-docs-view" class="hidden fixed inset-0 z-[2000] bg-slate-50 dark:bg-[#020617] overflow-y-auto">
+    
+    <!-- هيدر الصفحة -->
+    <header class="sticky top-0 z-[2001] bg-white/90 dark:bg-[#020617]/90 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800">
+        <div class="max-w-[1400px] mx-auto px-6 h-20 flex items-center justify-between">
+    <!-- الجزء اليمين (اللوجو) -->
+    <div class="flex items-center gap-4">
+        <div class="w-12 h-12 bg-gradient-to-br from-primary-500 to-primary-700 rounded-2xl flex items-center justify-center text-white shadow-lg">
+            <i class="fa-solid fa-book-bookmark text-xl"></i>
+        </div>
+        <h2 class="hidden md:block text-xl font-black dark:text-white">مركز المساعدة</h2>
     </div>
 
+<div class="flex-1 flex justify-center px-2">
+    <button onclick="toggleAIChat()" class="group relative flex items-center gap-4 bg-slate-900 dark:bg-primary-600 px-5 md:px-7 py-2.5 md:py-3 rounded-2xl shadow-[0_15px_30px_-5px_rgba(79,70,229,0.4)] hover:shadow-primary-500/60 hover:-translate-y-1 transition-all duration-300 overflow-hidden border border-white/10">
+        <!-- طبقة لمعان -->
+        <span class="absolute inset-0 bg-primary-400/10 animate-pulse"></span>
+        
+        <!-- صورة الروبوت الجديدة -->
+        <div class="relative w-10 h-10 md:w-12 md:h-12 bg-white rounded-xl overflow-hidden border-2 border-white/20 shadow-inner group-hover:scale-110 transition-transform duration-500">
+            <img src="https://blogger.googleusercontent.com/img/a/AVvXsEgj5O7p1tJU-P1PVzxcQulzi1izSdWrl5FPlKYVK9bc3rpk51FvQCE2TEKQt6hQ6YbauxeXZBdOItQ6kSSMyCPUAfzN12Ljd7ed0gq2-T-lCvDc4vYDVNwABG2EiNdu7bFePXMprIRn2N2Ur6-E2v_dPNj-AieGw88XGy79F2m7YtiMDVxZsRwi2LVSjQ8" 
+                 alt="Plugo Bot" class="w-full h-full object-cover">
+            <!-- نقطة حالة متوهجة -->
+            <span class="absolute top-0 right-0 w-3 h-3 bg-green-500 border-2 border-slate-900 rounded-full shadow-[0_0_10px_#22c55e]"></span>
+        </div>
+
+        <div class="relative text-right hidden sm:block">
+            <div class="text-[10px] text-primary-200 font-black tracking-[0.2em] uppercase">Plugo Intelligence</div>
+            <div class="text-white text-sm font-black whitespace-nowrap">اسأل المساعد الذكي</div>
+        </div>
+    </button>
+</div>
+    <!-- زر الإغلاق -->
+    <button onclick="showPage('home')" class="bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 px-6 py-3 rounded-2xl font-bold hover:bg-red-500 hover:text-white transition-all">
+        <i class="fa-solid fa-xmark"></i>
+    </button>
+</div>
+
+        <!-- شريط التبويبات الأفقي -->
+        <div class="relative max-w-[1400px] mx-auto border-t border-slate-100 dark:border-slate-800/50 px-2 md:px-12">
+            <button onclick="scrollDocs('left')" class="hidden md:flex absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 items-center justify-center text-slate-400 z-10 bg-white dark:bg-dark-900 shadow-md rounded-full border border-slate-100 dark:border-slate-700">
+                <i class="fa-solid fa-chevron-left"></i>
+            </button>
+
+            <div id="pub-docs-list" class="flex items-center gap-2 overflow-x-auto py-3 no-scrollbar scroll-smooth whitespace-nowrap px-2">
+                <!-- الدروس هنا -->
+            </div>
+
+            <button onclick="scrollDocs('right')" class="hidden md:flex absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 items-center justify-center text-slate-400 z-10 bg-white dark:bg-dark-900 shadow-md rounded-full border border-slate-100 dark:border-slate-700">
+                <i class="fa-solid fa-chevron-right"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- منطقة عرض المقال (تم تعديل العرض للموبايل هنا) -->
+    <main class="w-full max-w-[1200px] mx-auto px-2 md:px-6 py-6 md:py-12">
+        <article class="bg-white dark:bg-slate-900/50 rounded-2xl md:rounded-[40px] border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+            
+            <!-- رأس المقال -->
+            <div class="p-6 md:p-12 lg:p-16 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/30">
+                <h1 id="pub-docs-title" class="text-2xl md:text-4xl lg:text-6xl font-black text-slate-900 dark:text-white leading-tight"></h1>
+            </div>
+            
+            <!-- جسم المقال (تعديل الـ Padding ليناسب الموبايل) -->
+            <div id="pub-docs-content" class="p-4 md:p-10 lg:p-16 prose dark:prose-invert prose-slate md:prose-xl max-w-none 
+                prose-headings:font-black prose-p:leading-relaxed prose-pre:rounded-2xl prose-img:rounded-2xl">
+                <!-- المحتوى هنا -->
+            </div>
+
+        </article>
+    </main>
+</div>
+
+<!-- كود CSS إضافي لإصلاح المولدات (Generators) اللي في الصورة -->
+<style>
+    /* إخفاء السكرول بار */
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+    /* إصلاح الأدوات والمولدات داخل الشرح للموبايل */
+    #pub-docs-content .io-grid { 
+        display: grid !important; 
+        grid-template-columns: 1fr !important; /* عمود واحد في الموبايل */
+        gap: 20px !important;
+    }
+    
+    @media (min-width: 768px) {
+        #pub-docs-content .io-grid { 
+            grid-template-columns: 1fr 1fr !important; /* عمودين في الكمبيوتر */
+        }
+    }
+
+    /* تكبير حقول الإدخال في الموبايل عشان متكنش رفيعه */
+    #pub-docs-content input, 
+    #pub-docs-content select, 
+    #pub-docs-content textarea {
+        width: 100% !important;
+        display: block !important;
+    }
+</style>
+<!-- نافذة المحادثة الذكية -->
+<!-- نافذة المحادثة المحدثة -->
+<div id="ai-chat-box" class="hidden fixed bottom-4 right-4 left-4 md:left-auto md:w-[450px] h-[600px] max-h-[85vh] bg-white dark:bg-dark-900 border border-slate-200 dark:border-dark-800 rounded-[35px] shadow-[0_20px_50px_rgba(0,0,0,0.3)] z-[3000] flex flex-col overflow-hidden transition-all duration-500 border-t-4 border-t-primary-500">
+    <!-- Header -->
+    <div class="p-6 bg-slate-50 dark:bg-dark-800 border-b border-slate-100 dark:border-dark-700 flex justify-between items-center">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 bg-primary-600 rounded-2xl flex items-center justify-center text-white shadow-lg shadow-primary-500/30">
+                <i class="fa-solid fa-headset text-lg"></i>
+            </div>
+            <div>
+                <h4 class="font-black text-slate-900 dark:text-white leading-none">مساعد Plugo</h4>
+                <p class="text-[10px] text-green-500 font-bold mt-1">● متصل الآن ومستعد لشرح أي شيء</p>
+            </div>
+        </div>
+        <button onclick="toggleAIChat()" class="w-8 h-8 rounded-full bg-slate-200 dark:bg-dark-700 text-slate-500 flex items-center justify-center hover:bg-red-500 hover:text-white transition-all"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+
+    <!-- Messages Area -->
+    <div id="ai-messages" class="flex-1 p-6 overflow-y-auto space-y-4 bg-slate-50/50 dark:bg-dark-900/50 custom-scrollbar">
+        <!-- الترحيب -->
+        <div class="flex gap-3">
+            <div class="w-8 h-8 rounded-lg bg-primary-600 flex shrink-0 items-center justify-center text-white text-[10px]"><i class="fa-solid fa-robot"></i></div>
+            <div class="bg-white dark:bg-dark-800 p-4 rounded-3xl rounded-tr-none shadow-sm border border-slate-100 dark:border-dark-700 text-sm font-bold leading-relaxed dark:text-slate-200">
+                يا هلا بيك يا غالي في شروحات Plugo! <br><br>
+                لو فيه أي كود أو ميزة في الشرح واقفة قدامك قولي "بالمصري" أو بأي لهجة تحبها، وأنا هشرحهالك بطريقة سهلة جداً.. تحب نبدأ بإيه؟ 🦾
+            </div>
+        </div>
+    </div>
+
+    <!-- Input Box -->
+    <!-- Input Box المعدل لظهور أيقونة الإرسال بوضوح -->
+<div class="p-4 bg-white dark:bg-dark-800 border-t border-slate-100 dark:border-dark-700">
+    <div class="relative flex items-center">
+        <input type="text" id="ai-input" placeholder="اكتب سؤالك هنا يا بطل..." 
+               class="w-full p-4 pr-4 pl-14 rounded-2xl bg-slate-100 dark:bg-dark-700 border-2 border-transparent focus:border-primary-500 outline-none text-sm font-bold dark:text-white transition-all">
+        
+        <!-- زر الإرسال مع الأيقونة المضمونة -->
+        <button onclick="askGemini()" 
+                class="absolute left-2 w-11 h-11 bg-primary-600 text-white rounded-xl flex items-center justify-center hover:bg-primary-500 shadow-lg shadow-primary-500/30 transition-all z-10 active:scale-90">
+            <i class="fa-solid fa-paper-plane text-lg"></i>
+        </button>
+    </div>
+</div>
+</div>
+
+<style>
+    @keyframes slide-up { from { transform: translateY(100px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    .animate-slide-up { animation: slide-up 0.4s ease-out; }
+</style>
     <!-- ============================================== -->
     <!-- 2. AUTH MODAL -->
     <!-- ============================================== -->
@@ -473,75 +664,151 @@
     <!-- ============================================== -->
     <!-- 3. DASHBOARD VIEW -->
     <!-- ============================================== -->
-    <div id="user-dashboard-view" class="fixed inset-0 z-[200] bg-slate-50 dark:bg-dark-900 hidden flex flex-col md:flex-row transition-colors duration-300">
-        
-        <!-- Mobile Header Toggle -->
-        <div class="md:hidden h-16 bg-white dark:bg-dark-800 border-b border-slate-200 dark:border-dark-700 flex items-center justify-between px-4 z-30">
-            <span class="font-bold text-lg dark:text-white">لوحة التحكم</span>
-            <button onclick="toggleDashSidebar()" class="text-2xl text-slate-600 dark:text-white"><i class="fa-solid fa-bars"></i></button>
+   <!-- ============================================== -->
+<!-- 3. المطور: لوحة تحكم العميل المحدثة -->
+<!-- ============================================== -->
+<div id="user-dashboard-view" class="fixed inset-0 z-[200] bg-slate-50 dark:bg-[#020617] hidden flex flex-col transition-colors duration-300">
+    
+    <!-- هيدر اللوحة العلوي (نفس ستايل الموقع الرئيسي) -->
+    <nav class="h-20 bg-white/80 dark:bg-dark-900/80 backdrop-blur-md border-b border-slate-200 dark:border-dark-800 px-6 flex items-center justify-between sticky top-0 z-50">
+        <div class="flex items-center gap-4">
+            <div class="w-10 h-10 bg-primary-600 rounded-xl flex items-center justify-center text-white font-bold shadow-lg">P</div>
+            <span class="text-xl font-black font-en dark:text-white hidden sm:block">Plugo <span class="text-xs bg-primary-500 text-white px-2 py-0.5 rounded-md">PRO</span></span>
         </div>
 
-        <!-- Sidebar Overlay (Mobile) -->
-        <div id="dash-overlay" onclick="toggleDashSidebar()" class="fixed inset-0 bg-black/50 z-40 hidden md:hidden backdrop-blur-sm transition-opacity"></div>
+        <!-- أزرار التنقل السريع في الهيدر -->
+        <div class="hidden md:flex items-center gap-2 bg-slate-100 dark:bg-dark-800 p-1 rounded-2xl">
+            <button onclick="switchDashTab('overview')" id="tab-btn-overview" class="px-5 py-2 rounded-xl text-sm font-bold bg-white dark:bg-primary-600 text-primary-600 dark:text-white shadow-sm transition-all">🏠 نظرة عامة</button>
+            <button onclick="switchDashTab('docs')" id="tab-btn-docs" class="px-5 py-2 rounded-xl text-sm font-bold text-slate-500 hover:text-primary-500 transition-all">📚 الشروحات</button>
+        </div>
 
-        <aside id="dash-sidebar" class="fixed md:relative top-0 right-0 h-full w-72 bg-white dark:bg-dark-800 border-l border-slate-200 dark:border-dark-700 flex flex-col shadow-xl z-50 transform translate-x-full md:translate-x-0 transition-transform duration-300">
-            <div class="h-20 flex items-center justify-between px-6 border-b border-slate-200 dark:border-dark-700">
-                <span class="text-2xl font-black font-en text-slate-900 dark:text-white">Plugo <span class="text-xs bg-primary-500 text-white px-2 py-0.5 rounded-md align-middle">PRO</span></span>
-                <button onclick="toggleDashSidebar()" class="md:hidden text-slate-400 hover:text-red-500"><i class="fa-solid fa-xmark text-xl"></i></button>
-            </div>
-            <div class="p-6 bg-slate-50 dark:bg-dark-900/50 flex items-center gap-4"><div class="w-12 h-12 rounded-full bg-gradient-to-tr from-primary-500 to-secondary-500 flex items-center justify-center text-white font-bold text-xl shadow-lg">U</div><div><div class="text-sm font-black text-slate-800 dark:text-white" id="dash-name">User</div><div class="text-xs text-slate-500 font-bold mt-1">عميل مميز</div></div></div>
+        <div class="flex items-center gap-3">
+            <!-- زر الثيم داخل اللوحة -->
+            <!-- زر الثيم في لوحة التحكم -->
+<button onclick="window.toggleTheme()" class="w-10 h-10 rounded-full bg-slate-100 dark:bg-dark-800 flex items-center justify-center text-slate-600 dark:text-yellow-400">
+    <i class="fa-solid fa-moon dark:hidden"></i>
+    <i class="fa-solid fa-sun hidden dark:block"></i>
+</button>
+            
             <!-- زر الرجوع للموقع -->
-            <button onclick="exitToSite()" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-dark-700 font-bold transition-all border border-dashed border-slate-300 dark:border-dark-600"><i class="fa-solid fa-arrow-right-from-bracket"></i> الرجوع للموقع</button>
-            
-            <!-- زر لوحة التحكم -->
-            <button id="nav-btn-overview" onclick="switchDashTab('overview')" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-primary-50 dark:bg-primary-500/10 text-primary-600 dark:text-primary-400 font-bold border border-primary-100 dark:border-primary-500/20 transition-all"><i class="fa-solid fa-gauge-high"></i> لوحة التحكم</button>
-            
-            <!-- زر الشروحات -->
-            <button id="nav-btn-docs" onclick="switchDashTab('docs')" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-dark-700 font-bold transition-all border border-transparent"><i class="fa-solid fa-book-open"></i> الشروحات</button>
-            <div class="p-4 border-t border-slate-200 dark:border-dark-700"><button onclick="logoutClient()" class="w-full py-3 bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 rounded-xl font-bold text-sm hover:bg-red-100 dark:hover:bg-red-500/20 transition-colors"><i class="fa-solid fa-power-off ml-2"></i> تسجيل خروج</button></div>
-        </aside>
-        
-        <main class="flex-1 p-8 overflow-y-auto bg-slate-50 dark:bg-dark-900">
-          <!-- قسم الرئيسية (الافتراضي) -->
-            <div id="view-overview">
-            <header class="flex justify-between items-center mb-8"><h2 class="text-3xl font-black text-slate-900 dark:text-white">نظرة عامة</h2><div class="px-4 py-2 bg-green-100 dark:bg-green-500/10 text-green-600 dark:text-green-400 rounded-lg font-bold text-sm flex items-center gap-2"><span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span> متصل</div></header>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                <div class="bg-white dark:bg-dark-800 p-8 rounded-2xl shadow-sm border border-slate-200 dark:border-dark-700"><div class="text-sm text-slate-500 font-bold mb-2">حالة الترخيص</div><div class="text-3xl font-black text-green-500 flex items-center gap-2"><i class="fa-solid fa-shield-check"></i> <span id="dash-status">نشط</span></div></div>
-                <div class="bg-white dark:bg-dark-800 p-8 rounded-2xl shadow-sm border border-slate-200 dark:border-dark-700 col-span-2 cursor-pointer group hover:border-primary-500 transition-colors" onclick="copyDashCode()"><div class="text-sm text-slate-500 font-bold mb-2">حالة الاشتراك</div>
-<div class="text-xl font-bold text-green-500" id="dash-code">تم تفعيل مدونات هذا الحساب</div></div>
-            </div>
-            <div class="bg-white dark:bg-dark-800 rounded-2xl shadow-sm border border-slate-200 dark:border-dark-700 overflow-hidden"><div class="p-6 border-b border-slate-200 dark:border-dark-700 flex justify-between items-center bg-slate-50 dark:bg-dark-900"><h3 class="font-bold text-lg">تفاصيل المدونة</h3><i class="fa-solid fa-globe text-slate-400"></i></div><div class="p-6"><table class="w-full text-right"><tbody id="blogs-table-body" class="text-base font-bold text-slate-700 dark:text-slate-300"></tbody></table></div></div>
-              </div> <!-- إغلاق view-overview -->
+            <button onclick="exitToSite()" class="bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-5 py-2 rounded-xl font-bold text-xs hover:scale-105 transition-all">
+                الموقع <i class="fa-solid fa-arrow-left mr-1"></i>
+            </button>
+        </div>
+    </nav>
 
-            <!-- قسم الشروحات (Docs View) -->
-            <div id="view-docs" class="hidden h-full flex flex-col md:flex-row gap-6">
-                <!-- القائمة الجانبية للمقالات -->
-                <div class="w-full md:w-1/3 bg-white dark:bg-dark-800 rounded-2xl border border-slate-200 dark:border-dark-700 overflow-hidden flex flex-col h-[600px]">
-                    <div class="p-4 bg-slate-50 dark:bg-dark-900 border-b border-slate-200 dark:border-dark-700 font-bold text-slate-800 dark:text-white">
-                        فهرس الشروحات
+    <div class="flex flex-1 overflow-hidden">
+        <!-- Sidebar الجانبي -->
+        <aside class="w-20 md:w-72 bg-white dark:bg-dark-900 border-l border-slate-200 dark:border-dark-800 flex flex-col items-center md:items-stretch py-6 px-4 gap-2">
+            <div class="p-4 mb-6 bg-primary-50 dark:bg-primary-500/5 rounded-2xl hidden md:flex items-center gap-3 border border-primary-100 dark:border-primary-500/10">
+                <div class="w-10 h-10 rounded-full bg-primary-600 flex items-center justify-center text-white font-bold">U</div>
+                <div class="overflow-hidden">
+                    <p class="text-xs text-slate-400 font-bold uppercase">العميل</p>
+                    <p id="dash-user-name" class="text-sm font-black dark:text-white truncate">User Name</p>
+                </div>
+            </div>
+            
+            <button onclick="switchDashTab('overview')" class="dash-nav-link active w-full flex items-center gap-4 p-4 rounded-2xl transition-all font-bold text-slate-500 hover:bg-slate-50 dark:hover:bg-dark-800">
+                <i class="fa-solid fa-grid-2 text-xl"></i> <span class="hidden md:block">لوحة التحكم</span>
+            </button>
+            <button onclick="switchDashTab('docs')" class="dash-nav-link w-full flex items-center gap-4 p-4 rounded-2xl transition-all font-bold text-slate-500 hover:bg-slate-50 dark:hover:bg-dark-800">
+                <i class="fa-solid fa-book-open-reader text-xl"></i> <span class="hidden md:block">مركز الشروحات</span>
+            </button>
+            
+            <div class="mt-auto border-t border-slate-100 dark:border-dark-800 pt-4">
+                <button onclick="logoutClient()" class="w-full flex items-center gap-4 p-4 rounded-2xl text-red-500 font-bold hover:bg-red-50 dark:hover:bg-red-500/5 transition-all">
+                    <i class="fa-solid fa-power-off text-xl"></i> <span class="hidden md:block">تسجيل خروج</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- منطقة المحتوى الرئيسية -->
+        <main class="flex-1 overflow-y-auto p-4 md:p-8 custom-scrollbar">
+            
+            <!-- 1. قسم نظرة عامة (Overview) -->
+            <div id="view-overview" class="space-y-8 animate-fade-in">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-2xl md:text-3xl font-black dark:text-white">نظرة عامة</h2>
+                    <div class="px-4 py-2 bg-green-500/10 text-green-500 rounded-xl text-xs font-black flex items-center gap-2">
+                        <span class="w-2 h-2 bg-green-500 rounded-full animate-ping"></span> متصل الآن
                     </div>
-                    <div id="docs-list" class="flex-1 overflow-y-auto p-2"></div>
                 </div>
 
-                <!-- منطقة عرض المقال -->
-                <div class="w-full md:w-2/3 bg-white dark:bg-dark-800 rounded-2xl border border-slate-200 dark:border-dark-700 overflow-hidden flex flex-col h-[600px]">
-                    <div class="p-4 border-b border-slate-200 dark:border-dark-700 bg-slate-50 dark:bg-dark-900">
-                        <h3 id="docs-title" class="text-xl font-black text-primary-600 dark:text-primary-400">اختر موضوعاً</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-white dark:bg-dark-800 p-6 rounded-[30px] border border-slate-200 dark:border-dark-700 shadow-sm">
+                        <p class="text-xs font-bold text-slate-400 uppercase mb-2">حالة الاشتراك</p>
+                        <p class="text-2xl font-black text-green-500">نشط (مدى الحياة)</p>
                     </div>
-                    <div id="docs-viewer" class="flex-1 overflow-y-auto p-6 prose dark:prose-invert max-w-none text-slate-700 dark:text-slate-300 leading-relaxed">
+                    <div class="bg-white dark:bg-dark-800 p-6 rounded-[30px] border border-slate-200 dark:border-dark-700 shadow-sm col-span-1 md:col-span-2">
+                        <p class="text-xs font-bold text-slate-400 uppercase mb-2">رسالة المطور</p>
+                        <p class="text-sm font-bold dark:text-slate-300">أهلاً بك يا بطل! يمكنك الآن إدارة مواقعك والوصول لكل الشروحات والأدوات من مكان واحد.</p>
+                    </div>
+                </div>
+
+                <div class="bg-white dark:bg-dark-800 rounded-[30px] border border-slate-200 dark:border-dark-700 shadow-sm overflow-hidden">
+                    <div class="p-6 border-b border-slate-100 dark:border-dark-700 flex justify-between items-center">
+                        <h3 class="font-black dark:text-white">تراخيص مواقعك</h3>
+                        <button onclick="document.getElementById('add-site-modal').classList.remove('hidden')" class="text-xs bg-primary-600 text-white px-4 py-2 rounded-lg font-bold">إضافة موقع جديد</button>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-right">
+                            <thead class="bg-slate-50 dark:bg-dark-900/50 text-xs text-slate-400 font-black uppercase">
+                                <tr><th class="p-4">الموقع</th><th class="p-4 text-left">كود التفعيل</th></tr>
+                            </thead>
+                            <tbody id="blogs-table-body" class="font-bold dark:text-slate-300"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. قسم الشروحات (Docs) المدمج -->
+            <div id="view-docs" class="hidden h-full flex flex-col gap-6 animate-fade-in">
+                <!-- شريط العناوين الأفقي -->
+                <div class="bg-white dark:bg-dark-800 rounded-[25px] border border-slate-200 dark:border-dark-700 p-3 shadow-sm relative group">
+                     <button onclick="scrollDocs('left')" class="absolute left-1 top-1/2 -translate-y-1/2 z-10 w-8 h-8 bg-white dark:bg-dark-900 shadow rounded-full text-xs opacity-0 group-hover:opacity-100 transition-opacity"><i class="fa-solid fa-chevron-left"></i></button>
+                    <!-- شريط العناوين الأفقي في لوحة التحكم مع الأسهم -->
+<div class="bg-white dark:bg-dark-800 rounded-[25px] border border-slate-200 dark:border-dark-700 p-3 shadow-sm relative group">
+    <!-- سهم اليسار -->
+    <button onclick="window.scrollDashDocs('left')" class="absolute left-2 top-1/2 -translate-y-1/2 z-10 w-8 h-8 bg-white dark:bg-dark-900 shadow-md rounded-full text-[10px] flex items-center justify-center border border-slate-100 dark:border-slate-700 hover:text-primary-500 transition-all opacity-0 group-hover:opacity-100">
+        <i class="fa-solid fa-chevron-left"></i>
+    </button>
+
+    <!-- القائمة نفسها -->
+    <div id="dash-docs-list" class="flex items-center gap-2 overflow-x-auto no-scrollbar scroll-smooth whitespace-nowrap px-8">
+        <!-- الدروس بتظهر هنا -->
+    </div>
+
+    <!-- سهم اليمين -->
+    <button onclick="window.scrollDashDocs('right')" class="absolute right-2 top-1/2 -translate-y-1/2 z-10 w-8 h-8 bg-white dark:bg-dark-900 shadow-md rounded-full text-[10px] flex items-center justify-center border border-slate-100 dark:border-slate-700 hover:text-primary-500 transition-all opacity-0 group-hover:opacity-100">
+        <i class="fa-solid fa-chevron-right"></i>
+    </button>
+</div>
+                
+                <!-- منطقة عرض الشرح -->
+                <div class="flex-1 bg-white dark:bg-dark-800 rounded-[40px] border border-slate-200 dark:border-dark-700 shadow-sm flex flex-col overflow-hidden">
+                    <div class="p-8 border-b border-slate-100 dark:border-dark-700 flex justify-between items-center">
+                        <h3 id="dash-docs-title" class="text-2xl font-black dark:text-white leading-tight">اختر درساً</h3>
+                        <!-- زر المساعد الذكي المدمج في الشرح -->
+                        <button onclick="toggleAIChat()" class="bg-gradient-to-r from-purple-600 to-blue-600 text-white px-6 py-2 rounded-xl text-xs font-black shadow-lg animate-pulse">
+                            <i class="fa-solid fa-robot mr-2"></i> اسأل الذكاء الاصطناعي
+                        </button>
+                    </div>
+                    <div id="dash-docs-content" class="flex-1 overflow-y-auto p-8 lg:p-12 prose dark:prose-invert prose-lg max-w-none custom-scrollbar">
                         <!-- المحتوى هنا -->
                     </div>
                 </div>
             </div>
+
         </main>
     </div>
+</div>
 
     <!-- SCRIPTS -->
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script>
     // 1. تهيئة النظام
     AOS.init({ duration: 800, once: true });
-    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyRYFHJ3CQtL1yf4ZM7PFXBvpdaFsUczfGkOPDZBO0uePx4zHeJFK_FKy1BQQM3aCT7TQ/exec";
+    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxx06BFHjgMhWWvP910nEzWLb7AyTYJV3ZpTNrvXpB9EAOGZ3IKbWkTCow57KCG8w3tfA/exec";
 
     // 2. قائمة المميزات الـ 32
     const features = [
@@ -567,8 +834,47 @@
     if(grid) { grid.innerHTML = features.map((f, i) => `<div class="group p-5 rounded-2xl bg-white dark:bg-dark-800 border border-slate-100 dark:border-dark-700 hover:border-primary-500 transition-all flex items-center gap-4 hover:-translate-y-1 shadow-sm" data-aos="fade-up" data-aos-delay="${i*5}"><div class="w-10 h-10 rounded-lg bg-slate-50 dark:bg-dark-900 flex items-center justify-center text-lg ${f.c} group-hover:scale-110 transition-transform"><i class="fa-solid ${f.i}"></i></div><span class="font-bold text-sm text-slate-700 dark:text-slate-200 group-hover:text-primary-500 transition-colors">${f.t}</span></div>`).join(''); }
 
     // 3. محرك الكتابة (Typewriter)
-    var TxtType = function(el, toRotate, period) { this.toRotate = toRotate; this.el = el; this.loopNum = 0; this.period = parseInt(period, 10) || 2000; this.txt = ''; this.tick(); this.isDeleting = false; };
-    TxtType.prototype.tick = function() { var i = this.loopNum % this.toRotate.length; var fullTxt = this.toRotate[i]; if (this.isDeleting) { this.txt = fullTxt.substring(0, this.txt.length - 1); } else { this.txt = fullTxt.substring(0, this.txt.length + 1); } this.el.innerHTML = '<span class="wrap border-l-4 border-primary-500 pl-2">'+this.txt+'</span>'; var that = this; var delta = 150 - Math.random() * 100; if (this.isDeleting) { delta /= 2; } if (!this.isDeleting && this.txt === fullTxt) { delta = this.period; this.isDeleting = true; } else if (this.isDeleting && this.txt === '') { this.isDeleting = false; this.loopNum++; delta = 500; } setTimeout(function() { that.tick(); }, delta); };
+    var TxtType = function(el, toRotate, period) {
+    this.toRotate = toRotate;
+    this.el = el;
+    this.loopNum = 0;
+    this.period = parseInt(period, 10) || 2000;
+    this.txt = '';
+    this.tick();
+    this.isDeleting = false;
+};
+
+TxtType.prototype.tick = function() {
+    var i = this.loopNum % this.toRotate.length;
+    var fullTxt = this.toRotate[i];
+
+    if (this.isDeleting) {
+        // سرعة المسح (ثابتة ومنتظمة)
+        this.txt = fullTxt.substring(0, this.txt.length - 1);
+    } else {
+        // سرعة الكتابة (ثابتة ومنتظمة)
+        this.txt = fullTxt.substring(0, this.txt.length + 1);
+    }
+
+    this.el.innerHTML = '<span class="wrap">'+this.txt+'</span>';
+
+    var that = this;
+    // ضبط التوقيت: 100 مللي ثانية للكتابة، و 50 مللي ثانية للمسح (عشان ميبقاش فيه رعشة)
+    var delta = this.isDeleting ? 50 : 100;
+
+    if (!this.isDeleting && this.txt === fullTxt) {
+        delta = this.period; // وقت الانتظار لما الكلمة تخلص
+        this.isDeleting = true;
+    } else if (this.isDeleting && this.txt === '') {
+        this.isDeleting = false;
+        this.loopNum++;
+        delta = 500; // وقت الانتظار قبل ما يبدأ كلمة جديدة
+    }
+
+    setTimeout(function() {
+        that.tick();
+    }, delta);
+};
 
     // 4. نظام التسجيل والدخول (Auth)
     function toggleAuth(type) { document.getElementById('auth-modal').classList.remove('hidden'); switchForm(type); }
@@ -743,17 +1049,43 @@
 
     // 8. إضافة موقع جديد
     async function submitNewSite(e) {
-        e.preventDefault();
-        const stored = JSON.parse(localStorage.getItem('plugo_client'));
-        const btn = e.target.querySelector('button'); const oldText = btn.innerText;
-        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري...'; btn.disabled = true;
-        const payload = { action: 'signup', name: document.getElementById('dash-name').innerText, email: stored.email, blogName: document.getElementById('new-blog-name').value, blogUrl: document.getElementById('new-blog-url').value, blogId: document.getElementById('new-blog-id').value };
-        try {
-            const res = await fetch(APPS_SCRIPT_URL, { method: "POST", redirect: "follow", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(payload) });
-            const result = await res.json();
-            if (result.success) { alert('✅ تم إضافة الموقع بنجاح!'); location.reload(); } else { alert('❌ ' + result.message); }
-        } catch (error) { alert('خطأ في الاتصال'); } finally { btn.innerText = oldText; btn.disabled = false; }
+    e.preventDefault();
+    const stored = JSON.parse(localStorage.getItem('plugo_client'));
+    if (!stored) return alert("سجل دخولك أولاً");
+
+    const btn = e.target.querySelector('button');
+    const oldText = btn.innerText;
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري الإضافة...';
+    btn.disabled = true;
+
+    const payload = { 
+        action: 'add_site', // هذا هو التغيير المهم
+        email: stored.email, 
+        blogName: document.getElementById('new-blog-name').value, 
+        blogUrl: document.getElementById('new-blog-url').value, 
+        blogId: document.getElementById('new-blog-id').value 
+    };
+
+    try {
+        const res = await fetch(APPS_SCRIPT_URL, { 
+            method: "POST", 
+            body: JSON.stringify(payload) 
+        });
+        const result = await res.json();
+        
+        if (result.success) { 
+            alert('✅ ' + result.message); 
+            location.reload(); // إعادة تحميل لرؤية الموقع الجديد
+        } else { 
+            alert('❌ ' + result.message); 
+        }
+    } catch (error) { 
+        alert('خطأ في الاتصال بالسيرفر'); 
+    } finally { 
+        btn.innerText = oldText; 
+        btn.disabled = false; 
     }
+}
 
     // 9. وظائف مساعدة
     function toggleDashSidebar() { document.getElementById('dash-sidebar').classList.toggle('translate-x-full'); document.getElementById('dash-overlay').classList.toggle('hidden'); }
@@ -3630,113 +3962,540 @@ contactForm.addEventListener('submit', function (e) {
         
     ];
 
-    // ==========================================
-    // 2. نظام التشغيل (Engine) - لا تعدل هنا
-    // ==========================================
+</script>
+<script>
+    // ============================================================
+    // محرك التشغيل الاحترافي الموحد - نسخة الاستقرار النهائي 2025
+    // ============================================================
+
+    const AI_KEY = "AIzaSyC_5sWKbE24Ng-6KO6NIpMNSwNyH1_Jzt4";
+    const AI_MODEL = "gemini-3-flash-preview"; // موديل مستقر يدعم الذاكرة
+    const BOT_IMG = "https://blogger.googleusercontent.com/img/a/AVvXsEgj5O7p1tJU-P1PVzxcQulzi1izSdWrl5FPlKYVK9bc3rpk51FvQCE2TEKQt6hQ6YbauxeXZBdOItQ6kSSMyCPUAfzN12Ljd7ed0gq2-T-lCvDc4vYDVNwABG2EiNdu7bFePXMprIRn2N2Ur6-E2v_dPNj-AieGw88XGy79F2m7YtiMDVxZsRwi2LVSjQ8";
     
-    // دالة لتشغيل السكربتات الموجودة داخل المقالات (مثل أزرار النسخ)
-    function executeScripts(container) {
-        const scripts = container.querySelectorAll("script");
-        scripts.forEach((oldScript) => {
-            const newScript = document.createElement("script");
-            // نسخ محتوى السكربت
-            newScript.textContent = oldScript.textContent;
-            // تشغيل السكربت بإضافته للصفحة
-            document.body.appendChild(newScript);
-        });
+    // ذاكرة المحادثة (لحفظ السياق)
+    let chatHistory = [];
+
+    // --- [1] نظام الثيم (إصلاح نهائي) ---
+    function updateThemeUI() {
+        const isDark = localStorage.getItem('color-theme') === 'dark' || 
+                      (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches);
+        if (isDark) document.documentElement.classList.add('dark');
+        else document.documentElement.classList.remove('dark');
     }
 
-    function initDocsSystem() {
-        const listContainer = document.getElementById('docs-list');
-        const viewerTitle = document.getElementById('docs-title');
-        const viewerContent = document.getElementById('docs-viewer');
-
-        if(!listContainer || !viewerTitle) return;
-
-        listContainer.innerHTML = '';
-
-        docsData.forEach((doc) => {
-            const btn = document.createElement('button');
-            btn.className = "w-full text-right p-3 rounded-lg font-bold text-sm mb-2 transition-all hover:bg-primary-50 dark:hover:bg-primary-900/20 hover:text-primary-600 dark:hover:text-primary-400 text-slate-600 dark:text-slate-400 border border-transparent hover:border-primary-100 dark:hover:border-primary-500/30 flex items-center justify-between group";
-            
-            btn.innerHTML = `
-                <span>${doc.title}</span>
-                <i class="fa-solid fa-chevron-left opacity-0 group-hover:opacity-100 transition-opacity text-xs"></i>
-            `;
-
-            btn.onclick = function() {
-                // تفعيل الاستايل للزر النشط
-                document.querySelectorAll('#docs-list button').forEach(b => {
-                    b.classList.remove('bg-primary-50', 'dark:bg-primary-900/20', 'text-primary-600', 'border-primary-100');
-                    b.classList.add('text-slate-600');
-                });
-                btn.classList.add('bg-primary-50', 'dark:bg-primary-900/20', 'text-primary-600', 'border-primary-100');
-                btn.classList.remove('text-slate-600');
-
-                // 1. وضع المحتوى HTML
-                viewerTitle.innerText = doc.title;
-                viewerContent.innerHTML = doc.content;
-
-                // 2. تشغيل السكربتات الموجودة داخل المحتوى (مهم جداً للأدوات)
-                setTimeout(() => {
-                    executeScripts(viewerContent);
-                }, 100);
-                
-                // سكرول للموبايل
-                if(window.innerWidth < 768) {
-                    viewerTitle.scrollIntoView({ behavior: 'smooth' });
-                }
-            };
-
-            listContainer.appendChild(btn);
-        });
-
-        // فتح أول مقال افتراضياً
-        if(docsData.length > 0) {
-            const firstBtn = listContainer.querySelector('button');
-            if(firstBtn) firstBtn.click();
-        }
-    }
-
-    // ✅ حط دي مكانها ✅
-    function switchDashTab(tabName) {
-        const viewOverview = document.getElementById('view-overview');
-        const viewDocs = document.getElementById('view-docs');
-        const btnOverview = document.getElementById('nav-btn-overview');
-        const btnDocs = document.getElementById('nav-btn-docs');
-
-        // ستايلات الزراير
-        const baseClass = "w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold transition-all border ";
-        const activeClass = "bg-primary-50 dark:bg-primary-500/10 text-primary-600 dark:text-primary-400 border-primary-100 dark:border-primary-500/20";
-        const inactiveClass = "text-slate-500 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-dark-700 border-transparent";
-
-        if(tabName === 'docs') {
-            // إظهار الشروحات
-            viewOverview.classList.add('hidden');
-            viewDocs.classList.remove('hidden');
-            viewDocs.classList.add('flex');
-            
-            // تلوين زر الشروحات
-            if(btnOverview) btnOverview.className = baseClass + inactiveClass;
-            if(btnDocs) btnDocs.className = baseClass + activeClass;
-            
-            initDocsSystem();
+    window.toggleTheme = function() {
+        if (document.documentElement.classList.contains('dark')) {
+            document.documentElement.classList.remove('dark');
+            localStorage.setItem('color-theme', 'light');
         } else {
-            // إظهار الرئيسية (لوحة التحكم)
-            viewOverview.classList.remove('hidden');
-            viewDocs.classList.add('hidden');
-            viewDocs.classList.remove('flex');
-
-            // تلوين زر الرئيسية
-            if(btnDocs) btnDocs.className = baseClass + inactiveClass;
-            if(btnOverview) btnOverview.className = baseClass + activeClass;
+            document.documentElement.classList.add('dark');
+            localStorage.setItem('color-theme', 'dark');
         }
+    };
+
+    // --- [2] نظام المساعد الذكي (AI) مع الذاكرة وتنسيق البولد ---
+    window.toggleAIChat = function() {
+        document.getElementById('ai-chat-box')?.classList.toggle('hidden');
+    };
+
+    function formatAIResponse(text) {
+        return text
+            // تنسيق الخط العريض باللون المطلوب
+            .replace(/\*\*(.*?)\*\*/g, '<span style="background: rgba(103, 107, 254, 0.3); padding: 0 4px; border-radius: 4px; font-weight: bold; color: inherit;">$1</span>')
+            .replace(/\n/g, '<br>');
+    }
+
+    window.askGemini = async function() {
+        const input = document.getElementById('ai-input');
+        const messages = document.getElementById('ai-messages');
+        const query = input.value.trim();
+        if (!query) return;
+
+        // إضافة رسالة المستخدم للواجهة والذاكرة
+        messages.innerHTML += `<div class="flex justify-end mb-4"><div class="bg-primary-600 text-white p-4 rounded-3xl rounded-tl-none text-sm font-bold shadow-md max-w-[85%]">${query}</div></div>`;
+        chatHistory.push({ role: "user", parts: [{ text: query }] });
         
-        // للموبايل
-        if(window.innerWidth < 768) { toggleDashSidebar(); }
+        input.value = '';
+        messages.scrollTop = messages.scrollHeight;
+
+        const loadingId = 'ai-loading-' + Date.now();
+        messages.innerHTML += `<div id="${loadingId}" class="flex gap-2 items-center text-slate-400 text-[10px] font-black animate-pulse mb-4">جاري معالجة طلبك...</div>`;
+
+        // جلب أسماء أقسام الشرح لتوجيه المستخدم
+        const docsList = typeof docsData !== 'undefined' ? docsData.map(d => d.title).join(' - ') : "كل أقسام الشرح المتاحة";
+
+        try {
+            const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${AI_MODEL}:generateContent?key=${AI_KEY}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                    contents: [
+                        { role: "user", parts: [{ text: `أنت مساعد خبير في قالب Plugo. مهمتك هي مساعدة المبتدئين بلغة عربية فصحى بسيطة جداً. 
+                        قوانين صارمة: 
+                        1. لا تقم بكتابة أي أكواد برمجية نهائياً. 
+                        2. وجه المستخدم دائماً للقسم المناسب من قائمة الشروحات التالية: [ ${docsList} ]. 
+                        3. اشرح الخطوات نظرياً ببساطة. 
+                        4. تذكر أنك تتحدث مع مبتدئين، فكن صبوراً وواضحاً.` }]},
+                        ...chatHistory
+                    ] 
+                })
+            });
+            const data = await res.json();
+            document.getElementById(loadingId)?.remove();
+
+            if (data.candidates && data.candidates[0].content.parts[0].text) {
+                const reply = data.candidates[0].content.parts[0].text;
+                chatHistory.push({ role: "model", parts: [{ text: reply }] }); // حفظ رد الـ AI في الذاكرة
+                
+                const formatted = formatAIResponse(reply);
+                messages.innerHTML += `<div class="flex gap-3 mb-4"><div class="w-10 h-10 rounded-xl overflow-hidden bg-white border shrink-0"><img src="${BOT_IMG}" class="w-full h-full object-cover"></div><div class="bg-white dark:bg-dark-800 p-4 rounded-3xl rounded-tr-none shadow-sm border border-slate-100 dark:border-dark-700 text-sm font-bold dark:text-slate-200 w-full overflow-hidden">${formatted}</div></div>`;
+            }
+        } catch (e) {
+            document.getElementById(loadingId)?.remove();
+            messages.innerHTML += `<div class="text-red-500 text-xs font-black">نعتذر، حدث خطأ في الاتصال. حاول مرة أخرى.</div>`;
+        }
+        messages.scrollTop = messages.scrollHeight;
+    };
+
+    // --- [3] نظام لوحة التحكم (العميل) ---
+   // الصق الكود الجديد ده هنا
+window.showDashboard = function(user, sites = []) {
+    document.getElementById('auth-modal')?.classList.add('hidden');
+    document.getElementById('main-landing-page')?.classList.add('hidden');
+    document.getElementById('user-dashboard-view')?.classList.remove('hidden');
+    document.body.style.overflow = 'auto';
+
+    const nameSidebar = document.getElementById('dash-user-name');
+    if (nameSidebar) nameSidebar.innerText = user.name;
+
+    const tbody = document.getElementById('blogs-table-body');
+    if (!tbody) return;
+
+    // الحالة الأولى: لو الحساب لسه قيد الانتظار
+    if (user.status === "Pending") {
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="2" class="p-12 text-center">
+                    <div class="max-w-md mx-auto bg-amber-500/5 border border-amber-500/20 p-8 rounded-[30px]">
+                        <div class="w-16 h-16 bg-amber-500/20 text-amber-500 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl animate-pulse">
+                            <i class="fa-solid fa-clock-rotate-left"></i>
+                        </div>
+                        <h3 class="text-xl font-black text-amber-600 mb-2">طلبك قيد المراجعة</h3>
+                        <p class="text-sm font-bold text-slate-500 leading-relaxed">
+                            أهلاً يا بطل، لقد استلمنا طلب تفعيل القالب الخاص بك. 
+                            سيقوم المطور بمراجعة البيانات وتفعيل حسابك خلال ساعات قليلة.
+                        </p>
+                        <div class="mt-6 text-[10px] uppercase tracking-widest text-slate-400 font-black">Status: Waiting for Admin Approval</div>
+                    </div>
+                </td>
+            </tr>`;
+        // إخفاء زر إضافة موقع جديد لو الحساب مش مفعل
+        const addBtn = document.querySelector('button[onclick*="add-site-modal"]');
+        if(addBtn) addBtn.style.display = 'none';
+    } 
+    // الحالة الثانية: لو الحساب مفعل (Active)
+    else {
+        tbody.innerHTML = sites.map(s => `
+            <tr class="border-b dark:border-dark-700">
+                <td class="p-4">
+                    <div class="dark:text-white text-sm font-black">${s.blogName}</div>
+                    <div class="text-[10px] text-primary-500 font-bold">${s.blogUrl}</div>
+                </td>
+                <td class="p-4 text-left">
+                    <button onclick="navigator.clipboard.writeText('${s.activeCode}');alert('تم نسخ الكود')" 
+                            class="bg-slate-100 dark:bg-dark-900 px-3 py-1.5 rounded-lg text-[10px] text-blue-500 font-mono border border-slate-200 dark:border-slate-800 hover:bg-primary-600 hover:text-white transition-all">
+                        ${s.activeCode} 📋
+                    </button>
+                </td>
+            </tr>`).join('');
+        
+        const addBtn = document.querySelector('button[onclick*="add-site-modal"]');
+        if(addBtn) addBtn.style.display = 'block';
+    }
+};
+
+    window.switchDashTab = function(tab) {
+        const isDocs = tab === 'docs';
+        document.getElementById('view-overview')?.classList.toggle('hidden', isDocs);
+        document.getElementById('view-docs')?.classList.toggle('hidden', !isDocs);
+        
+        document.getElementById('tab-btn-docs').className = isDocs ? "px-5 py-2 rounded-xl text-sm font-bold bg-white dark:bg-primary-600 text-primary-600 dark:text-white shadow-sm" : "px-5 py-2 rounded-xl text-sm font-bold text-slate-500 hover:text-primary-500";
+        document.getElementById('tab-btn-overview').className = !isDocs ? "px-5 py-2 rounded-xl text-sm font-bold bg-white dark:bg-primary-600 text-primary-600 dark:text-white shadow-sm" : "px-5 py-2 rounded-xl text-sm font-bold text-slate-500 hover:text-primary-500";
+        
+        if (isDocs) loadDashboardDocs();
+    };
+
+    function loadDashboardDocs() {
+        const list = document.getElementById('dash-docs-list');
+        if (!list || list.children.length > 0) return;
+        docsData.forEach((doc, i) => {
+            const btn = document.createElement('button');
+            btn.className = "px-5 py-2 rounded-full font-bold text-xs border border-slate-200 dark:border-dark-700 bg-slate-50 dark:bg-dark-900 text-slate-500 shrink-0 mx-1";
+            btn.innerHTML = `${i+1}. ${doc.title}`;
+            btn.onclick = () => {
+                document.getElementById('dash-docs-title').innerText = doc.title;
+                document.getElementById('dash-docs-content').innerHTML = doc.content;
+                // تشغيل سكربتات المقال
+                document.getElementById('dash-docs-content').querySelectorAll("script").forEach(s => {
+                    const ns = document.createElement("script"); ns.textContent = s.textContent; document.body.appendChild(ns);
+                });
+            };
+            list.appendChild(btn);
+        });
+        if (list.firstChild) list.firstChild.click();
+    }
+
+    // --- [4] نظام التنقل وإظهار الشروحات (للزوار) ---
+    window.showPage = function(pageId) {
+        const landing = document.getElementById('landing-sections');
+        const docsView = document.getElementById('public-docs-view');
+        
+        if (pageId === 'docs') {
+            landing?.classList.add('hidden');
+            docsView?.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+            loadPublicDocs();
+        } else {
+            landing?.classList.remove('hidden');
+            docsView?.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+            if (pageId !== 'home') document.getElementById(pageId)?.scrollIntoView({ behavior: 'smooth' });
+        }
+        document.getElementById('mobile-menu')?.classList.add('hidden');
+    };
+
+    function loadPublicDocs() {
+        const list = document.getElementById('pub-docs-list');
+        if (!list || list.children.length > 0) return;
+        docsData.forEach((doc, i) => {
+            const btn = document.createElement('button');
+            btn.className = "px-6 py-2.5 rounded-2xl font-black text-sm transition-all border shrink-0 bg-white dark:bg-slate-800 text-slate-500 mx-1";
+            btn.innerHTML = `${i+1}. ${doc.title}`;
+            btn.onclick = () => {
+                document.getElementById('pub-docs-title').innerText = doc.title;
+                document.getElementById('pub-docs-content').innerHTML = doc.content;
+                document.getElementById('pub-docs-content').querySelectorAll("script").forEach(s => {
+                    const ns = document.createElement("script"); ns.textContent = s.textContent; document.body.appendChild(ns);
+                });
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            };
+            list.appendChild(btn);
+        });
+        if (list.firstChild) list.firstChild.click();
+    }
+
+    // --- [5] الربط النهائي عند التحميل ---
+    window.addEventListener('load', () => {
+        updateThemeUI(); // ضبط الثيم عند التحميل
+
+        // مراقب ضغطات الثيم (إصلاح شامل للزرار)
+        document.addEventListener('click', (e) => {
+            if (e.target.closest('#theme-toggle') || e.target.closest('#dash-theme-toggle')) {
+                window.toggleTheme();
+            }
+        });
+
+        // تشغيل العدادات
+        document.querySelectorAll('.counter').forEach(c => {
+            const target = +c.dataset.target;
+            let count = 0;
+            const update = () => {
+                if (count < target) { count += Math.ceil(target / 40); c.innerText = count; setTimeout(update, 30); }
+                else c.innerText = target;
+            };
+            update();
+        });
+
+        // تشغيل الكتابة التلقائية
+        document.querySelectorAll('.typewrite').forEach(el => {
+            const rotate = el.getAttribute('data-type');
+            if (rotate) new TxtType(el, JSON.parse(rotate), 2000);
+        });
+    });
+
+    // التعرف على Enter في الشات
+    document.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter' && document.activeElement.id === 'ai-input') {
+            window.askGemini();
+        }
+    });
+
+    window.scrollDocs = function(dir) {
+        const list = document.getElementById('pub-docs-list') || document.getElementById('dash-docs-list');
+        if (list) dir === 'left' ? list.scrollLeft -= 300 : list.scrollLeft += 300;
     }
 </script>
-</body>
+<script>
+    // 1. التحكم في فتح/قفل صفحة الشرح
+    function showPage(pageId) {
+        const docs = document.getElementById('public-docs-view');
+        if (pageId === 'docs') {
+            docs.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+            loadDocsContent(); 
+        } else {
+            docs.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+            if (pageId !== 'home') {
+                setTimeout(() => {
+                    const sec = document.getElementById(pageId);
+                    if (sec) sec.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }
+
+    // 2. وظيفة الأسهم لتحريك قائمة العناوين
+    function scrollDocs(direction) {
+        const list = document.getElementById('pub-docs-list');
+        const scrollAmount = 300;
+        if (direction === 'left') {
+            list.scrollLeft -= scrollAmount;
+        } else {
+            list.scrollLeft += scrollAmount;
+        }
+    }
+
+    function loadDocsContent() {
+        const list = document.getElementById('pub-docs-list');
+        if (list.children.length > 0) return;
+        if (typeof docsData === 'undefined') return;
+
+        docsData.forEach((doc, i) => {
+            const btn = document.createElement('button');
+            // تصميم الكبسولة
+            btn.className = "px-4 py-2 md:px-6 md:py-2.5 rounded-xl font-bold text-xs md:text-sm transition-all border shrink-0 flex items-center gap-2 bg-white dark:bg-slate-800 text-slate-500 border-slate-200 dark:border-slate-700";
+            
+            btn.innerHTML = `<span class="flex items-center justify-center w-5 h-5 rounded-md bg-slate-100 dark:bg-slate-700 text-[10px] font-bold">${i+1}</span> ${doc.title}`;
+            
+            btn.onclick = function() {
+                // إطفاء الكل
+                Array.from(list.children).forEach(b => {
+                    b.className = "px-4 py-2 md:px-6 md:py-2.5 rounded-xl font-bold text-xs md:text-sm transition-all border shrink-0 flex items-center gap-2 bg-white dark:bg-slate-800 text-slate-500 border-slate-200 dark:border-slate-700";
+                    b.querySelector('span').className = "flex items-center justify-center w-5 h-5 rounded-md bg-slate-100 dark:bg-slate-700 text-[10px] font-bold";
+                });
+
+                // تفعيل المختار
+                btn.className = "px-4 py-2 md:px-6 md:py-2.5 rounded-xl font-bold text-xs md:text-sm transition-all border shrink-0 flex items-center gap-2 bg-primary-600 text-white border-primary-600 shadow-lg shadow-primary-500/20";
+                btn.querySelector('span').className = "flex items-center justify-center w-5 h-5 rounded-md bg-white text-primary-600 text-[10px] font-bold";
+
+                document.getElementById('pub-docs-title').innerText = doc.title;
+                const contentDiv = document.getElementById('pub-docs-content');
+                contentDiv.innerHTML = doc.content;
+                
+                // تشغيل سكربتات المولدات
+                contentDiv.querySelectorAll("script").forEach(s => {
+                    const ns = document.createElement("script");
+                    ns.textContent = s.textContent;
+                    document.body.appendChild(ns);
+                });
+
+                // سكرول
+                btn.scrollIntoView({ behavior: 'smooth', inline: 'center' });
+                // رفع سكرول الصفحة نفسها مش الـ body لأننا استخدمنا fixed
+                document.getElementById('public-docs-view').scrollTo({ top: 0, behavior: 'smooth' });
+            };
+            list.appendChild(btn);
+        });
+        
+        if(list.firstChild) list.firstChild.click();
+    }
+
+    function scrollDocs(direction) {
+        const list = document.getElementById('pub-docs-list');
+        if (direction === 'left') list.scrollLeft -= 200;
+        else list.scrollLeft += 200;
+    }
+  // كود تشغيل زرار الوضع الليلي والنهاري (Theme Toggle)
+const themeToggleBtn = document.getElementById('theme-toggle');
+
+if (themeToggleBtn) {
+    themeToggleBtn.addEventListener('click', function() {
+        // لو الوضع الحالي "ليلي" حوله لـ "نهاري"
+        if (document.documentElement.classList.contains('dark')) {
+            document.documentElement.classList.remove('dark');
+            localStorage.setItem('color-theme', 'light');
+        } 
+        // لو الوضع الحالي "نهاري" حوله لـ "ليلي"
+        else {
+            document.documentElement.classList.add('dark');
+            localStorage.setItem('color-theme', 'dark');
+        }
+    });
+}
+</script>
+<script>
+    const AI_KEY = "AIzaSyC_5sWKbE24Ng-6KO6NIpMNSwNyH1_Jzt4";
+    const AI_MODEL = "gemini-3-flash-preview"; 
+    const BOT_IMG = "https://blogger.googleusercontent.com/img/a/AVvXsEgj5O7p1tJU-P1PVzxcQulzi1izSdWrl5FPlKYVK9bc3rpk51FvQCE2TEKQt6hQ6YbauxeXZBdOItQ6kSSMyCPUAfzN12Ljd7ed0gq2-T-lCvDc4vYDVNwABG2EiNdu7bFePXMprIRn2N2Ur6-E2v_dPNj-AieGw88XGy79F2m7YtiMDVxZsRwi2LVSjQ8";
+
+    function toggleAIChat() {
+        const box = document.getElementById('ai-chat-box');
+        box.classList.toggle('hidden');
+    }
+
+    async function copyAiCode(btn) {
+        try {
+            const container = btn.closest('.code-container');
+            const codeElement = container.querySelector('code');
+            const textToCopy = codeElement.innerText || codeElement.textContent;
+            await navigator.clipboard.writeText(textToCopy);
+            btn.innerHTML = '<i class="fa-solid fa-check"></i> تم النسخ';
+            btn.classList.add('bg-green-500');
+            setTimeout(() => {
+                btn.innerHTML = '<i class="fa-solid fa-copy mr-1"></i> نسخ الكود';
+                btn.classList.remove('bg-green-500');
+            }, 2000);
+        } catch (err) { console.error(err); }
+    }
+
+    function escapeHtml(text) {
+        return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    }
+
+    function formatAIResponse(text) {
+        return text
+            .replace(/```(?:[a-z]+)?\n([\s\S]*?)```/g, (match, code) => {
+                const safeCode = escapeHtml(code.trim());
+                return `
+                <div class="code-container relative my-6 bg-[#0d1117] rounded-2xl border border-white/10 shadow-2xl overflow-hidden">
+                    <div class="flex justify-between items-center px-4 py-2 bg-white/5 border-b border-white/5">
+                        <span class="text-[10px] font-mono text-slate-400 uppercase">Original Plugo Code</span>
+                        <button onclick="copyAiCode(this)" class="bg-primary-600 text-white text-[10px] px-4 py-1.5 rounded-lg font-black hover:bg-primary-500 transition-all active:scale-95">
+                            <i class="fa-solid fa-copy mr-1"></i> نسخ الكود
+                        </button>
+                    </div>
+                    <pre class="p-5 overflow-x-auto custom-scrollbar text-left" dir="ltr"><code class="text-blue-400 font-mono text-sm leading-relaxed">${safeCode}</code></pre>
+                </div>`;
+            })
+            .replace(/\*\*(.*?)\*\*/g, '<strong class="text-primary-500 font-black">$1</strong>')
+            .replace(/### (.*?)\n/g, '<h5 class="text-lg font-black text-slate-900 dark:text-white mt-4 mb-2">$1</h5>')
+            .replace(/- (.*?)\n/g, '<div class="flex gap-2 items-start mb-2"><span class="text-primary-500 font-black">•</span><span>$1</span></div>')
+            .replace(/\n/g, '<br>');
+    }
+
+    async function askGemini() {
+        const input = document.getElementById('ai-input');
+        const messagesDiv = document.getElementById('ai-messages');
+        const query = input.value.trim();
+        if (!query) return;
+
+        // تجهيز قائمة العناوين المتاحة في الشرح ليعرفها الروبوت
+        const availableDocs = typeof docsData !== 'undefined' ? docsData.map(d => d.title).join(' - ') : "";
+
+        messagesDiv.innerHTML += `
+            <div class="flex justify-end mb-6">
+                <div class="bg-primary-600 text-white p-4 rounded-3xl rounded-tl-none text-sm font-bold shadow-xl max-w-[85%]">${query}</div>
+            </div>`;
+        
+        input.value = '';
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+
+        const loadingId = 'loading-' + Date.now();
+        messagesDiv.innerHTML += `
+            <div id="${loadingId}" class="flex gap-3 items-center text-slate-400 text-xs font-black animate-pulse mb-6">
+                <div class="w-8 h-8 rounded-lg overflow-hidden border border-slate-200 dark:border-slate-700">
+                    <img src="${BOT_IMG}" class="w-full h-full object-cover">
+                </div>
+                جاري مراجعة شروحات Plugo...
+            </div>`;
+
+        try {
+            const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${AI_MODEL}:generateContent?key=${AI_KEY}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    contents: [{
+                        parts: [{
+                            text: `أنت مساعد خبير لقالب بلوجر Plugo. 
+                            لديك وصول لقائمة الشروحات الموفرة في الموقع وهي: [ ${availableDocs} ].
+                            تعليمات هامة جداً:
+                            1. إذا سأل المستخدم عن "اتصل بنا" أو "الأرشيف" أو "السيو" أو أي شيء موجود في القائمة، لا تخترع أكواداً من عندك. 
+                            2. بدلاً من ذلك، أخبره أن الكود الأصلي والمثالي موجود في قسم (اذكر اسم القسم من القائمة) واشرح له كيفية استخدامه من هناك.
+                            3. تحدث باللهجة المصرية الشعبية الذكية الودودة.
+                            4. إذا طلب كوداً لشيء غير موجود في القائمة، ساعده بكود متوافق مع معايير Plugo.
+                            سؤال المستخدم هو: ${query}`
+                        }]
+                    }]
+                })
+            });
+
+            const data = await response.json();
+            document.getElementById(loadingId).remove();
+
+            if (data.candidates && data.candidates[0].content.parts[0].text) {
+                let formattedText = formatAIResponse(data.candidates[0].content.parts[0].text);
+                messagesDiv.innerHTML += `
+                    <div class="flex gap-4 mb-6">
+                        <div class="w-10 h-10 rounded-xl overflow-hidden bg-white border border-slate-200 dark:border-slate-700 shadow-lg shrink-0">
+                            <img src="${BOT_IMG}" class="w-full h-full object-cover">
+                        </div>
+                        <div class="bg-white dark:bg-dark-800 p-5 rounded-3xl rounded-tr-none shadow-sm border border-slate-100 dark:border-dark-700 text-sm font-bold dark:text-slate-200 w-full overflow-hidden">
+                            ${formattedText}
+                        </div>
+                    </div>`;
+            } else { throw new Error(); }
+        } catch (error) {
+            if(document.getElementById(loadingId)) document.getElementById(loadingId).remove();
+            messagesDiv.innerHTML += `<div class="text-red-500 font-black p-3 bg-red-50 rounded-xl text-xs">حصل دروب في السيستم يا غالي، جرب تسأل تاني!</div>`;
+        }
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }
+
+    document.getElementById('ai-input')?.addEventListener('keypress', (e) => { if (e.key === 'Enter') askGemini(); });
+</script>
+<script>
+// دالة تغيير الثيم "العالمية" - معرفة على الـ window عشان تتشاف من أي مكان
+window.toggleTheme = function() {
+    const html = document.documentElement;
+    
+    if (html.classList.contains('dark')) {
+        html.classList.remove('dark');
+        localStorage.setItem('color-theme', 'light');
+    } else {
+        html.classList.add('dark');
+        localStorage.setItem('color-theme', 'dark');
+    }
+    
+    // سطر للتأكد في الكونسول إن الزرار استجاب
+    console.log("تم ضغط الزرار وتغيير الثيم بنجاح!");
+};
+
+// كود تشغيل الثيم المحفوظ فور فتح الصفحة
+(function() {
+    const saved = localStorage.getItem('color-theme');
+    if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+    } else {
+        document.documentElement.classList.remove('dark');
+    }
+  // دالة تحريك شريط الشروحات في لوحة التحكم
+window.scrollDashDocs = function(direction) {
+    const list = document.getElementById('dash-docs-list');
+    if (list) {
+        const scrollAmount = 300; // مسافة التحريك في كل ضغطة
+        if (direction === 'left') {
+            list.scrollLeft -= scrollAmount;
+        } else {
+            list.scrollLeft += scrollAmount;
+        }
+    }
+};
+
+// دالة تحريك شريط الشروحات في الصفحة العامة (عشان نضمن إن الكل شغال)
+window.scrollPublicDocs = function(direction) {
+    const list = document.getElementById('pub-docs-list');
+    if (list) {
+        const scrollAmount = 300;
+        if (direction === 'left') {
+            list.scrollLeft -= scrollAmount;
+        } else {
+            list.scrollLeft += scrollAmount;
+        }
+    }
+};
+})();
+  
+</script>
+  </body>
 </html>
-
-
